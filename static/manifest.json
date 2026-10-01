@@ -1,0 +1,38 @@
+{
+  "name": "REDUX — Commerce Collectif en Afrique",
+  "short_name": "REDUX",
+  "description": "Plateforme panafricaine d'achats groupés et prix dégressifs garantis par les commerçants vérifiés.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FF6500",
+  "orientation": "portrait-primary",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/static/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "business", "finance"],
+  "shortcuts": [
+    {
+      "name": "Explorer les Campagnes",
+      "url": "/campaigns/",
+      "description": "Voir les achats groupés en cours"
+    },
+    {
+      "name": "Demandes Groupées",
+      "url": "/requests/",
+      "description": "Proposer ou rejoindre une demande groupée"
+    }
+  ]
+}

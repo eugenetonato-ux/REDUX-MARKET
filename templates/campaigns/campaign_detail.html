@@ -1,0 +1,122 @@
+{% extends 'base/base.html' %}
+{% block title %}{{ campaign.title }} — REDUX{% endblock %}
+
+{% block extra_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/campaign.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Bannière Prochain Palier -->
+{% if summary.next_tier %}
+<div class="next-tier-banner">
+  <div>
+    <h3 style="color: #FFFFFF; font-size: 1.15rem; margin-bottom: 0.25rem;">
+      🚀 Plus que <span class="remaining-badge">{{ summary.remaining_for_next }} acheteur(s)</span> pour débloquer le prochain palier !
+    </h3>
+    <p style="color: #94A3B8; font-size: 0.9rem;">
+      Le prix descendra à <strong>{{ summary.next_tier.price }} {{ summary.currency.symbol }}</strong> pour tout le monde (-{{ summary.next_tier.discount_percentage }}% de réduction).
+    </p>
+  </div>
+  <a href="#join-section" class="btn btn-primary btn-sm">Participer maintenant</a>
+</div>
+{% endif %}
+
+<div style="display: grid; grid-template-columns: 1fr 380px; gap: 2.5rem; align-items: start;">
+  <!-- Colonne Gauche : Détails, Paliers, Boutique -->
+  <div>
+    <div class="card" style="margin-bottom: 2rem;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+        <span class="badge" style="background: var(--primary-light); color: var(--primary);">Campagne Collective</span>
+        {% include 'partials/verified_badge.html' with merchant=campaign.merchant %}
+      </div>
+
+      <h1 style="font-size: 2rem; margin-bottom: 0.75rem;">{{ campaign.title }}</h1>
+
+      <p class="text-muted" style="margin-bottom: 1.5rem;">
+        Vendu par <a href="{% url 'stores:detail' slug=campaign.product.store.slug %}" style="font-weight: 700;">{{ campaign.product.store.name }}</a>
+        &bull; 📍 {{ campaign.product.store.city|default:campaign.product.store.country.name }}
+      </p>
+
+      <!-- Barre de progression grande taille -->
+      {% include 'partials/campaign_progress.html' %}
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light); text-align: center;">
+        <div>
+          <span class="text-muted" style="font-size: 0.8rem; display: block;">Prix actuel</span>
+          <span style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">{{ campaign.current_price }} {{ summary.currency.symbol }}</span>
+        </div>
+        <div>
+          <span class="text-muted" style="font-size: 0.8rem; display: block;">Prix d'origine</span>
+          <span style="font-size: 1.25rem; font-weight: 700; color: var(--text-muted); text-decoration: line-through;">{{ campaign.product.original_price }} {{ summary.currency.symbol }}</span>
+        </div>
+        <div>
+          <span class="text-muted" style="font-size: 0.8rem; display: block;">Économie réalisée</span>
+          <span style="font-size: 1.25rem; font-weight: 800; color: var(--success);">-{{ summary.saved_pct }}%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tableau des Paliers -->
+    {% include 'partials/tier_table.html' %}
+
+    <!-- Conditions -->
+    <div class="card">
+      <h3 style="color: var(--secondary); margin-bottom: 0.75rem;">Règles & Conditions de la Campagne</h3>
+      <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+        {{ campaign.terms|default:"Cette offre collective est garantie par le commerçant partenaire. Si le palier minimum de participants est atteint à la date d'échéance, la commande est confirmée et préparée pour expédition. En cas d'annulation ou d'échec de la campagne, aucun débit n'est conservé." }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Colonne Droite : Formulaire d'Adhésion Sticky -->
+  <aside style="position: sticky; top: 90px;" id="join-section">
+    <div class="card" style="box-shadow: var(--shadow-lg); border-color: var(--primary-subtle);">
+      <h3 style="color: var(--secondary); margin-bottom: 0.5rem;">Rejoindre ce groupe</h3>
+      <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1.5rem;">
+        Aucun paiement immédiat n'est débité tant que le groupe n'a pas validé son palier.
+      </p>
+
+      {% if user_participation %}
+        <div class="alert alert-success">
+          <strong>✓ Vous participez déjà !</strong><br>
+          Quantité réservée : {{ user_participation.quantity }} unité(s).
+        </div>
+      {% elif user.is_authenticated %}
+        <form action="{% url 'campaigns:join' slug=campaign.slug %}" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label class="form-label" for="id_qty">Quantité souhaitée :</label>
+            <input type="number" name="quantity" id="id_qty" class="form-control" value="1" min="1" max="10" required>
+          </div>
+
+          <div style="background: var(--bg-surface); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem;">
+            <div class="flex items-center justify-between" style="font-size: 0.9rem;">
+              <span>Prix par unité estimé :</span>
+              <strong>{{ campaign.current_price }} {{ summary.currency.symbol }}</strong>
+            </div>
+            <div class="text-muted" style="font-size: 0.75rem; margin-top: 0.25rem;">
+              Le prix final pourra encore baisser si d'autres personnes rejoignent le groupe !
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 0.9rem;" id="btn-submit-join">
+            Rejoindre la campagne collective
+          </button>
+        </form>
+      {% else %}
+        <div style="text-align: center; padding: 1rem 0;">
+          <p class="text-muted" style="margin-bottom: 1rem;">Connectez-vous pour participer à cet achat groupé :</p>
+          <a href="/login/?next={{ request.path }}" class="btn btn-primary" style="width: 100%; margin-bottom: 0.5rem;">Se connecter</a>
+          <a href="/register/" class="btn btn-outline" style="width: 100%;">Créer un compte</a>
+        </div>
+      {% endif %}
+
+      <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border-light); font-size: 0.85rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.5rem;">
+        <div>🔒 Transaction sécurisée par l'administration REDUX</div>
+        <div>⏱️ Clôture automatique le {{ campaign.end_date|date:"d/m/Y à H:i" }}</div>
+      </div>
+    </div>
+  </aside>
+</div>
+{% endblock %}

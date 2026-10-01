@@ -1,0 +1,103 @@
+{% extends 'base/base_merchant.html' %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block merchant_content %}
+<div class="merchant-header">
+  <div>
+    <h1>Tableau de bord Commerçant</h1>
+    <p class="text-muted" style="font-size: 0.95rem;">Gérez vos boutiques, produits et campagnes d'achats groupés.</p>
+  </div>
+  <a href="/merchant/store/" class="btn btn-primary" id="btn-create-store">+ Ajouter une boutique</a>
+</div>
+
+<!-- Rappel KYC si non vérifié -->
+{% if not merchant.is_verified %}
+<div class="verification-banner">
+  <div class="verification-banner-content">
+    <h4>🔒 Vérification de votre compte requise</h4>
+    <p>
+      {% if merchant.verification_status == "PENDING" %}
+        Vos documents d'identification sont en cours de validation par l'équipe REDUX.
+      {% elif merchant.verification_status == "REJECTED" %}
+        Votre demande de vérification a été rejetée. Motif : {{ merchant.rejection_reason|default:"Document non conforme." }}
+      {% else %}
+        Faites vérifier votre entreprise pour obtenir le badge <strong>✓ Commerçant Vérifié</strong> et lancer des campagnes sans restriction.
+      {% endif %}
+    </p>
+  </div>
+  <a href="/merchant/verification/" class="btn btn-secondary btn-sm" id="btn-submit-kyc">
+    {% if merchant.verification_status == "PENDING" %}Voir mes documents{% else %}Soumettre mes documents{% endif %}
+  </a>
+</div>
+{% endif %}
+
+<!-- Statistiques Clés -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-card-label">Boutiques actives</div>
+    <div class="stat-card-value highlight-orange">{{ stats.stores_count }}</div>
+    <div class="stat-card-sub">En ligne sur REDUX</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-card-label">Campagnes en cours</div>
+    <div class="stat-card-value">{{ stats.campaigns_count }}</div>
+    <div class="stat-card-sub">Objectifs de groupe actifs</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-card-label">Commandes validées</div>
+    <div class="stat-card-value">{{ stats.orders_count }}</div>
+    <div class="stat-card-sub">Livraisons effectuées</div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-card-label">Statut du commerçant</div>
+    <div style="margin-top: 0.5rem;">
+      {% include 'partials/status_badge.html' with status=merchant.verification_status %}
+    </div>
+    <div class="stat-card-sub">Contrôle de confiance</div>
+  </div>
+</div>
+
+<!-- Mes Boutiques -->
+<div style="margin-top: 2rem;">
+  <div class="flex items-center justify-between" style="margin-bottom: 1.25rem;">
+    <h2>Mes Boutiques</h2>
+    <span class="text-muted" style="font-size: 0.9rem;">{{ stores.count }} boutique(s) configurée(s)</span>
+  </div>
+
+  {% if stores %}
+    <div class="store-grid">
+      {% for store in stores %}
+        <div class="store-card">
+          <div class="store-card-banner"></div>
+          <div class="store-card-body">
+            <div class="store-card-logo-wrap">
+              {{ store.name|slice:":2"|upper }}
+            </div>
+            <div class="store-card-title">
+              <span>{{ store.name }}</span>
+              {% include 'partials/verified_badge.html' %}
+            </div>
+            <p class="store-card-desc">{{ store.description|default:"Aucune description." }}</p>
+            <div class="store-card-footer">
+              <span>📍 {{ store.city|default:store.country.name }}</span>
+              <a href="{% url 'stores:detail' slug=store.slug %}" class="btn btn-outline btn-sm">Voir en ligne →</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
+      <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏪</div>
+      <h3>Vous n'avez pas encore de boutique</h3>
+      <p class="text-muted" style="margin: 0.5rem 0 1.5rem; max-width: 420px; margin-left: auto; margin-right: auto;">
+        Créez votre première boutique en quelques instants pour commencer à publier vos produits et lancer des campagnes groupées.
+      </p>
+      <a href="/merchant/store/" class="btn btn-primary" id="btn-empty-create-store">Créer ma première boutique</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

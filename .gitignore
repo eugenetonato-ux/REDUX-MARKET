@@ -1,0 +1,16 @@
+env/
+.env
+__pycache__/
+*.pyc
+media/
+staticfiles/
+logs/
+backups/
+.pytest_cache/
+.coverage
+db.sqlite3
+*.egg-info/
+dist/
+build/
+.DS_Store
+Thumbs.db

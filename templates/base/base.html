@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="{{ DEFAULT_LANGUAGE|default:'fr' }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}REDUX — Commerce Collectif en Afrique{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Achetez ensemble et profitez de prix dégressifs garantis par vos commerçants locaux sur REDUX.{% endblock %}">
+
+  <!-- PWA & Mobile Meta -->
+  <link rel="manifest" href="{% static 'manifest.json' %}">
+  <meta name="theme-color" content="#FF6500">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="REDUX">
+
+  <!-- Open Graph / SEO -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{% block og_title %}REDUX — Commerce Collectif en Afrique{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}Achetez ensemble et profitez de prix dégressifs garantis par vos commerçants vérifiés sur REDUX.{% endblock %}">
+  <meta property="og:site_name" content="REDUX">
+
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  {% include 'partials/header.html' %}
+
+  <main>
+    <div class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+      {% include 'partials/messages.html' %}
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  {% include 'partials/footer.html' %}
+
+  <!-- Enregistrement Service Worker PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/static/service-worker.js')
+          .then(reg => console.log('REDUX PWA ServiceWorker actif:', reg.scope))
+          .catch(err => console.log('REDUX PWA ServiceWorker échec:', err));
+      });
+    }
+  </script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

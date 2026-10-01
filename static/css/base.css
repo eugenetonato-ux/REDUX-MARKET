@@ -1,0 +1,228 @@
+/* ==============================================================================
+   REDUX DESIGN SYSTEM - STYLE DE BASE
+   Couleurs principales : Orange (#FF6500), Bleu (#0B2447), Fond Blanc/Clair (#F8FAFC / #FFFFFF)
+   ============================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Palette Orange (Couleur Principale) */
+  --primary: #FF6500;
+  --primary-hover: #E55B00;
+  --primary-dark: #C64E00;
+  --primary-light: #FFF4ED;
+  --primary-subtle: #FED7AA;
+  --primary-glow: rgba(255, 101, 0, 0.2);
+
+  /* Palette Bleu (Confiance, Sécurité, Finance) */
+  --secondary: #0B2447;
+  --secondary-hover: #19376D;
+  --secondary-light: #EFF6FF;
+  --secondary-subtle: #BFDBFE;
+  --blue-accent: #2563EB;
+  --blue-badge: #1E40AF;
+
+  /* Neutres et Fonds */
+  --bg-page: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-surface: #F1F5F9;
+  --bg-input: #FFFFFF;
+
+  /* Typographie */
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --text-inverted: #FFFFFF;
+
+  /* Bordures et Ombres */
+  --border: #E2E8F0;
+  --border-light: #F1F5F9;
+  --border-focus: #FF6500;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+  --shadow-orange: 0 10px 25px -5px rgba(255, 101, 0, 0.25);
+
+  /* Statuts */
+  --success: #10B981;
+  --success-bg: #ECFDF5;
+  --warning: #F59E0B;
+  --warning-bg: #FFFBEB;
+  --danger: #EF4444;
+  --danger-bg: #FEF2F2;
+  --info: #0284C7;
+  --info-bg: #F0F9FF;
+
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--primary-hover);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Layout Utilities */
+.container {
+  width: 100%;
+  max-width: 1240px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: 0.5rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.grid { display: grid; }
+
+/* Typo */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--secondary);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.text-orange { color: var(--primary); }
+.text-blue { color: var(--secondary); }
+.text-muted { color: var(--text-muted); }
+
+/* Cartes Modernes */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
+}
+
+.card:hover {
+  border-color: var(--primary-subtle);
+  box-shadow: var(--shadow-md);
+}
+
+/* Header & Navbar */
+.site-header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  padding: 0.75rem 0;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--secondary);
+}
+
+.brand-logo span.highlight {
+  color: var(--primary);
+}
+
+.brand-badge {
+  font-size: 0.65rem;
+  background: var(--primary-light);
+  color: var(--primary);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--primary-subtle);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: var(--radius-sm);
+}
+
+.nav-links a:hover, .nav-links a.active {
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+/* Footer */
+.site-footer {
+  background: var(--secondary);
+  color: #E2E8F0;
+  padding: 3rem 0 2rem;
+  margin-top: 4rem;
+}
+
+.site-footer a {
+  color: #94A3B8;
+}
+
+.site-footer a:hover {
+  color: var(--primary);
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 1.5rem;
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: #64748B;
+  display: flex;
+  justify-content: space-between;
+}

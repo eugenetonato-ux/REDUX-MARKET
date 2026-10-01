@@ -1,0 +1,48 @@
+{% extends 'base/base.html' %}
+{% block title %}Paiement en attente de confirmation — REDUX{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 2rem auto; text-align: center;">
+  <div class="card" style="padding: 2.5rem 2rem;">
+    <div style="font-size: 3rem; margin-bottom: 1rem; animation: pulse 2s infinite;">⏳</div>
+    <h1 style="font-size: 1.85rem; margin-bottom: 0.5rem;">En attente de confirmation...</h1>
+    <p class="text-muted" style="margin-bottom: 1.5rem; line-height: 1.6;">
+      Veuillez confirmer la transaction sur votre téléphone mobile.<br>
+      Dès réception du signal sécurisé de votre opérateur, votre commande sera automatiquement validée.
+    </p>
+
+    <div style="background: var(--bg-surface); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 2rem; font-size: 0.9rem;">
+      <div class="flex items-center justify-between" style="margin-bottom: 0.5rem;">
+        <span>Commande :</span>
+        <strong>#{{ order.order_number }}</strong>
+      </div>
+      <div class="flex items-center justify-between">
+        <span>Montant :</span>
+        <strong class="text-orange">{{ order.final_amount }} {{ order.currency.symbol }}</strong>
+      </div>
+    </div>
+
+    {% if debug %}
+      <!-- Simulation en mode développement -->
+      <div style="background: #FFFBEB; border: 1px dashed #F59E0B; border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
+        <span style="font-size: 0.85rem; color: #B45309; font-weight: 700; display: block; margin-bottom: 0.5rem;">
+          ⚙️ Environnement de Développement / Test
+        </span>
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="simulate_confirm" value="1">
+          <button type="submit" class="btn btn-secondary btn-sm" id="btn-simulate-webhook">
+            Simuler la réception du webhook opérateur (Succès)
+          </button>
+        </form>
+      </div>
+    {% endif %}
+
+    <div>
+      <a href="{% url 'orders:detail' order_number=order.order_number %}" class="btn btn-outline btn-sm">
+        Consulter ma commande
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

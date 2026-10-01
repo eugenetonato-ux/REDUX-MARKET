@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Espace Commerçant — REDUX{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}">
+  <link rel="stylesheet" href="{% static 'css/merchant.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  {% include 'partials/header.html' %}
+
+  <div class="merchant-layout">
+    <!-- Sidebar -->
+    <aside class="merchant-sidebar">
+      <div class="merchant-sidebar-header">
+        <div class="merchant-business-title">{{ merchant.business_name|default:"Ma Boutique" }}</div>
+        <div class="merchant-business-role">
+          {% include 'partials/status_badge.html' with status=merchant.verification_status %}
+        </div>
+      </div>
+
+      <ul class="merchant-nav">
+        <li><a href="/merchant/dashboard/" class="{% block nav_dashboard %}{% endblock %}" id="m-nav-dash">📊 Tableau de bord</a></li>
+        <li><a href="/merchant/store/" class="{% block nav_store %}{% endblock %}" id="m-nav-store">🏪 Ma Boutique</a></li>
+        <li><a href="/merchant/products/" class="{% block nav_products %}{% endblock %}" id="m-nav-products">📦 Produits</a></li>
+        <li><a href="/merchant/campaigns/" class="{% block nav_campaigns %}{% endblock %}" id="m-nav-campaigns">🎯 Campagnes</a></li>
+        <li><a href="/merchant/orders/" class="{% block nav_orders %}{% endblock %}" id="m-nav-orders">🛍️ Commandes</a></li>
+        <li><a href="/merchant/verification/" class="{% block nav_verification %}{% endblock %}" id="m-nav-verification">🛡️ Vérification KYC</a></li>
+        <li><a href="/merchant/settings/" class="{% block nav_settings %}{% endblock %}" id="m-nav-settings">⚙️ Paramètres</a></li>
+      </ul>
+    </aside>
+
+    <!-- Contenu Principal -->
+    <main class="merchant-content">
+      {% include 'partials/messages.html' %}
+      {% block merchant_content %}{% endblock %}
+    </main>
+  </div>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

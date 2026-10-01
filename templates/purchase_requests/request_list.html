@@ -1,0 +1,123 @@
+{% extends 'base/base.html' %}
+{% block title %}Demandes d'Achats Groupés — REDUX{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2.5rem; display: flex; flex-direction: column; align-items: center; text-align: center;">
+  <span class="badge" style="background: var(--primary-light); color: var(--primary); font-size: 0.85rem; margin-bottom: 0.5rem; font-weight: 700;">
+    🔄 Modèle Inversé — Demande Collective
+  </span>
+  <h1 style="font-size: 2.25rem; margin-bottom: 0.75rem; color: var(--secondary);">Demandes d'Achats Groupés</h1>
+  <p class="text-muted" style="font-size: 1.05rem; max-width: 640px; margin: 0 auto 1.5rem;">
+    Vous avez un besoin volumineux ou souhaitez vous regrouper avec d'autres acheteurs ? Publiez votre demande et laissez les commerçants vérifiés REDUX vous faire leurs meilleures offres.
+  </p>
+  <div>
+    <a href="{% url 'purchase_requests:create' %}" class="btn btn-primary" id="btn-create-purchase-request" style="font-size: 1rem; padding: 0.75rem 1.5rem;">
+      ➕ Créer une nouvelle demande groupée
+    </a>
+  </div>
+</div>
+
+<!-- Filtres -->
+<div class="card" style="margin-bottom: 2rem; padding: 1rem 1.5rem; background: var(--bg-card); border: 1px solid var(--border);">
+  <form method="get" class="flex items-center gap-4" style="flex-wrap: wrap;">
+    <div style="flex: 1; min-width: 200px;">
+      <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Pays</label>
+      <select name="country" class="form-control" onchange="this.form.submit()">
+        <option value="">Tous les pays</option>
+        {% for c in countries %}
+          <option value="{{ c.code }}" {% if selected_country == c.code %}selected{% endif %}>
+            {{ c.flag_emoji }} {{ c.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div style="flex: 1; min-width: 200px;">
+      <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Catégorie</label>
+      <select name="category" class="form-control" onchange="this.form.submit()">
+        <option value="">Toutes les catégories</option>
+        {% for cat in categories %}
+          <option value="{{ cat.id }}" {% if selected_category == cat.id %}selected{% endif %}>
+            {{ cat.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div style="align-self: flex-end;">
+      <a href="{% url 'purchase_requests:list' %}" class="btn btn-outline btn-sm">Réinitialiser</a>
+    </div>
+  </form>
+</div>
+
+<!-- Liste des demandes -->
+{% if requests %}
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+    {% for req in requests %}
+      <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid var(--primary); transition: transform 0.2s, box-shadow 0.2s;">
+        <div>
+          <div class="flex justify-between items-center" style="margin-bottom: 0.75rem;">
+            <span class="badge" style="background: var(--bg-surface); color: var(--secondary); font-size: 0.75rem; border: 1px solid var(--border);">
+              {{ req.country.flag_emoji }} {{ req.country.name }}
+            </span>
+            {% if req.status == 'OPEN' %}
+              <span class="badge" style="background: #ECFDF5; color: #059669; font-weight: 600; font-size: 0.75rem;">
+                🟢 Ouverte aux participants
+              </span>
+            {% elif req.status == 'PROPOSALS_RECEIVED' %}
+              <span class="badge" style="background: #EFF6FF; color: #2563EB; font-weight: 600; font-size: 0.75rem;">
+                💬 Offres reçues
+              </span>
+            {% else %}
+              <span class="badge" style="background: var(--bg-surface); color: var(--text-muted); font-size: 0.75rem;">
+                {{ req.get_status_display }}
+              </span>
+            {% endif %}
+          </div>
+
+          <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem; line-height: 1.3;">
+            <a href="{% url 'purchase_requests:detail' pk=req.pk %}" style="color: var(--secondary); text-decoration: none;">
+              {{ req.title }}
+            </a>
+          </h3>
+
+          <p class="text-muted" style="font-size: 0.9rem; line-height: 1.4; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+            {{ req.description }}
+          </p>
+
+          <div style="background: var(--bg-surface); padding: 0.75rem; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.85rem;">
+            <div class="flex justify-between" style="margin-bottom: 0.35rem;">
+              <span class="text-muted">Objectif visé :</span>
+              <strong style="color: var(--secondary);">{{ req.target_quantity }} unités</strong>
+            </div>
+            <div class="flex justify-between" style="margin-bottom: 0.35rem;">
+              <span class="text-muted">Prix cible souhaité :</span>
+              <strong style="color: var(--primary);">{{ req.target_price }} FCFA</strong>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-muted">Engagements actuels :</span>
+              <span style="font-weight: 700; color: #059669;">{{ req.total_pledged|default:0 }} unités ({{ req.total_participants|default:0 }} acheteurs)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between" style="padding-top: 0.75rem; border-top: 1px solid var(--border);">
+          <small class="text-muted">Expire le {{ req.expires_at|date:"d/m/Y" }}</small>
+          <a href="{% url 'purchase_requests:detail' pk=req.pk %}" class="btn btn-primary btn-sm">
+            Voir & Rejoindre →
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="card" style="text-align: center; padding: 4rem 1.5rem;">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">📢</div>
+    <h2>Aucune demande groupée trouvée</h2>
+    <p class="text-muted" style="max-width: 480px; margin: 0.5rem auto 1.5rem;">
+      Soyez le premier à lancer une demande groupée pour votre produit recherché et mobilisez d'autres acheteurs !
+    </p>
+    <a href="{% url 'purchase_requests:create' %}" class="btn btn-primary">Lancer une demande</a>
+  </div>
+{% endif %}
+{% endblock %}

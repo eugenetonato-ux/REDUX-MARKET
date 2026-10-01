@@ -1,0 +1,68 @@
+{% extends "admin/index.html" %}
+{% load i18n admin_tags %}
+
+{% block content %}
+{% platform_metrics as metrics %}
+
+<!-- Tableau de Bord KPIs REDUX -->
+<div style="margin-bottom: 2.5rem;">
+  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+    <h2 style="font-size: 1.3rem; color: #0B2447; margin: 0; font-weight: 800;">
+      📊 Métriques Clés de la Plateforme
+    </h2>
+    <span style="font-size: 0.85rem; color: #64748B;">Temps réel &bull; Données certifiées</span>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem;">
+    <!-- Métrique 1 : Utilisateurs -->
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 10px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #0B2447;">
+      <div style="font-size: 0.8rem; color: #64748B; font-weight: 600; text-transform: uppercase;">Utilisateurs Inscrits</div>
+      <div style="font-size: 1.85rem; font-weight: 800; color: #0B2447; margin: 0.25rem 0;">
+        {{ metrics.total_buyers|add:metrics.total_merchants }}
+      </div>
+      <div style="font-size: 0.8rem; color: #64748B;">
+        {{ metrics.total_buyers }} acheteurs &bull; {{ metrics.total_merchants }} vendeurs
+      </div>
+    </div>
+
+    <!-- Métrique 2 : Vérifications KYC en attente -->
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 10px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid {% if metrics.pending_verifications > 0 %}#F59E0B{% else %}#10B981{% endif %};">
+      <div style="font-size: 0.8rem; color: #64748B; font-weight: 600; text-transform: uppercase;">Dossiers KYC en attente</div>
+      <div style="font-size: 1.85rem; font-weight: 800; color: {% if metrics.pending_verifications > 0 %}#B45309{% else %}#047857{% endif %}; margin: 0.25rem 0;">
+        {{ metrics.pending_verifications }}
+      </div>
+      <div style="font-size: 0.8rem; color: #64748B;">
+        {% if metrics.pending_verifications > 0 %}
+          <a href="/{{ ADMIN_URL_PATH|default:'cpanel-redux' }}/merchants/merchantverification/?status__exact=PENDING" style="color: #FF6500; font-weight: 700;">Examiner les dossiers →</a>
+        {% else %}
+          Tous les dossiers sont à jour ✓
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Métrique 3 : Campagnes & Boutiques -->
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 10px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #FF6500;">
+      <div style="font-size: 0.8rem; color: #64748B; font-weight: 600; text-transform: uppercase;">Campagnes Actives</div>
+      <div style="font-size: 1.85rem; font-weight: 800; color: #FF6500; margin: 0.25rem 0;">
+        {{ metrics.active_campaigns }}
+      </div>
+      <div style="font-size: 0.8rem; color: #64748B;">
+        {{ metrics.total_stores }} boutique(s) en ligne
+      </div>
+    </div>
+
+    <!-- Métrique 4 : Volume d'Affaires & Commissions -->
+    <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 10px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-left: 4px solid #2563EB;">
+      <div style="font-size: 0.8rem; color: #64748B; font-weight: 600; text-transform: uppercase;">Volume d'Affaires (GMV)</div>
+      <div style="font-size: 1.85rem; font-weight: 800; color: #0B2447; margin: 0.25rem 0;">
+        {{ metrics.total_gmv }}
+      </div>
+      <div style="font-size: 0.8rem; color: #10B981; font-weight: 700;">
+        {{ metrics.paid_orders }} commande(s) réglée(s)
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ block.super }}
+{% endblock %}

@@ -1,0 +1,51 @@
+<div class="tier-table-card">
+  <div class="flex items-center justify-between">
+    <h3 style="color: var(--secondary);">Paliers de prix dégressifs</h3>
+    <span class="badge" style="background: var(--primary-light); color: var(--primary);">
+      Prix plancher garanti : {{ campaign.product.minimum_price }} {{ campaign.product.store.country.currency.symbol }}
+    </span>
+  </div>
+
+  <table class="tier-table">
+    <thead>
+      <tr>
+        <th>Palier de volume</th>
+        <th>Prix unitaire</th>
+        <th>Économie</th>
+        <th>Statut</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for tier in tiers %}
+        {% with is_current=False %}
+          {% if summary.current_tier and summary.current_tier.id == tier.id %}
+            <tr class="tier-row-active">
+          {% else %}
+            <tr>
+          {% endif %}
+            <td>
+              <strong>{{ tier.min_participants }}</strong>
+              {% if tier.max_participants %} à {{ tier.max_participants }}{% else %}+{% endif %} acheteurs
+              {% if summary.current_tier and summary.current_tier.id == tier.id %}
+                <span class="tier-current-tag">Palier Actuel</span>
+              {% endif %}
+            </td>
+            <td>
+              <span style="font-size: 1.1rem; font-weight: 700;">{{ tier.price }} {{ campaign.product.store.country.currency.symbol }}</span>
+            </td>
+            <td>
+              <span style="color: var(--primary); font-weight: 700;">-{{ tier.discount_percentage }}%</span>
+            </td>
+            <td>
+              {% if campaign.current_participants_count >= tier.min_participants %}
+                <span style="color: var(--success); font-weight: 700;">✓ Débloqué</span>
+              {% else %}
+                <span class="text-muted">À débloquer</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endwith %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

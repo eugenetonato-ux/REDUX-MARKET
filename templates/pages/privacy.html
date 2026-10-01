@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+{% block title %}Politique de Confidentialité — REDUX{% endblock %}
+
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto; padding: 2rem 0;">
+  <h1 style="font-size: 2.25rem; color: var(--secondary); margin-bottom: 1rem;">
+    Politique de Protection des Données Personnelles
+  </h1>
+  <p class="text-muted" style="margin-bottom: 2rem;">Dernière mise à jour : 30 septembre 2026</p>
+
+  <div class="card" style="line-height: 1.7; color: var(--text-main);">
+    <h3 style="color: var(--secondary);">1. Collecte des Données</h3>
+    <p>
+      REDUX collecte uniquement les données strictement nécessaires au traitement des commandes groupées, à la livraison et à la facturation (nom, numéro de téléphone Mobile Money, adresse email, adresse de livraison).
+    </p>
+
+    <h3 style="color: var(--secondary); margin-top: 1.5rem;">2. Sécurité des Transactions</h3>
+    <p>
+      Aucune coordonnée bancaire sensible (code PIN Mobile Money, cryptogramme de carte bancaire) n'est stockée sur nos serveurs. Les flux de paiement sont traités par des prestataires certifiés PCI-DSS (CinetPay, Paypack, Fedapay, NotchPay).
+    </p>
+
+    <h3 style="color: var(--secondary); margin-top: 1.5rem;">3. Vos Droits</h3>
+    <p>
+      Conformément aux législations régionales sur la protection des données à caractère personnel, vous disposez d'un droit d'accès, de rectification et d'effacement de vos informations en contactant notre délégué à la protection des données à dpo@redux.app.
+    </p>
+  </div>
+</div>
+{% endblock %}

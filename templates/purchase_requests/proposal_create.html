@@ -1,0 +1,85 @@
+{% extends 'base/base.html' %}
+{% block title %}Soumettre une Offre — {{ request_obj.title }} — REDUX{% endblock %}
+
+{% block content %}
+<div style="max-width: 650px; margin: 0 auto;">
+  <div style="margin-bottom: 1.5rem;">
+    <a href="{% url 'purchase_requests:detail' pk=request_obj.pk %}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">
+      ← Retour à la demande
+    </a>
+  </div>
+
+  <div class="card" style="border-top: 4px solid var(--secondary); padding: 2.5rem;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <span class="badge" style="background: #EFF6FF; color: #1D4ED8; font-size: 0.8rem; margin-bottom: 0.5rem; font-weight: 700;">
+        Espace Commerçant Vérifié
+      </span>
+      <h1 style="font-size: 1.75rem; color: var(--secondary); margin-bottom: 0.5rem;">
+        Soumettre une Offre Commerciale
+      </h1>
+      <p class="text-muted" style="font-size: 0.95rem;">
+        Pour : <strong>« {{ request_obj.title }} »</strong> (Objectif : {{ request_obj.target_quantity }} unités à {{ request_obj.target_price }} FCFA)
+      </p>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div style="margin-bottom: 1.25rem;">
+        <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+          {{ form.store.label }} *
+        </label>
+        {{ form.store }}
+        {% if form.store.errors %}
+          <div style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.store.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+        <div>
+          <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+            {{ form.proposed_price.label }} *
+          </label>
+          {{ form.proposed_price }}
+          {% if form.proposed_price.errors %}
+            <div style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.proposed_price.errors.0 }}</div>
+          {% endif %}
+        </div>
+        <div>
+          <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+            {{ form.min_quantity.label }} *
+          </label>
+          {{ form.min_quantity }}
+          {% if form.min_quantity.errors %}
+            <div style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.min_quantity.errors.0 }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div style="margin-bottom: 1.25rem;">
+        <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+          {{ form.validity_days.label }} *
+        </label>
+        {{ form.validity_days }}
+      </div>
+
+      <div style="margin-bottom: 1.5rem;">
+        <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+          {{ form.description.label }}
+        </label>
+        {{ form.description }}
+        {% if form.description.errors %}
+          <div style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.description.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div class="flex justify-between items-center">
+        <a href="{% url 'purchase_requests:detail' pk=request_obj.pk %}" class="btn btn-outline">Annuler</a>
+        <button type="submit" class="btn btn-secondary" id="btn-submit-proposal" style="padding: 0.75rem 2rem;">
+          Envoyer mon offre commerciale
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

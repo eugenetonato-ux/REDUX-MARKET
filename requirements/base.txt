@@ -1,0 +1,13 @@
+Django>=5.1,<5.3
+djangorestframework
+drf-spectacular
+django-filter
+django-cors-headers
+django-ratelimit
+python-decouple
+Pillow
+mysqlclient
+celery
+redis
+django-redis
+phonenumbers

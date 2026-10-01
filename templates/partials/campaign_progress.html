@@ -1,0 +1,11 @@
+<div class="campaign-progress-wrap">
+  <div class="campaign-progress-header">
+    <span class="target">{{ summary.progress_pct }}% atteint</span>
+    <span class="remaining">
+      <strong>{{ campaign.current_participants_count }}</strong> / {{ campaign.target_participants }} acheteurs
+    </span>
+  </div>
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill" style="width: {{ summary.progress_pct }}%;"></div>
+  </div>
+</div>

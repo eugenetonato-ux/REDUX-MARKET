@@ -1,0 +1,147 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Explorer — Campagnes & Demandes Groupées — REDUX{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/campaign.css' %}">
+{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2rem;">
+  <h1 style="font-size: 2.25rem; color: var(--secondary); margin-bottom: 0.5rem;">
+    Explorer les Achats Groupés
+  </h1>
+  <p class="text-muted" style="font-size: 1.05rem;">
+    Trouvez les meilleures offres collectives en cours ou découvrez les besoins exprimés par d'autres acheteurs.
+  </p>
+</div>
+
+<!-- Barre de Recherche & Filtres Avancés -->
+<div class="card" style="margin-bottom: 2.5rem; padding: 1.5rem; background: var(--bg-card); border: 1px solid var(--border);">
+  <form method="get" class="flex flex-col gap-4">
+    <!-- Champ de recherche texte -->
+    <div style="display: flex; gap: 0.75rem;">
+      <input type="text" name="q" value="{{ query }}" placeholder="Rechercher un produit, une marque, une demande..." class="form-control" style="flex: 1; font-size: 1rem; padding: 0.75rem 1rem;">
+      <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.75rem;">
+        🔍 Rechercher
+      </button>
+    </div>
+
+    <!-- Filtres en ligne -->
+    <div class="flex items-center gap-4" style="flex-wrap: wrap;">
+      <!-- Type d'élément -->
+      <div style="min-width: 180px;">
+        <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Type d'achat</label>
+        <select name="type" class="form-control" onchange="this.form.submit()">
+          <option value="all" {% if selected_type == 'all' %}selected{% endif %}>Tout afficher</option>
+          <option value="campaigns" {% if selected_type == 'campaigns' %}selected{% endif %}>Campagnes vendeurs</option>
+          <option value="requests" {% if selected_type == 'requests' %}selected{% endif %}>Demandes acheteurs</option>
+        </select>
+      </div>
+
+      <!-- Pays -->
+      <div style="min-width: 180px;">
+        <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Pays</label>
+        <select name="country" class="form-control" onchange="this.form.submit()">
+          <option value="">Tous les pays</option>
+          {% for c in countries %}
+            <option value="{{ c.code }}" {% if selected_country == c.code %}selected{% endif %}>
+              {{ c.flag_emoji }} {{ c.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Catégorie -->
+      <div style="min-width: 180px;">
+        <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Catégorie</label>
+        <select name="category" class="form-control" onchange="this.form.submit()">
+          <option value="">Toutes catégories</option>
+          {% for cat in categories %}
+            <option value="{{ cat.slug }}" {% if selected_category == cat.slug %}selected{% endif %}>
+              {{ cat.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div style="align-self: flex-end;">
+        <a href="{% url 'pages:explorer' %}" class="btn btn-outline btn-sm">Réinitialiser</a>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Résultats : Campagnes -->
+{% if campaign_cards and selected_type != 'requests' %}
+  <section style="margin-bottom: 3.5rem;">
+    <div class="flex justify-between items-center" style="margin-bottom: 1.25rem;">
+      <h2 style="font-size: 1.5rem; color: var(--secondary);">
+        Campagnes Collectives ({{ campaign_cards|length }})
+      </h2>
+    </div>
+    <div class="campaign-grid">
+      {% for item in campaign_cards %}
+        {% include 'partials/campaign_card.html' with campaign=item.campaign summary=item.summary %}
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+
+<!-- Résultats : Demandes Groupées -->
+{% if purchase_requests and selected_type != 'campaigns' %}
+  <section style="margin-bottom: 3.5rem;">
+    <div class="flex justify-between items-center" style="margin-bottom: 1.25rem;">
+      <h2 style="font-size: 1.5rem; color: var(--secondary);">
+        Demandes Groupées de la Communauté ({{ purchase_requests|length }})
+      </h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+      {% for req in purchase_requests %}
+        <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; border-left: 4px solid var(--secondary);">
+          <div>
+            <div class="flex justify-between items-center" style="margin-bottom: 0.5rem;">
+              <span class="badge" style="background: var(--bg-surface); color: var(--secondary); font-size: 0.75rem;">
+                {{ req.country.flag_emoji }} {{ req.country.name }}
+              </span>
+              <span class="badge" style="background: #ECFDF5; color: #059669; font-size: 0.75rem; font-weight: 600;">
+                {{ req.get_status_display }}
+              </span>
+            </div>
+            <h3 style="font-size: 1.15rem; margin-bottom: 0.5rem;">
+              <a href="{% url 'purchase_requests:detail' pk=req.pk %}" style="color: var(--secondary); text-decoration: none;">
+                {{ req.title }}
+              </a>
+            </h3>
+            <p class="text-muted" style="font-size: 0.85rem; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+              {{ req.description }}
+            </p>
+          </div>
+          <div class="flex justify-between items-center" style="border-top: 1px solid var(--border); padding-top: 0.75rem; font-size: 0.85rem;">
+            <div>
+              <strong style="color: var(--primary);">{{ req.target_price }} FCFA</strong>
+              <span class="text-muted">/ unité cible</span>
+            </div>
+            <a href="{% url 'purchase_requests:detail' pk=req.pk %}" class="btn btn-primary btn-sm">
+              Voir la demande →
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+
+{% if not campaign_cards and not purchase_requests %}
+  <div class="card" style="text-align: center; padding: 4rem 1.5rem;">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
+    <h2>Aucun résultat ne correspond à vos critères</h2>
+    <p class="text-muted" style="max-width: 480px; margin: 0.5rem auto 1.5rem;">
+      Essayez de modifier vos filtres ou de lancer vous-même une demande d'achat groupé.
+    </p>
+    <a href="{% url 'pages:explorer' %}" class="btn btn-outline" style="margin-right: 0.5rem;">Réinitialiser</a>
+    <a href="{% url 'purchase_requests:create' %}" class="btn btn-primary">Créer une demande</a>
+  </div>
+{% endif %}
+{% endblock %}

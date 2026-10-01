@@ -1,0 +1,62 @@
+{% extends 'base/base.html' %}
+{% block title %}Centre d'Aide & FAQ — REDUX{% endblock %}
+
+{% block content %}
+<div style="max-width: 760px; margin: 0 auto; padding: 2rem 0;">
+  <div style="text-align: center; margin-bottom: 2.5rem;">
+    <h1 style="font-size: 2.25rem; color: var(--secondary); margin-bottom: 0.5rem;">
+      Centre d'Aide & Questions Fréquentes
+    </h1>
+    <p class="text-muted" style="font-size: 1.05rem;">
+      Toutes les réponses à vos questions sur les achats groupés, les paiements et les livraisons REDUX.
+    </p>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+    <div class="card">
+      <h3 style="color: var(--secondary); font-size: 1.15rem; margin-bottom: 0.5rem;">
+        ❓ Comment fonctionne la baisse de prix par palier ?
+      </h3>
+      <p class="text-muted" style="line-height: 1.6; margin: 0;">
+        Le commerçant fixe des paliers (ex: 10, 25, 50 acheteurs). À chaque seuil franchi par les acheteurs, le prix unitaire diminue. Même si vous avez rejoint l'achat au début, votre prix final correspondra au palier le plus avantageux atteint à la clôture de la campagne.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3 style="color: var(--secondary); font-size: 1.15rem; margin-bottom: 0.5rem;">
+        ❓ Quels moyens de paiement sont acceptés ?
+      </h3>
+      <p class="text-muted" style="line-height: 1.6; margin: 0;">
+        REDUX accepte tous les portefeuilles Mobile Money locaux selon votre pays : MTN Mobile Money, Moov Money, Orange Money, Wave, ainsi que les cartes bancaires Visa et Mastercard.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3 style="color: var(--secondary); font-size: 1.15rem; margin-bottom: 0.5rem;">
+        ❓ Que se passe-t-il si la campagne n'atteint pas son objectif minimum ?
+      </h3>
+      <p class="text-muted" style="line-height: 1.6; margin: 0;">
+        Si l'objectif minimal de participants n'est pas atteint à la date limite, la campagne est automatiquement annulée. Vous êtes intégralement remboursé sur votre compte Mobile Money sans aucun frais retenu.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3 style="color: var(--secondary); font-size: 1.15rem; margin-bottom: 0.5rem;">
+        ❓ Comment devenir un commerçant vérifié ?
+      </h3>
+      <p class="text-muted" style="line-height: 1.6; margin: 0;">
+        Inscrivez-vous en choisissant le profil "Commerçant", puis soumettez vos pièces d'identification légale (RCCM, IFU/NIF, pièce d'identité). L'équipe de modération REDUX examine et valide votre dossier sous 24 à 48 heures.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3 style="color: var(--secondary); font-size: 1.15rem; margin-bottom: 0.5rem;">
+        ❓ Comment contacter le support en cas de litige ?
+      </h3>
+      <p class="text-muted" style="line-height: 1.6; margin: 0;">
+        Depuis votre tableau de bord acheteur, ouvrez la commande concernée et cliquez sur « Signaler un litige ». Notre équipe de médiation bloque le paiement sous séquestre et instruit la réclamation.
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+{% block title %}Mes Commandes — REDUX{% endblock %}
+
+{% block content %}
+<div style="max-width: 960px; margin: 0 auto;">
+  <div class="flex items-center justify-between" style="margin-bottom: 2rem;">
+    <div>
+      <span class="badge" style="background: var(--primary-light); color: var(--primary); margin-bottom: 0.5rem;">Espace Acheteur</span>
+      <h1>Mes Commandes</h1>
+    </div>
+    <a href="/campaigns/" class="btn btn-primary btn-sm">Découvrir les offres groupées</a>
+  </div>
+
+  {% if orders %}
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      {% for o in orders %}
+        <div class="card" style="display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1.5rem;">
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.25rem;">
+              <span style="font-weight: 800; font-size: 1.1rem; color: var(--secondary);">#{{ o.order_number }}</span>
+              {% include 'partials/status_badge.html' with status=o.status %}
+            </div>
+            <div class="text-muted" style="font-size: 0.85rem;">
+              Le {{ o.created_at|date:"d/m/Y à H:i" }} &bull;
+              {% for it in o.items.all %}{{ it.quantity }}x {{ it.product.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+            </div>
+          </div>
+
+          <div style="text-align: right; display: flex; align-items: center; gap: 1.5rem;">
+            <div>
+              <span style="font-size: 1.25rem; font-weight: 800; color: var(--primary);">{{ o.final_amount }} {{ o.currency.symbol }}</span>
+            </div>
+            <a href="{% url 'orders:detail' order_number=o.order_number %}" class="btn btn-outline btn-sm">Détails →</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="card" style="text-align: center; padding: 3rem;">
+      <div style="font-size: 2.5rem; margin-bottom: 1rem;">📦</div>
+      <h3>Aucune commande passée pour l'instant</h3>
+      <p class="text-muted" style="margin: 0.5rem 0 1.5rem;">Rejoignez une campagne collective pour profiter de prix dégressifs exclusifs.</p>
+      <a href="/campaigns/" class="btn btn-primary">Voir les campagnes en cours</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

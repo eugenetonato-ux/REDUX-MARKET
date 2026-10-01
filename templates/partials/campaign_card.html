@@ -1,0 +1,45 @@
+<div class="campaign-card">
+  <div class="campaign-card-header">
+    {% if campaign.product.images.first %}
+      <img src="{{ campaign.product.images.first.image.url }}" alt="{{ campaign.title }}">
+    {% else %}
+      <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:#F1F5F9; color:var(--text-muted); font-size:2.5rem;">
+        📦
+      </div>
+    {% endif %}
+
+    <div class="campaign-card-badge">
+      {% include 'partials/verified_badge.html' with merchant=campaign.merchant %}
+    </div>
+
+    {% if summary.saved_pct > 0 %}
+      <div class="campaign-discount-pill">-{{ summary.saved_pct }}%</div>
+    {% endif %}
+  </div>
+
+  <div class="campaign-card-body">
+    <div class="campaign-card-store">
+      <span>🏪 {{ campaign.product.store.name }}</span>
+      <span>&bull;</span>
+      <span>📍 {{ campaign.product.store.city|default:campaign.product.store.country.name }}</span>
+    </div>
+
+    <h3 class="campaign-card-title">
+      <a href="{% url 'campaigns:detail' slug=campaign.slug %}">{{ campaign.title }}</a>
+    </h3>
+
+    <div class="campaign-price-box">
+      <span class="campaign-price-current">{{ campaign.current_price }} {{ summary.currency.symbol }}</span>
+      {% if campaign.current_price < campaign.product.original_price %}
+        <span class="campaign-price-original">{{ campaign.product.original_price }} {{ summary.currency.symbol }}</span>
+      {% endif %}
+    </div>
+
+    {% include 'partials/campaign_progress.html' %}
+
+    <div class="campaign-card-footer">
+      <span class="text-muted" style="font-size: 0.8rem;">Fin le {{ campaign.end_date|date:"d/m/Y" }}</span>
+      <a href="{% url 'campaigns:detail' slug=campaign.slug %}" class="btn btn-primary btn-sm">Participer →</a>
+    </div>
+  </div>
+</div>

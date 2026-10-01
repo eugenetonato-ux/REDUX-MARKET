@@ -1,0 +1,79 @@
+{% extends 'base/base.html' %}
+{% block title %}Validation de commande — REDUX{% endblock %}
+
+{% block content %}
+<div style="max-width: 960px; margin: 0 auto;">
+  <div style="margin-bottom: 2rem;">
+    <span class="badge" style="background: var(--primary-light); color: var(--primary); margin-bottom: 0.5rem;">Étape finale</span>
+    <h1>Finaliser votre commande groupée</h1>
+    <p class="text-muted">Renseignez vos coordonnées de livraison pour confirmer la commande issue du groupe.</p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 360px; gap: 2rem; align-items: start;">
+    <!-- Formulaire Livraison -->
+    <div class="card">
+      <h3 style="color: var(--secondary); margin-bottom: 1.25rem;">Informations de livraison</h3>
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label class="form-label" for="id_address">Adresse complète de livraison ou agence relais *</label>
+          <textarea name="shipping_address" id="id_address" rows="3" class="form-control" placeholder="Ex: Cotonou, Haie Vive, Rue 340, Immeuble Horizon 2ème étage..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="id_phone">Numéro de téléphone / WhatsApp de réception *</label>
+          <input type="text" name="contact_phone" id="id_phone" class="form-control" value="{{ user.phone|default:'' }}" placeholder="Ex: +229 97 00 00 00" required>
+          <div class="form-help">Le livreur et le commerçant utiliseront ce numéro pour vous contacter à l'arrivée du colis.</div>
+        </div>
+
+        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light);">
+          <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 0.9rem;" id="btn-confirm-checkout">
+            Confirmer ma commande
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Récapitulatif Commande & Prix Collectif -->
+    <div class="card" style="background: var(--bg-surface); border-color: var(--primary-subtle);">
+      <h3 style="color: var(--secondary); font-size: 1.2rem; margin-bottom: 1rem;">Récapitulatif</h3>
+      
+      <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);">
+        <h4 style="font-size: 1rem; color: var(--secondary);">{{ product.name }}</h4>
+        <div class="text-muted" style="font-size: 0.85rem; margin-top: 0.25rem;">Boutique : {{ product.store.name }}</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.95rem;">
+        <div class="flex items-center justify-between">
+          <span>Quantité réservée :</span>
+          <strong>x{{ participant.quantity }}</strong>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <span>Prix public unitaire :</span>
+          <span style="text-decoration: line-through; color: var(--text-muted);">{{ product.original_price }} {{ currency.symbol }}</span>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <span>Prix collectif obtenu :</span>
+          <strong class="text-orange">{{ campaign.current_price }} {{ currency.symbol }}</strong>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <span>Frais de livraison :</span>
+          <span style="color: var(--success); font-weight: 600;">Gratuit / Standard</span>
+        </div>
+
+        <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 2px dashed var(--border); display: flex; justify-content: space-between; align-items: baseline;">
+          <span style="font-size: 1.1rem; font-weight: 700; color: var(--secondary);">Total final :</span>
+          <span style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">{{ total_estimated }} {{ currency.symbol }}</span>
+        </div>
+      </div>
+
+      <div class="alert alert-success" style="margin-top: 1.25rem; font-size: 0.85rem; padding: 0.75rem;">
+        🎉 Vous économisez grâce à la force du groupe !
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

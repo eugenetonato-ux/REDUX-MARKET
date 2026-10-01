@@ -1,0 +1,41 @@
+{% extends 'base/base_merchant.html' %}
+{% block nav_store %}active{% endblock %}
+
+{% block merchant_content %}
+<div class="merchant-header">
+  <div>
+    <h1>Configuration de la Boutique</h1>
+    <p class="text-muted">Renseignez les coordonnées et informations de votre commerce.</p>
+  </div>
+</div>
+
+<div class="card" style="max-width: 680px;">
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label class="form-label" for="id_name">Nom de la boutique *</label>
+      <input type="text" name="name" id="id_name" class="form-control" placeholder="Ex: Électro Bénin Pro" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="id_city">Ville / Localisation *</label>
+      <input type="text" name="city" id="id_city" class="form-control" placeholder="Ex: Cotonou, Akpakpa" required>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="id_phone">Numéro de téléphone professionnel</label>
+      <input type="text" name="phone" id="id_phone" class="form-control" placeholder="Ex: +229 97 00 00 00">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="id_description">Description de la boutique</label>
+      <textarea name="description" id="id_description" rows="3" class="form-control" placeholder="Présentez brièvement vos produits phares et votre engagement qualité..."></textarea>
+    </div>
+
+    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+      <button type="submit" class="btn btn-primary">Enregistrer la boutique</button>
+      <a href="/merchant/dashboard/" class="btn btn-outline">Annuler</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

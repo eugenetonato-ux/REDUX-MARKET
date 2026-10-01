@@ -1,0 +1,48 @@
+{% load static %}
+<header class="site-header">
+  <div class="container flex items-center justify-between">
+    <!-- Marque REDUX -->
+    <a href="/" class="brand-logo" id="header-brand-logo">
+      <span>RE<span class="highlight">DUX</span></span>
+      <span class="brand-badge">Afrique</span>
+    </a>
+
+    <!-- Navigation Principale -->
+    <nav>
+      <ul class="nav-links">
+        <li><a href="/explorer" id="nav-explorer">Explorer</a></li>
+        <li><a href="/stores/" id="nav-stores">Boutiques</a></li>
+        <li><a href="/campaigns/" id="nav-campaigns">Campagnes</a></li>
+        <li><a href="/requests/" id="nav-requests">Demandes Groupées</a></li>
+      </ul>
+    </nav>
+
+    <!-- Zone Droite : Pays & Auth -->
+    <div class="flex items-center gap-4">
+      {% if current_country %}
+      <div style="font-size: 0.85rem; font-weight: 700; color: var(--secondary); background: var(--bg-surface); padding: 0.35rem 0.75rem; border-radius: var(--radius-full); border: 1px solid var(--border);">
+        <span>{{ current_country.flag_emoji }} {{ current_country.name }}</span>
+      </div>
+      {% endif %}
+
+      {% if user.is_authenticated %}
+        {% if user.is_merchant %}
+          <a href="/merchant/dashboard/" class="btn btn-secondary btn-sm" id="btn-merchant-dashboard">
+            <span>Espace Commerçant</span>
+          </a>
+        {% else %}
+          <a href="/dashboard/" class="btn btn-outline btn-sm" id="btn-buyer-dashboard">
+            <span>Mon Espace</span>
+          </a>
+        {% endif %}
+        <form action="/logout/" method="post" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-outline btn-sm" style="border:none; color:var(--text-muted);">Déconnexion</button>
+        </form>
+      {% else %}
+        <a href="/login/" class="btn btn-outline btn-sm" id="btn-header-login">Connexion</a>
+        <a href="/register/" class="btn btn-primary btn-sm" id="btn-header-register">Rejoindre REDUX</a>
+      {% endif %}
+    </div>
+  </div>
+</header>

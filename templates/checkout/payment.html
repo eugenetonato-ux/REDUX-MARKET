@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+{% block title %}Paiement Sécurisé — REDUX{% endblock %}
+
+{% block content %}
+<div style="max-width: 680px; margin: 0 auto;">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <span class="badge" style="background: var(--primary-light); color: var(--primary); margin-bottom: 0.5rem;">Sécurisé par REDUX</span>
+    <h1>Réglement de votre commande</h1>
+    <p class="text-muted">Choisissez votre moyen de paiement sécurisé pour valider votre commande groupée.</p>
+  </div>
+
+  <div class="card" style="box-shadow: var(--shadow-lg); border-color: var(--primary-subtle); margin-bottom: 1.5rem;">
+    <!-- Montant Récapitulatif -->
+    <div style="background: var(--bg-surface); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+      <div>
+        <span class="text-muted" style="font-size: 0.85rem; display: block;">Montant total à régler :</span>
+        <span style="font-size: 1.75rem; font-weight: 800; color: var(--primary);">{{ order.final_amount }} {{ order.currency.symbol }}</span>
+      </div>
+      <div style="text-align: right;">
+        <span class="text-muted" style="font-size: 0.85rem; display: block;">Commande :</span>
+        <strong>#{{ order.order_number }}</strong>
+      </div>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="order" value="{{ order.order_number }}">
+      <input type="hidden" name="provider" value="mock">
+
+      <h3 style="color: var(--secondary); font-size: 1.1rem; margin-bottom: 1rem;">Moyens de paiement disponibles</h3>
+
+      <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem;">
+        <!-- Option MTN Mobile Money -->
+        <label style="border: 2px solid var(--primary-subtle); border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; background: var(--primary-light);">
+          <input type="radio" name="payment_method" value="mtn_momo" checked style="accent-color: var(--primary); transform: scale(1.2);">
+          <div style="flex: 1;">
+            <strong style="color: var(--secondary); display: block;">MTN Mobile Money</strong>
+            <span class="text-muted" style="font-size: 0.85rem;">Paiement instantané par code USSD ou push notification</span>
+          </div>
+          <span style="font-size: 1.25rem;">📱</span>
+        </label>
+
+        <!-- Option Moov Money -->
+        <label style="border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem; cursor: pointer;">
+          <input type="radio" name="payment_method" value="moov_money" style="accent-color: var(--primary); transform: scale(1.2);">
+          <div style="flex: 1;">
+            <strong style="color: var(--secondary); display: block;">Moov Money</strong>
+            <span class="text-muted" style="font-size: 0.85rem;">Validation directe sur votre compte Moov</span>
+          </div>
+          <span style="font-size: 1.25rem;">📲</span>
+        </label>
+
+        <!-- Option Carte Bancaire -->
+        <label style="border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem; cursor: pointer;">
+          <input type="radio" name="payment_method" value="card" style="accent-color: var(--primary); transform: scale(1.2);">
+          <div style="flex: 1;">
+            <strong style="color: var(--secondary); display: block;">Carte Visa / Mastercard</strong>
+            <span class="text-muted" style="font-size: 0.85rem;">Paiement sécurisé 3D-Secure</span>
+          </div>
+          <span style="font-size: 1.25rem;">💳</span>
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.15rem; padding: 1rem;" id="btn-submit-payment">
+        Payer maintenant ({{ order.final_amount }} {{ order.currency.symbol }})
+      </button>
+    </form>
+  </div>
+
+  <div style="text-align: center; font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 1.5rem;">
+    <span>🔒 Chiffrement SSL 256-bit</span>
+    <span>✓ Confirmation serveur sécurisée</span>
+  </div>
+</div>
+{% endblock %}

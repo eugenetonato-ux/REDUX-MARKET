@@ -1,0 +1,63 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | REDUX Administration{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap">
+<style>
+  :root {
+    --primary: #FF6500;
+    --primary-hover: #E55B00;
+    --secondary: #0B2447;
+    --header-bg: #0B2447;
+    --header-color: #FFFFFF;
+    --breadcrumbs-bg: #F1F5F9;
+  }
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
+  }
+  #header {
+    background: var(--header-bg) !important;
+    color: var(--header-color) !important;
+    border-bottom: 3px solid var(--primary) !important;
+  }
+  #branding h1 {
+    font-size: 1.4rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.03em !important;
+  }
+  #branding h1 a:link, #branding h1 a:visited {
+    color: #FFFFFF !important;
+  }
+  #branding h1 span.highlight {
+    color: var(--primary) !important;
+  }
+  .module h2, .module caption, .inline-group h2 {
+    background: #F1F5F9 !important;
+    color: var(--secondary) !important;
+    font-weight: 700 !important;
+  }
+  .button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: var(--primary) !important;
+    border-radius: 6px !important;
+    font-weight: 700 !important;
+    transition: all 0.2s ease !important;
+  }
+  .button:hover, input[type=submit]:hover {
+    background: var(--primary-hover) !important;
+  }
+</style>
+{% endblock %}
+
+{% block branding %}
+<div id="site-name">
+  <a href="{% url 'admin:index' %}">
+    BI<span style="color: #FF6500;">ZO</span>
+    <span style="font-size: 0.8rem; background: #FF6500; color: #fff; padding: 2px 8px; border-radius: 12px; margin-left: 8px; font-weight: 700; letter-spacing: 0.05em;">ADMINISTRATION</span>
+  </a>
+</div>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

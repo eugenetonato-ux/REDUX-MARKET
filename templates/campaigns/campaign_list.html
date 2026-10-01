@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+{% block title %}Campagnes d'Achats Groupés — REDUX{% endblock %}
+
+{% block extra_css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/campaign.css' %}">
+{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 2.5rem; text-align: center;">
+  <span class="badge" style="background: var(--primary-light); color: var(--primary); font-size: 0.8rem; margin-bottom: 0.5rem;">
+    Achats Groupés & Prix Dégressifs
+  </span>
+  <h1 style="font-size: 2.25rem; margin-bottom: 0.75rem;">Campagnes Collectives en Cours</h1>
+  <p class="text-muted" style="font-size: 1.05rem; max-width: 620px; margin: 0 auto;">
+    Plus vous êtes nombreux à rejoindre l'achat, plus le prix unitaire diminue pour tout le groupe.
+  </p>
+</div>
+
+{% if campaign_cards %}
+  <div class="campaign-grid">
+    {% for item in campaign_cards %}
+      {% include 'partials/campaign_card.html' with campaign=item.campaign summary=item.summary %}
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="card" style="text-align: center; padding: 4rem 1.5rem;">
+    <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+    <h2>Aucune campagne active pour le moment</h2>
+    <p class="text-muted" style="max-width: 480px; margin: 0.5rem auto 1.5rem;">
+      Les commerçants de votre région préparent de nouvelles offres groupées. Revenez très bientôt ou explorez le catalogue !
+    </p>
+    <a href="/products/" class="btn btn-primary">Explorer les produits</a>
+  </div>
+{% endif %}
+{% endblock %}

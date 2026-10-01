@@ -1,0 +1,106 @@
+{% extends 'base/base.html' %}
+{% block title %}Créer une Demande Groupée — REDUX{% endblock %}
+
+{% block content %}
+<div style="max-width: 680px; margin: 0 auto;">
+  <div style="margin-bottom: 1.5rem;">
+    <a href="{% url 'purchase_requests:list' %}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">
+      ← Retour aux demandes
+    </a>
+  </div>
+
+  <div class="card" style="border-top: 4px solid var(--primary); padding: 2.5rem;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+      <span class="badge" style="background: var(--primary-light); color: var(--primary); font-size: 0.8rem; margin-bottom: 0.5rem; font-weight: 700;">
+        Achat Groupé Inversé
+      </span>
+      <h1 style="font-size: 1.85rem; color: var(--secondary); margin-bottom: 0.5rem;">
+        Exprimez votre besoin d'achat
+      </h1>
+      <p class="text-muted" style="font-size: 0.95rem;">
+        Définissez votre quantité et prix cible. Mobilisez la communauté et obtenez les offres des commerçants vérifiés.
+      </p>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div style="margin-bottom: 1.25rem;">
+        <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+          {{ form.title.label }} *
+        </label>
+        {{ form.title }}
+        {% if form.title.errors %}
+          <div style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.title.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+        <div>
+          <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+            {{ form.country.label }} *
+          </label>
+          {{ form.country }}
+          {% if form.country.errors %}
+            <div style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.country.errors.0 }}</div>
+          {% endif %}
+        </div>
+        <div>
+          <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+            {{ form.category.label }}
+          </label>
+          {{ form.category }}
+        </div>
+      </div>
+
+      <div style="margin-bottom: 1.25rem;">
+        <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+          {{ form.description.label }} *
+        </label>
+        {{ form.description }}
+        {% if form.description.errors %}
+          <div style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.description.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+        <div>
+          <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+            {{ form.target_quantity.label }} *
+          </label>
+          {{ form.target_quantity }}
+          {% if form.target_quantity.errors %}
+            <div style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.target_quantity.errors.0 }}</div>
+          {% endif %}
+        </div>
+        <div>
+          <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+            {{ form.target_price.label }} *
+          </label>
+          {{ form.target_price }}
+          {% if form.target_price.errors %}
+            <div style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.target_price.errors.0 }}</div>
+          {% endif %}
+        </div>
+        <div>
+          <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+            {{ form.duration_days.label }} *
+          </label>
+          {{ form.duration_days }}
+        </div>
+      </div>
+
+      <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">
+        ℹ️ En publiant cette demande, vous serez automatiquement enregistré comme premier participant avec 1 unité.
+      </div>
+
+      <div class="flex justify-between items-center">
+        <a href="{% url 'purchase_requests:list' %}" class="btn btn-outline">Annuler</a>
+        <button type="submit" class="btn btn-primary" id="btn-submit-request" style="padding: 0.75rem 2rem;">
+          Publier ma demande groupée
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,219 @@
+{% extends 'base/base.html' %}
+{% block title %}{{ request_obj.title }} — Demande Groupée REDUX{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 1.5rem;">
+  <a href="{% url 'purchase_requests:list' %}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">
+    ← Retour aux demandes groupées
+  </a>
+</div>
+
+<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start;">
+  <!-- Colonne Gauche : Détails & Propositions -->
+  <div>
+    <div class="card" style="margin-bottom: 2rem;">
+      <div class="flex justify-between items-center" style="margin-bottom: 1rem;">
+        <span class="badge" style="background: var(--bg-surface); color: var(--secondary); font-size: 0.85rem; border: 1px solid var(--border);">
+          {{ request_obj.country.flag_emoji }} {{ request_obj.country.name }}
+          {% if request_obj.category %} • {{ request_obj.category.name }}{% endif %}
+        </span>
+        <span class="badge" style="
+          {% if request_obj.status == 'OPEN' %}background: #ECFDF5; color: #059669;
+          {% elif request_obj.status == 'PROPOSALS_RECEIVED' %}background: #EFF6FF; color: #2563EB;
+          {% elif request_obj.status == 'ACCEPTED' %}background: #FEF3C7; color: #D97706;
+          {% else %}background: var(--bg-surface); color: var(--text-muted);{% endif %}
+          font-weight: 700; font-size: 0.85rem; padding: 0.35rem 0.75rem;">
+          {{ request_obj.get_status_display }}
+        </span>
+      </div>
+
+      <h1 style="font-size: 1.85rem; color: var(--secondary); margin-bottom: 1rem; line-height: 1.25;">
+        {{ request_obj.title }}
+      </h1>
+
+      <div style="font-size: 1rem; line-height: 1.6; color: var(--text-main); margin-bottom: 1.5rem; white-space: pre-line;">
+        {{ request_obj.description }}
+      </div>
+
+      <!-- Barre d'avancement du volume -->
+      <div style="background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border);">
+        <div class="flex justify-between items-center" style="margin-bottom: 0.5rem;">
+          <span style="font-weight: 600; color: var(--secondary);">Progression de la demande</span>
+          <span style="font-weight: 700; color: var(--primary);">
+            {{ request_obj.total_pledged|default:0 }} / {{ request_obj.target_quantity }} unités engagées
+          </span>
+        </div>
+        <div style="background: #E2E8F0; height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 0.5rem;">
+          <div style="background: linear-gradient(90deg, var(--primary), #FF8533); height: 100%; width: min(100%, calc(({{ request_obj.total_pledged|default:0 }} / {{ request_obj.target_quantity }}) * 100%)); transition: width 0.4s ease;"></div>
+        </div>
+        <div class="flex justify-between" style="font-size: 0.85rem; color: var(--text-muted);">
+          <span>Initiée par {{ request_obj.creator.get_full_name|default:request_obj.creator.email }}</span>
+          <span>Expire le {{ request_obj.expires_at|date:"d F Y à H:i" }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Propositions des Commerçants -->
+    <div class="card" style="margin-bottom: 2rem;">
+      <div class="flex justify-between items-center" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
+        <div>
+          <h2 style="font-size: 1.35rem; color: var(--secondary); margin-bottom: 0.25rem;">
+            Propositions des Commerçants Vérifiés
+          </h2>
+          <p class="text-muted" style="font-size: 0.85rem; margin: 0;">
+            Offres directes déposées par des professionnels certifiés par REDUX.
+          </p>
+        </div>
+        {% if can_submit_proposal %}
+          <a href="{% url 'purchase_requests:proposal_create' pk=request_obj.pk %}" class="btn btn-secondary btn-sm" id="btn-submit-proposal">
+            💼 Déposer une offre
+          </a>
+        {% endif %}
+      </div>
+
+      {% if request_obj.proposals.all %}
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          {% for prop in request_obj.proposals.all %}
+            <div style="border: 1px solid {% if prop.status == 'ACCEPTED' %}#059669{% else %}var(--border){% endif %}; border-radius: var(--radius-md); padding: 1.25rem; background: {% if prop.status == 'ACCEPTED' %}#F0FDF4{% else %}var(--bg-card){% endif %};">
+              <div class="flex justify-between items-start" style="margin-bottom: 0.75rem;">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <strong style="font-size: 1.05rem; color: var(--secondary);">{{ prop.store.name }}</strong>
+                    {% if prop.merchant.is_verified %}
+                      <span class="badge" style="background: #EFF6FF; color: #1D4ED8; font-size: 0.7rem; font-weight: 600;">
+                        ✓ Commerçant Vérifié
+                      </span>
+                    {% endif %}
+                  </div>
+                  <small class="text-muted">Par {{ prop.merchant.business_name }}</small>
+                </div>
+
+                <div style="text-align: right;">
+                  <span style="font-size: 1.35rem; font-weight: 800; color: var(--primary);">
+                    {{ prop.proposed_price }} FCFA
+                  </span>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">par unité (min {{ prop.min_quantity }})</div>
+                </div>
+              </div>
+
+              {% if prop.description %}
+                <p style="font-size: 0.9rem; color: var(--text-main); margin-bottom: 0.75rem; background: var(--bg-surface); padding: 0.5rem 0.75rem; border-radius: var(--radius-sm);">
+                  {{ prop.description }}
+                </p>
+              {% endif %}
+
+              <div class="flex justify-between items-center" style="padding-top: 0.75rem; border-top: 1px dashed var(--border); font-size: 0.8rem;">
+                <span class="text-muted">Offre valide jusqu'au {{ prop.valid_until|date:"d/m/Y H:i" }}</span>
+                <div>
+                  {% if prop.status == 'ACCEPTED' %}
+                    <span class="badge" style="background: #059669; color: #fff; font-weight: 700; padding: 0.35rem 0.75rem;">
+                      ✓ Proposition Retenue
+                    </span>
+                  {% elif prop.status == 'REJECTED' %}
+                    <span class="badge" style="background: var(--bg-surface); color: var(--text-muted);">Non retenue</span>
+                  {% elif prop.status == 'EXPIRED' %}
+                    <span class="badge" style="background: var(--bg-surface); color: var(--text-muted);">Expirée</span>
+                  {% elif is_creator and request_obj.status != 'ACCEPTED' %}
+                    <form method="post" action="{% url 'purchase_requests:proposal_accept' pk=request_obj.pk proposal_id=prop.pk %}" style="display: inline;">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('Confirmez-vous la sélection de cette offre pour le groupe ?');">
+                        Accepter cette offre pour le groupe
+                      </button>
+                    </form>
+                  {% else %}
+                    <span class="badge" style="background: #EFF6FF; color: #2563EB;">En attente de décision</span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div style="text-align: center; padding: 2rem 1rem; color: var(--text-muted);">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">⏳</div>
+          <p>Aucun commerçant n'a encore déposé d'offre formelle.</p>
+          {% if can_submit_proposal %}
+            <p style="margin-top: 0.5rem;">
+              <a href="{% url 'purchase_requests:proposal_create' pk=request_obj.pk %}" class="btn btn-secondary btn-sm">
+                Soyez le premier à répondre à ce besoin
+              </a>
+            </p>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Colonne Droite : Rejoindre & Stats -->
+  <div>
+    <!-- Encadré Rejoindre -->
+    <div class="card" style="margin-bottom: 1.5rem; border-top: 4px solid var(--primary);">
+      <h3 style="font-size: 1.2rem; color: var(--secondary); margin-bottom: 1rem;">
+        Participer au Groupe
+      </h3>
+
+      <div style="margin-bottom: 1rem; font-size: 0.9rem;">
+        <div class="flex justify-between" style="margin-bottom: 0.5rem;">
+          <span class="text-muted">Prix cible souhaité :</span>
+          <strong style="color: var(--primary); font-size: 1.1rem;">{{ request_obj.target_price }} FCFA</strong>
+        </div>
+        <div class="flex justify-between" style="margin-bottom: 0.5rem;">
+          <span class="text-muted">Objectif du groupe :</span>
+          <strong>{{ request_obj.target_quantity }} unités</strong>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-muted">Participants :</span>
+          <strong style="color: #059669;">{{ request_obj.total_participants|default:0 }} acheteurs</strong>
+        </div>
+      </div>
+
+      {% if user_has_joined %}
+        <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: var(--radius-sm); padding: 1rem; text-align: center; margin-top: 1rem;">
+          <div style="color: #059669; font-weight: 700; margin-bottom: 0.25rem;">✓ Vous participez à cet achat !</div>
+          <p style="font-size: 0.85rem; color: #065F46; margin: 0;">
+            Vous êtes engagé pour <strong>{{ user_pledged_qty }} unité(s)</strong>. Vous serez notifié dès qu'une offre commerçante est validée.
+          </p>
+        </div>
+      {% elif request_obj.status == 'OPEN' %}
+        {% if user.is_authenticated %}
+          <form method="post" action="{% url 'purchase_requests:join' pk=request_obj.pk %}">
+            {% csrf_token %}
+            <div style="margin-bottom: 1rem;">
+              <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">
+                Quantité souhaitée :
+              </label>
+              {{ join_form.quantity_pledged }}
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;" id="btn-join-request">
+              Rejoindre la demande groupée
+            </button>
+          </form>
+        {% else %}
+          <a href="/login/?next={{ request.path }}" class="btn btn-primary" style="width: 100%;">
+            Se connecter pour rejoindre
+          </a>
+        {% endif %}
+      {% else %}
+        <div style="background: var(--bg-surface); border-radius: var(--radius-sm); padding: 1rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+          Cette demande est fermée aux nouvelles adhésions.
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Encadré Commerçants -->
+    {% if can_submit_proposal %}
+      <div class="card" style="background: linear-gradient(135deg, #0B2447, #1E3A8A); color: #fff;">
+        <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 0.5rem;">
+          💼 Vous avez du stock ?
+        </h3>
+        <p style="font-size: 0.85rem; color: #CBD5E1; margin-bottom: 1rem;">
+          En tant que commerçant vérifié REDUX, vous pouvez vendre en gros à ce groupe dès maintenant.
+        </p>
+        <a href="{% url 'purchase_requests:proposal_create' pk=request_obj.pk %}" class="btn btn-primary btn-sm" style="width: 100%; text-align: center;">
+          Déposer une proposition de prix
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

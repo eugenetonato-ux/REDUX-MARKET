@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+{% block title %}Échec du Paiement — REDUX{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 2rem auto; text-align: center;">
+  <div class="card" style="padding: 3rem 2rem; border-color: #FECACA;">
+    <div style="width: 72px; height: 72px; border-radius: 50%; background: #FEF2F2; color: var(--danger); font-size: 2.5rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; border: 2px solid #FECACA;">
+      ✕
+    </div>
+
+    <h1 style="font-size: 2rem; color: var(--secondary); margin-bottom: 0.5rem;">Échec du Paiement</h1>
+    <p class="text-muted" style="margin-bottom: 2rem; line-height: 1.6;">
+      La transaction n'a pas pu aboutir ou a été interrompue. Aucun montant n'a été débité de votre compte.
+    </p>
+
+    <div style="display: flex; justify-content: center; gap: 1rem;">
+      <a href="/payment/?order={{ order.order_number }}" class="btn btn-primary" id="btn-retry-payment">
+        Réessayer le paiement
+      </a>
+      <a href="{% url 'orders:detail' order_number=order.order_number %}" class="btn btn-outline">
+        Retour à la commande
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

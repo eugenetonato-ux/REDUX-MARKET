@@ -1,0 +1,63 @@
+{% extends 'base/base_merchant.html' %}
+{% block nav_verification %}active{% endblock %}
+
+{% block merchant_content %}
+<div class="merchant-header">
+  <div>
+    <h1>Vérification d'Identité & Entreprise (KYC)</h1>
+    <p class="text-muted">Conformité et certification pour débloquer le badge Commerçant Vérifié.</p>
+  </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+  <!-- Formulaire de soumission -->
+  <div class="card">
+    <h3 style="margin-bottom: 1rem; color: var(--secondary);">Soumettre une pièce justificative</h3>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="form-label" for="id_doc_type">Type de document</label>
+        <select name="document_type" id="id_doc_type" class="form-control">
+          <option value="Registre de Commerce (RCCM)">Registre du Commerce et du Crédit Mobilier (RCCM)</option>
+          <option value="IFU / Numéro Fiscal">Numéro d'Identification Fiscale (IFU)</option>
+          <option value="Carte Nationale d'Identité / CIP">Pièce d'Identité du Gérant (CNI, CIP, Passeport)</option>
+          <option value="Attestation d'Enregistrement">Attestation d'enregistrement de l'entreprise</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="id_doc_file">Fichier du document (PDF, PNG, JPG)</label>
+        <input type="file" name="document_file" id="id_doc_file" class="form-control" required>
+        <div class="form-help">Taille maximale recommandée : 5 Mo. Document lisible et non expiré.</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Envoyer pour vérification</button>
+    </form>
+  </div>
+
+  <!-- Historique des pièces -->
+  <div class="card">
+    <h3 style="margin-bottom: 1rem; color: var(--secondary);">Documents soumis</h3>
+    {% if verifications %}
+      <ul style="list-style: none; display: flex; flex-direction: column; gap: 1rem;">
+        {% for v in verifications %}
+          <li style="border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem;">
+            <div class="flex items-center justify-between" style="margin-bottom: 0.5rem;">
+              <strong>{{ v.document_type }}</strong>
+              {% include 'partials/status_badge.html' with status=v.status %}
+            </div>
+            <div class="text-muted" style="font-size: 0.85rem;">Soumis le {{ v.submitted_at|date:"d/m/Y à H:i" }}</div>
+            {% if v.reviewer_notes %}
+              <div style="margin-top: 0.5rem; font-size: 0.85rem; color: #92400E; background: #FFFBEB; padding: 0.5rem; border-radius: 4px;">
+                Note de l'administrateur : {{ v.reviewer_notes }}
+              </div>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted" style="font-size: 0.95rem;">Aucun document soumis pour le moment.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
