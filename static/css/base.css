@@ -1,11 +1,8 @@
-/* ==============================================================================
+﻿/* ==============================================================================
    REDUX DESIGN SYSTEM - STYLE FONDAMENTAL
-   SpÃ©cifications conformes Ã  REDUX_skills-design.md :
    - Noir de marque : #0A0A0F
    - Blanc de marque : #FFFFFF
-   - Vert du X (dÃ©gradÃ© / Ã©conomie) : #1FE06A / #12B76A
    - Bleu du X (actions / primaire) : #0A6CFF / #0753C9
-   - DÃ©gradÃ© signature : linear-gradient(135deg, #1FE06A, #0A6CFF)
    ============================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
@@ -195,7 +192,6 @@ img {
 .gap-8 { gap: 2rem; }
 .grid { display: grid; }
 
-/* En-tÃªte Sombre Haute Confiance (DÃ©fini dans la section HEADER COMPACT) */
 
 .brand-logo {
   display: flex;
@@ -454,7 +450,6 @@ img {
   color: #FFFFFF;
 }
 
-/* Menu de Navigation en Mode SÃ©lection (Ultra-AllÃ©gÃ©) */
 .header-nav-select-wrap {
   position: relative;
   display: inline-flex;
@@ -605,9 +600,8 @@ img {
   }
 }
 
-/* Tiroir de navigation latÃ©rale (Drawer) */
+/* Sidebar Drawer */
 /* ============================================================
-   SIDEBAR DRAWER â€” Apple Store Style (blanc, verre dÃ©poli)
    ============================================================ */
 
 .sidebar-backdrop {
