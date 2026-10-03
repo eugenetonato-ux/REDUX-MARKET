@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.core.mail import EmailMessage, get_connection
+from django.core.mail import EmailMessage
 from django.utils.html import escape
 from .models import Notification, NotificationPreference
 
@@ -21,16 +21,14 @@ def _send_email(subject: str, body: str, recipient_email: str) -> bool:
     """
     Envoie un email via le mailer Django 6.1+ (MAILERS["default"]).
     Retourne True si l'envoi a réussi, False sinon.
-    Remplace send_mail(..., fail_silently=True) — deprecated en Django 6.
     """
     try:
-        connection = get_connection(using="default")
         email = EmailMessage(
             subject=subject,
             body=body,
             from_email=getattr(settings, "DEFAULT_FROM_EMAIL", "noreply@redux.app"),
             to=[recipient_email],
-            connection=connection,
+            using="default",
         )
         email.send()
         return True
