@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <footer class="site-footer">
   <div class="container">
     <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem;">
@@ -7,43 +7,43 @@
           <img src="{% static 'images/redux_logo.png' %}" alt="REDUX" style="height: 26px; width: auto; max-width: 150px; display: block;">
         </div>
         <p style="color: #94A3B8; font-size: 0.9rem; max-width: 320px; line-height: 1.6;">
-          La plateforme panafricaine de commerce collectif. Regroupez-vous pour obtenir les meilleurs prix avec vos commerçants de proximité.
+          {% trans "The pan-African collective commerce platform. Join together to get the best prices with your local merchants." %}
         </p>
       </div>
 
       <div>
-        <h4 style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1rem;">Découvrir</h4>
+        <h4 style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1rem;">{% trans "Discover" %}</h4>
         <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
-          <li><a href="/explorer">Toutes les offres</a></li>
-          <li><a href="/stores/">Boutiques vérifiées</a></li>
-          <li><a href="/campaigns/">Campagnes en cours</a></li>
-          <li><a href="/requests/">Demandes groupées</a></li>
+          <li><a href="/explorer">{% trans "All offers" %}</a></li>
+          <li><a href="/stores/">{% trans "Verified stores" %}</a></li>
+          <li><a href="/campaigns/">{% trans "Active campaigns" %}</a></li>
+          <li><a href="/requests/">{% trans "Group requests" %}</a></li>
         </ul>
       </div>
 
       <div>
-        <h4 style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1rem;">Commerçants</h4>
+        <h4 style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1rem;">{% trans "Merchants" %}</h4>
         <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
-          <li><a href="/merchant/dashboard/">Espace Vendeur</a></li>
-          <li><a href="/merchant/verification/">Vérifier ma boutique</a></li>
-          <li><a href="/how-it-works/">Comment ça marche</a></li>
-          <li><a href="/terms/">Conditions générales</a></li>
+          <li><a href="/merchant/dashboard/">{% trans "Seller space" %}</a></li>
+          <li><a href="/merchant/verification/">{% trans "Verify my store" %}</a></li>
+          <li><a href="/how-it-works/">{% trans "How it works" %}</a></li>
+          <li><a href="/terms/">{% trans "Terms & Conditions" %}</a></li>
         </ul>
       </div>
 
       <div>
-        <h4 style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1rem;">Assistance</h4>
+        <h4 style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1rem;">{% trans "Support" %}</h4>
         <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
-          <li><a href="/help/">Centre d'aide</a></li>
-          <li><a href="/privacy/">Confidentialité & Sécurité</a></li>
+          <li><a href="/help/">{% trans "Help center" %}</a></li>
+          <li><a href="/privacy/">{% trans "Privacy & Security" %}</a></li>
           <li><span style="color:#94A3B8;">support@redux.app</span></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <p>&copy; 2026 REDUX Platform. Tous droits réservés.</p>
-      <p style="color: var(--primary); font-weight: 600;">Commerce collectif & équitable en Afrique</p>
+      <p>&copy; 2026 REDUX Platform. {% trans "All rights reserved." %}</p>
+      <p style="color: var(--primary); font-weight: 600;">{% trans "Collective & fair commerce in Africa" %}</p>
     </div>
   </div>
 </footer>

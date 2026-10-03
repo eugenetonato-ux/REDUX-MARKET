@@ -1,49 +1,87 @@
 {% extends 'base/base.html' %}
+{% load static %}
+
 {% block title %}Boutiques Partenaires — REDUX{% endblock %}
 
 {% block content %}
-<div style="margin-bottom: 2.5rem; text-align: center;">
-  <span class="badge" style="background: var(--primary-light); color: var(--primary); font-size: 0.8rem; margin-bottom: 0.5rem;">
-    Commerçants Certifiés
-  </span>
-  <h1 style="font-size: 2.25rem; margin-bottom: 0.75rem;">Nos Boutiques Partenaires</h1>
-  <p class="text-muted" style="font-size: 1.05rem; max-width: 600px; margin: 0 auto;">
-    Achetez directement auprès de vendeurs vérifiés et rejoignez leurs offres d'achats groupés pour faire baisser les prix.
-  </p>
-</div>
+<div class="py-8 md:py-12 space-y-10">
 
-{% if stores %}
-  <div class="store-grid">
-    {% for store in stores %}
-      <div class="store-card">
-        <div class="store-card-banner"></div>
-        <div class="store-card-body">
-          <div class="store-card-logo-wrap">
-            {{ store.name|slice:":2"|upper }}
+  <!-- Apple Store Header -->
+  <div class="text-center max-w-[680px] mx-auto">
+    <span class="inline-block text-[11px] font-semibold uppercase tracking-wider text-[#0071e3] bg-[#0071e3]/10 px-3 py-1 rounded-full mb-3">
+      Commerçants Certifiés
+    </span>
+    <h1 class="text-[36px] md:text-[48px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+      Nos Boutiques Partenaires
+    </h1>
+    <p class="text-[17px] text-[#6e6e73] mt-3 leading-relaxed">
+      Achetez directement auprès de vendeurs locaux vérifiés et profitez de prix dégressifs garantis par le volume collectif.
+    </p>
+  </div>
+
+  {% if stores %}
+    <!-- Stores Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for store in stores %}
+        <div class="bg-white rounded-[18px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-200 flex flex-col justify-between group">
+          <div>
+            <div class="flex items-center gap-4 mb-4">
+              <div class="w-14 h-14 rounded-2xl bg-[#f5f5f7] border border-black/5 flex items-center justify-center font-bold text-[18px] text-[#1d1d1f] shrink-0 shadow-xs">
+                {{ store.name|slice:":2"|upper }}
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <a href="{% url 'stores:detail' slug=store.slug %}" class="text-[16px] font-bold text-[#1d1d1f] hover:text-[#0071e3] transition-colors truncate">
+                    {{ store.name }}
+                  </a>
+                  {% include 'partials/verified_badge.html' with merchant=store.merchant %}
+                </div>
+                <div class="text-[13px] text-[#6e6e73] mt-0.5 flex items-center gap-1.5">
+                  <span>{{ store.country.flag_emoji|default:"📍" }}</span>
+                  <span>{{ store.city|default:store.country.name }} ({{ store.country.code }})</span>
+                </div>
+              </div>
+            </div>
+
+            <p class="text-[13px] text-[#6e6e73] line-clamp-3 leading-relaxed mb-5">
+              {{ store.description|default:"Boutique partenaire certifiée proposant des articles de qualité avec tarification dégressive sur la plateforme REDUX." }}
+            </p>
           </div>
-          <div class="store-card-title">
-            <a href="{% url 'stores:detail' slug=store.slug %}" style="color: inherit;">{{ store.name }}</a>
-            {% include 'partials/verified_badge.html' %}
-          </div>
-          <p class="store-card-desc">{{ store.description|default:"Boutique partenaire certifiée sur la plateforme REDUX." }}</p>
-          <div class="store-card-footer">
-            <span>{{ store.city|default:store.country.name }} ({{ store.country.code }})</span>
-            <a href="{% url 'stores:detail' slug=store.slug %}" class="btn btn-outline btn-sm">Découvrir l'offre →</a>
+
+          <div class="pt-4 border-t border-black/5 flex items-center justify-between gap-3">
+            <span class="text-[12px] text-[#86868b] font-medium">
+              Vendeur vérifié
+            </span>
+            <a href="{% url 'stores:detail' slug=store.slug %}" 
+               class="h-8 px-4 rounded-full bg-[#f5f5f7] hover:bg-[#1d1d1f] hover:text-white text-[#1d1d1f] text-[12px] font-medium transition-all inline-flex items-center gap-1">
+              <span>Voir la boutique</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </a>
           </div>
         </div>
-      </div>
-    {% endfor %}
-  </div>
-{% else %}
-  <div class="empty-state-box">
-    <div class="empty-state-icon">
-      {% include 'partials/icons/store.html' %}
+      {% endfor %}
     </div>
-    <h2 class="empty-state-title">Bientôt de nouvelles boutiques</h2>
-    <p class="empty-state-desc">
-      Aucune boutique n'est encore référencée dans cette région. Vous êtes commerçant ? Créez la première boutique dès maintenant !
-    </p>
-    <a href="{% url 'accounts:register_merchant' %}" class="btn btn-primary">Rejoindre comme Commerçant</a>
-  </div>
-{% endif %}
+  {% else %}
+    <!-- Empty State -->
+    <div class="bg-white rounded-[18px] p-12 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 text-center max-w-[540px] mx-auto">
+      <div class="w-14 h-14 rounded-full bg-[#f5f5f7] text-[#86868b] flex items-center justify-center mx-auto mb-4">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+      </div>
+      <h2 class="text-[18px] font-bold text-[#1d1d1f]">Bientôt de nouvelles boutiques</h2>
+      <p class="text-[14px] text-[#6e6e73] mt-2 mb-6 leading-relaxed">
+        Aucune boutique n'est encore référencée dans cette région. Vous êtes commerçant ? Créez la première boutique dès maintenant !
+      </p>
+      <a href="{% url 'accounts:register_merchant' %}" 
+         class="h-9 px-6 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium inline-flex items-center justify-center transition-all shadow-xs">
+        Rejoindre comme Commerçant
+      </a>
+    </div>
+  {% endif %}
+
+</div>
 {% endblock %}

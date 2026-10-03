@@ -1,219 +1,278 @@
 {% extends 'base/base.html' %}
+{% load static %}
+
 {% block title %}{{ request_obj.title }} — Demande Groupée REDUX{% endblock %}
 
 {% block content %}
-<div style="margin-bottom: 1.5rem;">
-  <a href="{% url 'purchase_requests:list' %}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">
-    ← Retour aux demandes groupées
-  </a>
-</div>
+<div class="py-8 md:py-12 space-y-8">
 
-<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; align-items: start;">
-  <!-- Colonne Gauche : Détails & Propositions -->
+  <!-- Navigation Retour -->
   <div>
-    <div class="card" style="margin-bottom: 2rem;">
-      <div class="flex justify-between items-center" style="margin-bottom: 1rem;">
-        <span class="badge" style="background: var(--bg-surface); color: var(--secondary); font-size: 0.85rem; border: 1px solid var(--border);">
-          {{ request_obj.country.flag_emoji }} {{ request_obj.country.name }}
-          {% if request_obj.category %} • {{ request_obj.category.name }}{% endif %}
-        </span>
-        <span class="badge" style="
-          {% if request_obj.status == 'OPEN' %}background: #ECFDF5; color: #059669;
-          {% elif request_obj.status == 'PROPOSALS_RECEIVED' %}background: #EFF6FF; color: #2563EB;
-          {% elif request_obj.status == 'ACCEPTED' %}background: #FEF3C7; color: #D97706;
-          {% else %}background: var(--bg-surface); color: var(--text-muted);{% endif %}
-          font-weight: 700; font-size: 0.85rem; padding: 0.35rem 0.75rem;">
-          {{ request_obj.get_status_display }}
-        </span>
-      </div>
+    <a href="{% url 'purchase_requests:list' %}" 
+       class="inline-flex items-center gap-1.5 text-[13px] text-[#6e6e73] hover:text-[#1d1d1f] transition-colors font-medium">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Retour aux demandes groupées</span>
+    </a>
+  </div>
 
-      <h1 style="font-size: 1.85rem; color: var(--secondary); margin-bottom: 1rem; line-height: 1.25;">
-        {{ request_obj.title }}
-      </h1>
-
-      <div style="font-size: 1rem; line-height: 1.6; color: var(--text-main); margin-bottom: 1.5rem; white-space: pre-line;">
-        {{ request_obj.description }}
-      </div>
-
-      <!-- Barre d'avancement du volume -->
-      <div style="background: var(--bg-surface); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border);">
-        <div class="flex justify-between items-center" style="margin-bottom: 0.5rem;">
-          <span style="font-weight: 600; color: var(--secondary);">Progression de la demande</span>
-          <span style="font-weight: 700; color: var(--primary);">
-            {{ request_obj.total_pledged|default:0 }} / {{ request_obj.target_quantity }} unités engagées
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    
+    <!-- Colonne Gauche : Détails & Propositions (8 cols) -->
+    <div class="lg:col-span-8 space-y-8">
+      
+      <!-- Fiche Principale de la Demande -->
+      <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 space-y-6">
+        <div class="flex items-center justify-between gap-3 flex-wrap">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-medium bg-[#f5f5f7] text-[#1d1d1f]">
+            <span>{{ request_obj.country.flag_emoji|default:"📍" }}</span>
+            <span>{{ request_obj.country.name }}</span>
+            {% if request_obj.category %}
+              <span>•</span>
+              <span>{{ request_obj.category.name }}</span>
+            {% endif %}
           </span>
-        </div>
-        <div style="background: #E2E8F0; height: 12px; border-radius: 6px; overflow: hidden; margin-bottom: 0.5rem;">
-          <div style="background: linear-gradient(90deg, var(--primary), #FF8533); height: 100%; width: min(100%, calc(({{ request_obj.total_pledged|default:0 }} / {{ request_obj.target_quantity }}) * 100%)); transition: width 0.4s ease;"></div>
-        </div>
-        <div class="flex justify-between" style="font-size: 0.85rem; color: var(--text-muted);">
-          <span>Initiée par {{ request_obj.creator.get_full_name|default:request_obj.creator.email }}</span>
-          <span>Expire le {{ request_obj.expires_at|date:"d F Y à H:i" }}</span>
-        </div>
-      </div>
-    </div>
 
-    <!-- Section Propositions des Commerçants -->
-    <div class="card" style="margin-bottom: 2rem;">
-      <div class="flex justify-between items-center" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
-        <div>
-          <h2 style="font-size: 1.35rem; color: var(--secondary); margin-bottom: 0.25rem;">
-            Propositions des Commerçants Vérifiés
-          </h2>
-          <p class="text-muted" style="font-size: 0.85rem; margin: 0;">
-            Offres directes déposées par des professionnels certifiés par REDUX.
-          </p>
+          {% if request_obj.status == 'OPEN' %}
+            <span class="inline-block text-[11px] font-semibold px-3 py-1 rounded-full bg-[#34c759]/10 text-[#248a3d]">
+              Ouverte aux adhésions
+            </span>
+          {% elif request_obj.status == 'PROPOSALS_RECEIVED' %}
+            <span class="inline-block text-[11px] font-semibold px-3 py-1 rounded-full bg-[#0071e3]/10 text-[#0071e3]">
+              Offres commerçants reçues
+            </span>
+          {% elif request_obj.status == 'ACCEPTED' %}
+            <span class="inline-block text-[11px] font-semibold px-3 py-1 rounded-full bg-[#ff9500]/10 text-[#b25000]">
+              Offre sélectionnée
+            </span>
+          {% else %}
+            <span class="inline-block text-[11px] font-medium px-3 py-1 rounded-full bg-black/5 text-[#6e6e73]">
+              {{ request_obj.get_status_display }}
+            </span>
+          {% endif %}
         </div>
-        {% if can_submit_proposal %}
-          <a href="{% url 'purchase_requests:proposal_create' pk=request_obj.pk %}" class="btn btn-secondary btn-sm" id="btn-submit-proposal">
-             Déposer une offre
-          </a>
-        {% endif %}
-      </div>
 
-      {% if request_obj.proposals.all %}
-        <div style="display: flex; flex-direction: column; gap: 1rem;">
-          {% for prop in request_obj.proposals.all %}
-            <div style="border: 1px solid {% if prop.status == 'ACCEPTED' %}#059669{% else %}var(--border){% endif %}; border-radius: var(--radius-md); padding: 1.25rem; background: {% if prop.status == 'ACCEPTED' %}#F0FDF4{% else %}var(--bg-card){% endif %};">
-              <div class="flex justify-between items-start" style="margin-bottom: 0.75rem;">
-                <div>
-                  <div class="flex items-center gap-2">
-                    <strong style="font-size: 1.05rem; color: var(--secondary);">{{ prop.store.name }}</strong>
-                    {% if prop.merchant.is_verified %}
-                      <span class="badge" style="background: #EFF6FF; color: #1D4ED8; font-size: 0.7rem; font-weight: 600;">
-                         Commerçant Vérifié
-                      </span>
-                    {% endif %}
-                  </div>
-                  <small class="text-muted">Par {{ prop.merchant.business_name }}</small>
-                </div>
+        <h1 class="text-[28px] md:text-[36px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+          {{ request_obj.title }}
+        </h1>
 
-                <div style="text-align: right;">
-                  <span style="font-size: 1.35rem; font-weight: 800; color: var(--primary);">
-                    {{ prop.proposed_price }} FCFA
-                  </span>
-                  <div style="font-size: 0.75rem; color: var(--text-muted);">par unité (min {{ prop.min_quantity }})</div>
-                </div>
-              </div>
-
-              {% if prop.description %}
-                <p style="font-size: 0.9rem; color: var(--text-main); margin-bottom: 0.75rem; background: var(--bg-surface); padding: 0.5rem 0.75rem; border-radius: var(--radius-sm);">
-                  {{ prop.description }}
-                </p>
-              {% endif %}
-
-              <div class="flex justify-between items-center" style="padding-top: 0.75rem; border-top: 1px dashed var(--border); font-size: 0.8rem;">
-                <span class="text-muted">Offre valide jusqu'au {{ prop.valid_until|date:"d/m/Y H:i" }}</span>
-                <div>
-                  {% if prop.status == 'ACCEPTED' %}
-                    <span class="badge" style="background: #059669; color: #fff; font-weight: 700; padding: 0.35rem 0.75rem;">
-                       Proposition Retenue
-                    </span>
-                  {% elif prop.status == 'REJECTED' %}
-                    <span class="badge" style="background: var(--bg-surface); color: var(--text-muted);">Non retenue</span>
-                  {% elif prop.status == 'EXPIRED' %}
-                    <span class="badge" style="background: var(--bg-surface); color: var(--text-muted);">Expirée</span>
-                  {% elif is_creator and request_obj.status != 'ACCEPTED' %}
-                    <form method="post" action="{% url 'purchase_requests:proposal_accept' pk=request_obj.pk proposal_id=prop.pk %}" style="display: inline;">
-                      {% csrf_token %}
-                      <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('Confirmez-vous la sélection de cette offre pour le groupe ?');">
-                        Accepter cette offre pour le groupe
-                      </button>
-                    </form>
-                  {% else %}
-                    <span class="badge" style="background: #EFF6FF; color: #2563EB;">En attente de décision</span>
-                  {% endif %}
-                </div>
-              </div>
-            </div>
-          {% endfor %}
+        <div class="text-[15px] text-[#424245] leading-relaxed whitespace-pre-line">
+          {{ request_obj.description }}
         </div>
-      {% else %}
-        <div class="empty-state-box" style="padding: 2rem 1rem;">
-          <div class="empty-state-icon" style="width: 52px; height: 52px; margin-bottom: 0.75rem;">
-            {% include 'partials/icons/store.html' %}
+
+        <!-- Avancement du volume collectif -->
+        <div class="bg-[#f5f5f7] rounded-2xl p-5 border border-black/5 space-y-3">
+          <div class="flex items-center justify-between text-[13px]">
+            <span class="font-semibold text-[#1d1d1f]">Progression du groupe</span>
+            <span class="font-bold text-[#0071e3]">
+              {{ request_obj.total_pledged|default:0 }} / {{ request_obj.target_quantity }} unités engagées
+            </span>
           </div>
-          <p class="empty-state-desc" style="margin-bottom: 0.75rem;">Aucun commerçant n'a encore déposé d'offre formelle.</p>
+
+          <div class="w-full bg-black/5 h-2 rounded-full overflow-hidden">
+            <div class="bg-[#0071e3] h-full rounded-full transition-all duration-300" style="width: min(100%, calc(({{ request_obj.total_pledged|default:0 }} / {{ request_obj.target_quantity }}) * 100%));"></div>
+          </div>
+
+          <div class="flex items-center justify-between text-[12px] text-[#86868b] pt-1">
+            <span>Initiée par {{ request_obj.creator.full_name|default:request_obj.creator.email }}</span>
+            <span>Expire le {{ request_obj.expires_at|date:"d F Y à H:i" }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Propositions des Commerçants Vérifiés -->
+      <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/5">
+          <div>
+            <h2 class="text-[20px] font-bold tracking-tight text-[#1d1d1f]">
+              Propositions des Commerçants Vérifiés
+            </h2>
+            <p class="text-[13px] text-[#6e6e73] mt-0.5">
+              Offres directes déposées par des professionnels certifiés par REDUX.
+            </p>
+          </div>
+
           {% if can_submit_proposal %}
-            <a href="{% url 'purchase_requests:proposal_create' pk=request_obj.pk %}" class="btn btn-secondary btn-sm">
-              Soyez le premier à répondre à ce besoin
+            <a href="{% url 'purchase_requests:proposal_create' pk=request_obj.pk %}" 
+               id="btn-submit-proposal"
+               class="h-9 px-4 rounded-full bg-[#1d1d1f] hover:bg-[#323236] text-white text-[12px] font-medium transition-all inline-flex items-center justify-center shrink-0">
+              Déposer une offre
             </a>
           {% endif %}
         </div>
-      {% endif %}
-    </div>
-  </div>
 
-  <!-- Colonne Droite : Rejoindre & Stats -->
-  <div>
-    <!-- Encadré Rejoindre -->
-    <div class="card" style="margin-bottom: 1.5rem; border-top: 4px solid var(--primary);">
-      <h3 style="font-size: 1.2rem; color: var(--secondary); margin-bottom: 1rem;">
-        Participer au Groupe
-      </h3>
+        {% if request_obj.proposals.all %}
+          <div class="space-y-4">
+            {% for prop in request_obj.proposals.all %}
+              <div class="rounded-2xl p-5 border {% if prop.status == 'ACCEPTED' %}border-[#34c759] bg-[#34c759]/5{% else %}border-black/5 bg-[#fbfbfd]{% endif %} transition-all">
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-3">
+                  <div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <strong class="text-[16px] font-bold text-[#1d1d1f]">{{ prop.store.name }}</strong>
+                      {% if prop.merchant.is_verified %}
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#0071e3]/10 text-[#0071e3]">
+                          Vérifié
+                        </span>
+                      {% endif %}
+                    </div>
+                    <span class="text-[12px] text-[#86868b] block mt-0.5">Par {{ prop.merchant.business_name }}</span>
+                  </div>
 
-      <div style="margin-bottom: 1rem; font-size: 0.9rem;">
-        <div class="flex justify-between" style="margin-bottom: 0.5rem;">
-          <span class="text-muted">Prix cible souhaité :</span>
-          <strong style="color: var(--primary); font-size: 1.1rem;">{{ request_obj.target_price }} FCFA</strong>
-        </div>
-        <div class="flex justify-between" style="margin-bottom: 0.5rem;">
-          <span class="text-muted">Objectif du groupe :</span>
-          <strong>{{ request_obj.target_quantity }} unités</strong>
-        </div>
-        <div class="flex justify-between">
-          <span class="text-muted">Participants :</span>
-          <strong style="color: #059669;">{{ request_obj.total_participants|default:0 }} acheteurs</strong>
-        </div>
-      </div>
+                  <div class="text-left sm:text-right">
+                    <span class="text-[20px] font-bold text-[#1d1d1f]">
+                      {{ prop.proposed_price }} {{ request_obj.country.currency.symbol|default:"FCFA" }}
+                    </span>
+                    <span class="text-[12px] text-[#6e6e73] block">par unité (min. {{ prop.min_quantity }} unités)</span>
+                  </div>
+                </div>
 
-      {% if user_has_joined %}
-        <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: var(--radius-sm); padding: 1rem; text-align: center; margin-top: 1rem;">
-          <div style="color: #059669; font-weight: 700; margin-bottom: 0.25rem;"> Vous participez à cet achat !</div>
-          <p style="font-size: 0.85rem; color: #065F46; margin: 0;">
-            Vous êtes engagé pour <strong>{{ user_pledged_qty }} unité(s)</strong>. Vous serez notifié dès qu'une offre commerçante est validée.
-          </p>
-        </div>
-      {% elif request_obj.status == 'OPEN' %}
-        {% if user.is_authenticated %}
-          <form method="post" action="{% url 'purchase_requests:join' pk=request_obj.pk %}">
-            {% csrf_token %}
-            <div style="margin-bottom: 1rem;">
-              <label style="font-size: 0.85rem; font-weight: 600; display: block; margin-bottom: 0.25rem;">
-                Quantité souhaitée :
-              </label>
-              {{ join_form.quantity_pledged }}
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%;" id="btn-join-request">
-              Rejoindre la demande groupée
-            </button>
-          </form>
+                {% if prop.description %}
+                  <p class="text-[13px] text-[#424245] bg-white p-3 rounded-xl border border-black/5 mb-4 leading-relaxed">
+                    {{ prop.description }}
+                  </p>
+                {% endif %}
+
+                <div class="pt-3 border-t border-black/5 flex items-center justify-between gap-3 flex-wrap text-[12px]">
+                  <span class="text-[#86868b]">Offre valide jusqu'au {{ prop.valid_until|date:"d/m/Y à H:i" }}</span>
+
+                  <div>
+                    {% if prop.status == 'ACCEPTED' %}
+                      <span class="inline-flex items-center gap-1 text-[11px] font-bold px-3 py-1 rounded-full bg-[#34c759] text-white shadow-xs">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        Offre Retenue
+                      </span>
+                    {% elif prop.status == 'REJECTED' %}
+                      <span class="text-[11px] font-medium text-[#86868b] px-2.5 py-1 rounded-full bg-black/5">Non retenue</span>
+                    {% elif prop.status == 'EXPIRED' %}
+                      <span class="text-[11px] font-medium text-[#86868b] px-2.5 py-1 rounded-full bg-black/5">Expirée</span>
+                    {% elif is_creator and request_obj.status != 'ACCEPTED' %}
+                      <form method="post" action="{% url 'purchase_requests:proposal_accept' pk=request_obj.pk proposal_id=prop.pk %}" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" 
+                                class="h-8 px-4 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium transition-all shadow-xs"
+                                onclick="return confirm('Confirmez-vous la sélection de cette offre pour le groupe ?');">
+                          Accepter pour le groupe
+                        </button>
+                      </form>
+                    {% else %}
+                      <span class="text-[11px] font-medium text-[#0071e3] px-2.5 py-1 rounded-full bg-[#0071e3]/10">En étude</span>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
         {% else %}
-          <a href="/login/?next={{ request.path }}" class="btn btn-primary" style="width: 100%;">
-            Se connecter pour rejoindre
-          </a>
+          <div class="text-center py-8">
+            <div class="w-12 h-12 rounded-full bg-[#f5f5f7] text-[#86868b] flex items-center justify-center mx-auto mb-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+            </div>
+            <p class="text-[14px] text-[#6e6e73] mb-3">Aucun commerçant n'a encore déposé d'offre formelle.</p>
+            {% if can_submit_proposal %}
+              <a href="{% url 'purchase_requests:proposal_create' pk=request_obj.pk %}" 
+                 class="h-8 px-4 rounded-full bg-[#1d1d1f] hover:bg-[#323236] text-white text-[12px] font-medium transition-all inline-flex items-center justify-center">
+                Déposer la première offre
+              </a>
+            {% endif %}
+          </div>
         {% endif %}
-      {% else %}
-        <div style="background: var(--bg-surface); border-radius: var(--radius-sm); padding: 1rem; text-align: center; color: var(--text-muted); font-size: 0.9rem;">
-          Cette demande est fermée aux nouvelles adhésions.
-        </div>
-      {% endif %}
+      </div>
+
     </div>
 
-    <!-- Encadré Commerçants -->
-    {% if can_submit_proposal %}
-      <div class="card" style="background: linear-gradient(135deg, #0B2447, #1E3A8A); color: #fff;">
-        <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 0.5rem;">
-           Vous avez du stock ?
-        </h3>
-        <p style="font-size: 0.85rem; color: #CBD5E1; margin-bottom: 1rem;">
-          En tant que commerçant vérifié REDUX, vous pouvez vendre en gros à ce groupe dès maintenant.
-        </p>
-        <a href="{% url 'purchase_requests:proposal_create' pk=request_obj.pk %}" class="btn btn-primary btn-sm" style="width: 100%; text-align: center;">
-          Déposer une proposition de prix
-        </a>
+    <!-- Colonne Droite : Participer & Stats (4 cols) -->
+    <div class="lg:col-span-4 space-y-6">
+      
+      <!-- Carte d'adhésion -->
+      <div class="bg-white rounded-[18px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 space-y-5">
+        <h2 class="text-[18px] font-bold text-[#1d1d1f]">
+          Participer au Groupe
+        </h2>
+
+        <div class="space-y-3 py-3 border-y border-black/5 text-[13px]">
+          <div class="flex items-center justify-between">
+            <span class="text-[#6e6e73]">Prix cible souhaité</span>
+            <span class="font-bold text-[#1d1d1f] text-[15px]">{{ request_obj.target_price }} {{ request_obj.country.currency.code }}</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-[#6e6e73]">Objectif global</span>
+            <span class="font-medium text-[#1d1d1f]">{{ request_obj.target_quantity }} unités</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span class="text-[#6e6e73]">Adhérents actuels</span>
+            <span class="font-bold text-[#248a3d]">{{ request_obj.total_participants|default:0 }} acheteurs</span>
+          </div>
+        </div>
+
+        {% if user_has_joined %}
+          <div class="bg-[#34c759]/10 rounded-2xl p-4 text-center border border-[#34c759]/20">
+            <div class="text-[13px] font-bold text-[#248a3d] mb-1">
+              Vous participez à cet achat !
+            </div>
+            <p class="text-[12px] text-[#248a3d]/80 leading-snug">
+              Vous êtes engagé pour <strong>{{ user_pledged_qty }} unité(s)</strong>. Vous serez notifié dès la validation d'une offre commerçante.
+            </p>
+          </div>
+        {% elif request_obj.status == 'OPEN' %}
+          {% if user.is_authenticated %}
+            <form method="post" action="{% url 'purchase_requests:join' pk=request_obj.pk %}" class="space-y-4">
+              {% csrf_token %}
+              <div>
+                <label class="block text-[12px] font-semibold text-[#1d1d1f] mb-1.5">
+                  Quantité souhaitée :
+                </label>
+                {{ join_form.quantity_pledged }}
+              </div>
+              <button type="submit" 
+                      id="btn-join-request"
+                      class="w-full h-11 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[13px] font-medium transition-all shadow-xs flex items-center justify-center">
+                Rejoindre la demande groupée
+              </button>
+            </form>
+          {% else %}
+            <a href="/login/?next={{ request.path }}" 
+               class="w-full h-11 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[13px] font-medium transition-all shadow-xs flex items-center justify-center">
+              Se connecter pour rejoindre
+            </a>
+          {% endif %}
+        {% else %}
+          <div class="bg-[#f5f5f7] rounded-xl p-4 text-center text-[#86868b] text-[13px]">
+            Cette demande est clôturée aux nouvelles adhésions.
+          </div>
+        {% endif %}
       </div>
-    {% endif %}
+
+      <!-- Encadré Commerçants -->
+      {% if can_submit_proposal %}
+        <div class="bg-[#1d1d1f] text-white rounded-[18px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.04)] space-y-4">
+          <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-[17px] font-bold">Vous avez du stock ?</h3>
+            <p class="text-[13px] text-[#a1a1a6] mt-1 leading-relaxed">
+              En tant que vendeur certifié REDUX, vous pouvez capter ce volume garanti et livrer ce groupe d'acheteurs.
+            </p>
+          </div>
+          <a href="{% url 'purchase_requests:proposal_create' pk=request_obj.pk %}" 
+             class="w-full h-10 rounded-full bg-white hover:bg-[#f5f5f7] text-[#1d1d1f] text-[12px] font-medium transition-all flex items-center justify-center">
+            Déposer une proposition
+          </a>
+        </div>
+      {% endif %}
+
+    </div>
+
   </div>
+
 </div>
 {% endblock %}

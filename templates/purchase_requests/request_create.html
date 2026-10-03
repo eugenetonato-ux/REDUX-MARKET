@@ -1,106 +1,132 @@
 {% extends 'base/base.html' %}
+{% load static %}
+
 {% block title %}Créer une Demande Groupée — REDUX{% endblock %}
 
 {% block content %}
-<div style="max-width: 680px; margin: 0 auto;">
-  <div style="margin-bottom: 1.5rem;">
-    <a href="{% url 'purchase_requests:list' %}" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">
-      ← Retour aux demandes
+<div class="max-w-[680px] mx-auto py-8 md:py-12 space-y-6">
+
+  <!-- Navigation Retour -->
+  <div>
+    <a href="{% url 'purchase_requests:list' %}" 
+       class="inline-flex items-center gap-1.5 text-[13px] text-[#6e6e73] hover:text-[#1d1d1f] transition-colors font-medium">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Retour aux demandes</span>
     </a>
   </div>
 
-  <div class="card" style="border-top: 4px solid var(--primary); padding: 2.5rem;">
-    <div style="text-align: center; margin-bottom: 2rem;">
-      <span class="badge" style="background: var(--primary-light); color: var(--primary); font-size: 0.8rem; margin-bottom: 0.5rem; font-weight: 700;">
-        Achat Groupé Inversé
-      </span>
-      <h1 style="font-size: 1.85rem; color: var(--secondary); margin-bottom: 0.5rem;">
-        Exprimez votre besoin d'achat
-      </h1>
-      <p class="text-muted" style="font-size: 0.95rem;">
-        Définissez votre quantité et prix cible. Mobilisez la communauté et obtenez les offres des commerçants vérifiés.
-      </p>
-    </div>
+  <!-- Apple Store Header -->
+  <div class="text-center mb-6">
+    <span class="inline-block text-[11px] font-semibold uppercase tracking-wider text-[#0071e3] bg-[#0071e3]/10 px-3 py-1 rounded-full mb-3">
+      Achat Groupé Inversé
+    </span>
+    <h1 class="text-[32px] md:text-[40px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+      Exprimez votre besoin d'achat
+    </h1>
+    <p class="text-[16px] text-[#6e6e73] mt-2 max-w-xl mx-auto">
+      Définissez votre quantité et prix cible. Mobilisez la communauté et recevez les propositions des vendeurs vérifiés.
+    </p>
+  </div>
 
-    <form method="post">
+  <!-- Form Card -->
+  <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+    <form method="post" class="space-y-5">
       {% csrf_token %}
 
-      <div style="margin-bottom: 1.25rem;">
-        <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+      <div>
+        <label for="{{ form.title.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
           {{ form.title.label }} *
         </label>
         {{ form.title }}
         {% if form.title.errors %}
-          <div style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.title.errors.0 }}</div>
+          <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.title.errors.0 }}</p>
         {% endif %}
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+          <label for="{{ form.country.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
             {{ form.country.label }} *
           </label>
           {{ form.country }}
           {% if form.country.errors %}
-            <div style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.country.errors.0 }}</div>
+            <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.country.errors.0 }}</p>
           {% endif %}
         </div>
+
         <div>
-          <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+          <label for="{{ form.category.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
             {{ form.category.label }}
           </label>
           {{ form.category }}
         </div>
       </div>
 
-      <div style="margin-bottom: 1.25rem;">
-        <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+      <div>
+        <label for="{{ form.description.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
           {{ form.description.label }} *
         </label>
         {{ form.description }}
         {% if form.description.errors %}
-          <div style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.description.errors.0 }}</div>
+          <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.description.errors.0 }}</p>
         {% endif %}
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
-          <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+          <label for="{{ form.target_quantity.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
             {{ form.target_quantity.label }} *
           </label>
           {{ form.target_quantity }}
           {% if form.target_quantity.errors %}
-            <div style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.target_quantity.errors.0 }}</div>
+            <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.target_quantity.errors.0 }}</p>
           {% endif %}
         </div>
+
         <div>
-          <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+          <label for="{{ form.target_price.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
             {{ form.target_price.label }} *
           </label>
           {{ form.target_price }}
           {% if form.target_price.errors %}
-            <div style="color: #DC2626; font-size: 0.85rem; margin-top: 0.25rem;">{{ form.target_price.errors.0 }}</div>
+            <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.target_price.errors.0 }}</p>
           {% endif %}
         </div>
+
         <div>
-          <label style="font-weight: 600; display: block; margin-bottom: 0.35rem; color: var(--secondary);">
+          <label for="{{ form.duration_days.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
             {{ form.duration_days.label }} *
           </label>
           {{ form.duration_days }}
         </div>
       </div>
 
-      <div style="background: var(--bg-surface); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border); margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">
-        ℹ️ En publiant cette demande, vous serez automatiquement enregistré comme premier participant avec 1 unité.
+      <!-- Note informative -->
+      <div class="bg-[#f5f5f7] rounded-xl p-3.5 border border-black/5 text-[12px] text-[#6e6e73] flex items-center gap-2">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#0071e3] shrink-0">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <span>En publiant cette demande, vous serez automatiquement enregistré comme premier participant avec 1 unité.</span>
       </div>
 
-      <div class="flex justify-between items-center">
-        <a href="{% url 'purchase_requests:list' %}" class="btn btn-outline">Annuler</a>
-        <button type="submit" class="btn btn-primary" id="btn-submit-request" style="padding: 0.75rem 2rem;">
+      <div class="pt-3 flex items-center justify-between gap-4">
+        <a href="{% url 'purchase_requests:list' %}" 
+           class="h-10 px-5 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[13px] font-medium transition-all inline-flex items-center justify-center">
+          Annuler
+        </a>
+        <button type="submit" 
+                id="btn-submit-request" 
+                class="h-10 px-6 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[13px] font-medium transition-all shadow-xs inline-flex items-center justify-center">
           Publier ma demande groupée
         </button>
       </div>
     </form>
   </div>
+
 </div>
 {% endblock %}

@@ -1,67 +1,115 @@
 {% extends 'base/base.html' %}
+{% load static %}
+
 {% block title %}{{ product.name }} — REDUX{% endblock %}
 
 {% block content %}
-<div class="card" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-bottom: 3rem;">
-  <!-- Visuel -->
-  <div style="height: 380px; background: var(--bg-surface); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; font-size: 4rem;">
-    {% if product.images.first %}
-      <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg);">
-    {% else %}
-      
-    {% endif %}
+<div class="py-8 md:py-12 space-y-6">
+
+  <!-- Navigation Retour -->
+  <div>
+    <a href="{% url 'catalog:list' %}" 
+       class="inline-flex items-center gap-1.5 text-[13px] text-[#6e6e73] hover:text-[#1d1d1f] transition-colors font-medium">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Retour au catalogue</span>
+    </a>
   </div>
 
-  <!-- Infos -->
-  <div style="display: flex; flex-direction: column;">
-    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
-      <span class="badge" style="background: var(--bg-surface); color: var(--secondary);">{{ product.category.name|default:"Commerce Local" }}</span>
-      {% include 'partials/verified_badge.html' with merchant=product.store.merchant %}
-    </div>
-
-    <h1 style="font-size: 2rem; margin-bottom: 0.75rem;">{{ product.name }}</h1>
-    <p class="text-muted" style="font-size: 0.95rem; margin-bottom: 1.5rem;">
-      Proposé par <a href="{% url 'stores:detail' slug=product.store.slug %}" style="font-weight: 700;">{{ product.store.name }}</a>
-      ({{ product.store.city|default:product.store.country.name }})
-    </p>
-
-    <!-- Prix Box -->
-    <div style="background: var(--primary-light); border: 1px solid var(--primary-subtle); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
-      <div class="flex items-center justify-between">
-        <div>
-          <span style="font-size: 0.85rem; color: var(--text-secondary); display: block;">Prix public unitaire :</span>
-          <span style="font-size: 1.75rem; font-weight: 800; color: var(--secondary);">{{ product.original_price }} {{ product.store.country.currency.symbol }}</span>
-        </div>
-        <div style="text-align: right;">
-          <span style="font-size: 0.85rem; color: var(--primary); font-weight: 700; display: block;">Jusqu'à :</span>
-          <span style="font-size: 1.75rem; font-weight: 800; color: var(--primary);">{{ product.minimum_price }} {{ product.store.country.currency.symbol }}</span>
-          <span style="font-size: 0.75rem; color: var(--text-muted); display: block;">en achat groupé</span>
-        </div>
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    
+    <!-- Image Card (5 cols) -->
+    <div class="lg:col-span-5 bg-white rounded-[18px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+      <div class="w-full h-80 sm:h-96 rounded-2xl bg-[#f5f5f7] border border-black/5 overflow-hidden flex items-center justify-center">
+        {% if product.images.first %}
+          <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+        {% else %}
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#86868b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+          </svg>
+        {% endif %}
       </div>
     </div>
 
-    <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 2rem;">
-      {{ product.description|default:"Produit certifié et garanti d'origine par le commerçant." }}
-    </p>
+    <!-- Product Details (7 cols) -->
+    <div class="lg:col-span-7 bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 space-y-6">
+      <div class="flex items-center justify-between gap-3 flex-wrap">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-[12px] font-medium bg-[#f5f5f7] text-[#1d1d1f]">
+          {{ product.category.name|default:"Commerce Local" }}
+        </span>
+        {% include 'partials/verified_badge.html' with merchant=product.store.merchant %}
+      </div>
 
-    <!-- Actions Campagnes -->
-    <div style="margin-top: auto;">
-      {% if active_campaigns %}
-        <h4 style="margin-bottom: 0.75rem; color: var(--secondary);">Campagnes actives pour ce produit :</h4>
-        {% for c in active_campaigns %}
-          <div style="background: #FFFFFF; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-            <div>
-              <strong>{{ c.title }}</strong>
-              <div class="text-orange" style="font-weight: 700;">{{ c.current_price }} {{ product.store.country.currency.symbol }} ({{ c.current_participants_count }} participants)</div>
-            </div>
-            <a href="{% url 'campaigns:detail' slug=c.slug %}" class="btn btn-primary btn-sm">Rejoindre l'offre</a>
+      <div>
+        <h1 class="text-[28px] md:text-[36px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+          {{ product.name }}
+        </h1>
+        <p class="text-[14px] text-[#6e6e73] mt-2">
+          Proposé par <a href="{% url 'stores:detail' slug=product.store.slug %}" class="font-semibold text-[#1d1d1f] hover:underline">{{ product.store.name }}</a>
+          ({{ product.store.city|default:product.store.country.name }})
+        </p>
+      </div>
+
+      <!-- Price Box Apple Style -->
+      <div class="bg-[#f5f5f7] rounded-2xl p-5 border border-black/5 flex items-center justify-between gap-4">
+        <div>
+          <span class="text-[12px] text-[#86868b] block mb-0.5">Prix public unitaire</span>
+          <span class="text-[24px] font-bold text-[#1d1d1f]">{{ product.original_price }} {{ product.store.country.currency.symbol }}</span>
+        </div>
+        <div class="text-right">
+          <span class="text-[12px] text-[#248a3d] font-semibold block mb-0.5">Jusqu'à</span>
+          <span class="text-[24px] font-bold text-[#248a3d]">{{ product.minimum_price }} {{ product.store.country.currency.symbol }}</span>
+          <span class="text-[11px] text-[#86868b] block">en achat groupé</span>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-[14px] font-bold text-[#1d1d1f] mb-1.5">Description</h3>
+        <p class="text-[15px] text-[#424245] leading-relaxed">
+          {{ product.description|default:"Produit certifié et garanti d'origine par le commerçant partenaire." }}
+        </p>
+      </div>
+
+      <!-- Campagnes actives pour ce produit -->
+      <div class="pt-6 border-t border-black/5 space-y-4">
+        <h3 class="text-[16px] font-bold text-[#1d1d1f]">
+          Campagnes collectives actives
+        </h3>
+
+        {% if active_campaigns %}
+          <div class="space-y-3">
+            {% for c in active_campaigns %}
+              <div class="bg-[#fbfbfd] rounded-2xl p-4 border border-black/5 flex items-center justify-between gap-4 flex-wrap">
+                <div>
+                  <strong class="text-[14px] text-[#1d1d1f] block">{{ c.title }}</strong>
+                  <div class="text-[13px] font-bold text-[#0071e3] mt-0.5">
+                    {{ c.current_price }} {{ product.store.country.currency.symbol }} 
+                    <span class="text-[12px] text-[#86868b] font-normal">({{ c.current_participants_count }} acheteurs)</span>
+                  </div>
+                </div>
+                <a href="{% url 'campaigns:detail' slug=c.slug %}" 
+                   class="h-8 px-4 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium transition-all shadow-xs inline-flex items-center justify-center">
+                  Rejoindre l'offre
+                </a>
+              </div>
+            {% endfor %}
           </div>
-        {% endfor %}
-      {% else %}
-        <p class="text-muted" style="margin-bottom: 1rem;">Aucune campagne groupée en cours pour le moment sur ce produit.</p>
-        <a href="/stores/{{ product.store.slug }}/" class="btn btn-outline">Voir tous les articles de la boutique</a>
-      {% endif %}
+        {% else %}
+          <div class="text-center py-4 text-[#86868b] text-[13px]">
+            Aucune campagne active sur ce produit.
+          </div>
+          <a href="{% url 'stores:detail' slug=product.store.slug %}" 
+             class="w-full h-10 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[12px] font-medium transition-all inline-flex items-center justify-center">
+            Voir tous les articles de cette boutique
+          </a>
+        {% endif %}
+      </div>
     </div>
+
   </div>
+
 </div>
 {% endblock %}

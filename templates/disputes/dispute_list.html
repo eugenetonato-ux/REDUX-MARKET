@@ -4,49 +4,63 @@
 {% block title %}Mes Réclamations & Litiges — REDUX{% endblock %}
 
 {% block content %}
-<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+<div class="py-8 md:py-12 space-y-8 max-w-[820px] mx-auto">
+
+  <!-- Apple Store Header -->
   <div>
-    <h1 style="font-size: 1.6rem; color: var(--text-primary);">Dossiers de Réclamation</h1>
-    <p style="color: var(--text-secondary); font-size: 0.95rem;">
-      Suivi des signalements et médiation des commandes sous séquestre.
+    <span class="inline-block text-[11px] font-semibold uppercase tracking-wider text-[#ff9500] bg-[#ff9500]/10 px-3 py-1 rounded-full mb-3">
+      Sécurité & Séquestre
+    </span>
+    <h1 class="text-[32px] md:text-[40px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+      Dossiers de Réclamation
+    </h1>
+    <p class="text-[16px] text-[#6e6e73] mt-2">
+      Suivi des signalements et médiation des commandes sous séquestre garanti.
     </p>
   </div>
 
-  <div class="card">
-    {% if disputes %}
-      <div style="display: flex; flex-direction: column; gap: 1rem;">
-        {% for d in disputes %}
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.25rem; border: 1px solid var(--border); border-radius: var(--radius-md); flex-wrap: wrap; gap: 1rem;">
-            <div>
-              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                <span class="badge badge-status {% if d.status == 'OPEN' %}pending{% else %}active{% endif %}">
-                  {{ d.get_status_display }}
-                </span>
-                <span style="font-size: 0.8rem; color: var(--text-muted);">{{ d.created_at|date:"d M Y" }}</span>
-              </div>
-              <strong style="font-size: 1.05rem; color: var(--text-primary);">Commande #{{ d.order.order_number }}</strong>
-              <div style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.2rem;">
-                Motif : {{ d.reason }}
-              </div>
+  {% if disputes %}
+    <div class="space-y-4">
+      {% for d in disputes %}
+        <div class="bg-white rounded-[18px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="min-w-0">
+            <div class="flex items-center gap-2.5 mb-2">
+              <span class="inline-block text-[11px] font-semibold px-2.5 py-0.5 rounded-full {% if d.status == 'OPEN' %}bg-[#ff9500]/10 text-[#b25000]{% elif d.status == 'RESOLVED' %}bg-[#34c759]/10 text-[#248a3d]{% else %}bg-black/5 text-[#6e6e73]{% endif %}">
+                {{ d.get_status_display }}
+              </span>
+              <span class="text-[12px] text-[#86868b]">{{ d.created_at|date:"d M Y" }}</span>
             </div>
-
-            <a href="{% url 'disputes:detail' pk=d.pk %}" class="btn btn-outline btn-sm">
-              Consulter le dossier →
-            </a>
+            <h3 class="text-[16px] font-bold text-[#1d1d1f]">
+              Commande #{{ d.order.order_number }}
+            </h3>
+            <div class="text-[13px] text-[#6e6e73] mt-0.5 truncate max-w-md">
+              Motif : {{ d.reason }}
+            </div>
           </div>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="empty-state-box">
-        <div class="empty-state-icon">
-          {% include 'partials/icons/shield.html' %}
+
+          <a href="{% url 'disputes:detail' pk=d.pk %}" 
+             class="h-8 px-4 rounded-full bg-[#f5f5f7] hover:bg-[#1d1d1f] hover:text-white text-[#1d1d1f] text-[12px] font-medium transition-all inline-flex items-center gap-1 shrink-0 self-start sm:self-auto">
+            <span>Consulter le dossier</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
         </div>
-        <h3 class="empty-state-title">Aucune réclamation enregistrée</h3>
-        <p class="empty-state-desc">
-          Toutes vos transactions sont fluides et protégées par notre système de séquestre sécurisé.
-        </p>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="bg-white rounded-[18px] p-12 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 text-center">
+      <div class="w-14 h-14 rounded-full bg-[#f5f5f7] text-[#34c759] flex items-center justify-center mx-auto mb-4">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
       </div>
-    {% endif %}
-  </div>
+      <h3 class="text-[18px] font-bold text-[#1d1d1f]">Aucune réclamation enregistrée</h3>
+      <p class="text-[14px] text-[#6e6e73] mt-1 max-w-[420px] mx-auto">
+        Toutes vos transactions sont fluides et protégées par notre système de séquestre sécurisé.
+      </p>
+    </div>
+  {% endif %}
+
 </div>
 {% endblock %}

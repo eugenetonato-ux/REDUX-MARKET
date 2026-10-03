@@ -1,0 +1,10 @@
+{% if amount %}
+<span class="price-block">
+  {% if original_amount and discount > 0 %}
+    <span class="price-original">{{ original_amount }}</span>
+    <span class="price-badge-discount">-{{ discount }}%</span>
+  {% endif %}
+  <span class="price-current">{{ amount }}</span>
+  {% if label %}<span class="price-label">{{ label }}</span>{% endif %}
+</span>
+{% endif %}

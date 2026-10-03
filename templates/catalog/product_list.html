@@ -1,67 +1,106 @@
 {% extends 'base/base.html' %}
+{% load static %}
+
 {% block title %}Catalogue des Produits — REDUX{% endblock %}
 
 {% block content %}
-<div style="margin-bottom: 2rem;">
-  <span class="badge" style="background: var(--primary-light); color: var(--primary); margin-bottom: 0.5rem;">Catalogue</span>
-  <h1>Nos Produits & Offres Groupées</h1>
-  <p class="text-muted">Découvrez les produits disponibles auprès de vos commerçants locaux partenaires.</p>
-</div>
+<div class="py-8 md:py-12 space-y-10">
 
-<div style="display: grid; grid-template-columns: 240px 1fr; gap: 2rem;">
-  <!-- Sidebar Filtres Catégories -->
-  <aside>
-    <div class="card" style="padding: 1.25rem;">
-      <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--secondary);">Catégories</h3>
-      <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.95rem;">
-        <li>
-          <a href="/products/" style="{% if not current_category_slug %}font-weight: 700; color: var(--primary);{% else %}color: var(--text-secondary);{% endif %}">
+  <!-- Apple Store Header -->
+  <div class="text-center max-w-[680px] mx-auto">
+    <span class="inline-block text-[11px] font-semibold uppercase tracking-wider text-[#0071e3] bg-[#0071e3]/10 px-3 py-1 rounded-full mb-3">
+      Catalogue Général
+    </span>
+    <h1 class="text-[36px] md:text-[48px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+      Nos Produits & Offres
+    </h1>
+    <p class="text-[17px] text-[#6e6e73] mt-3 leading-relaxed">
+      Découvrez les articles référencés par nos commerçants locaux partenaires et profitez de tarifs dégressifs.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+    
+    <!-- Sidebar Filtres Catégories (3 cols) -->
+    <aside class="lg:col-span-3">
+      <div class="bg-white rounded-[18px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 space-y-4">
+        <h2 class="text-[15px] font-bold text-[#1d1d1f]">
+          Catégories
+        </h2>
+        <div class="flex flex-col gap-1 text-[13px]">
+          <a href="/products/" 
+             class="px-3.5 py-2 rounded-xl transition-all font-medium {% if not current_category_slug %}bg-[#1d1d1f] text-white shadow-xs{% else %}text-[#6e6e73] hover:text-[#1d1d1f] hover:bg-[#f5f5f7]{% endif %}">
             Toutes les catégories
           </a>
-        </li>
-        {% for cat in categories %}
-          <li>
-            <a href="?category={{ cat.slug }}" style="{% if current_category_slug == cat.slug %}font-weight: 700; color: var(--primary);{% else %}color: var(--text-secondary);{% endif %}">
+          {% for cat in categories %}
+            <a href="?category={{ cat.slug }}" 
+               class="px-3.5 py-2 rounded-xl transition-all font-medium {% if current_category_slug == cat.slug %}bg-[#1d1d1f] text-white shadow-xs{% else %}text-[#6e6e73] hover:text-[#1d1d1f] hover:bg-[#f5f5f7]{% endif %}">
               {{ cat.name }}
             </a>
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-  </aside>
+          {% endfor %}
+        </div>
+      </div>
+    </aside>
 
-  <!-- Grille de Produits -->
-  <div>
-    {% if products %}
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem;">
-        {% for prod in products %}
-          <div class="card" style="display: flex; flex-direction: column; padding: 1.25rem;">
-            <div style="height: 160px; background: var(--bg-surface); border-radius: var(--radius-md); margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; font-size: 2.5rem;">
-              {% if prod.images.first %}
-                <img src="{{ prod.images.first.image.url }}" alt="{{ prod.name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-md);">
-              {% else %}
-                {% include 'partials/icons/box.html' %}
-              {% endif %}
-            </div>
-            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.25rem;">{{ prod.store.name }}</div>
-            <h4 style="font-size: 1.05rem; margin-bottom: 0.5rem;">
-              <a href="{% url 'catalog:detail' slug=prod.slug %}" style="color: inherit;">{{ prod.name }}</a>
-            </h4>
-            <div style="margin-top: auto; padding-top: 0.75rem; border-top: 1px solid var(--border-light); display: flex; align-items: baseline; justify-content: space-between;">
+    <!-- Grille de Produits (9 cols) -->
+    <main class="lg:col-span-9">
+      {% if products %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for prod in products %}
+            <div class="bg-white rounded-[18px] p-5 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all flex flex-col justify-between group">
               <div>
-                <span style="font-size: 1.25rem; font-weight: 800; color: var(--secondary);">{{ prod.original_price }} {{ prod.store.country.currency.symbol }}</span>
-                <div style="font-size: 0.75rem; color: var(--primary); font-weight: 600;">Min. {{ prod.minimum_price }} {{ prod.store.country.currency.symbol }} en groupe</div>
+                <!-- Image -->
+                <div class="w-full h-44 rounded-xl bg-[#f5f5f7] border border-black/5 overflow-hidden mb-4 flex items-center justify-center">
+                  {% if prod.images.first %}
+                    <img src="{{ prod.images.first.image.url }}" alt="{{ prod.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                  {% else %}
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#86868b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line>
+                      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    </svg>
+                  {% endif %}
+                </div>
+
+                <div class="text-[11px] font-medium text-[#86868b] truncate mb-1">
+                  {{ prod.store.name }}
+                </div>
+
+                <h3 class="text-[15px] font-bold text-[#1d1d1f] group-hover:text-[#0071e3] transition-colors line-clamp-2 mb-3">
+                  <a href="{% url 'catalog:detail' slug=prod.slug %}">
+                    {{ prod.name }}
+                  </a>
+                </h3>
+
+                <div class="mb-4">
+                  <div class="text-[18px] font-bold text-[#1d1d1f]">
+                    {{ prod.original_price }} {{ prod.store.country.currency.symbol }}
+                  </div>
+                  <div class="text-[11px] font-medium text-[#248a3d]">
+                    Jusqu'à {{ prod.minimum_price }} {{ prod.store.country.currency.symbol }} en groupe
+                  </div>
+                </div>
               </div>
-              <a href="{% url 'catalog:detail' slug=prod.slug %}" class="btn btn-outline btn-sm">Voir →</a>
+
+              <div class="pt-3 border-t border-black/5">
+                <a href="{% url 'catalog:detail' slug=prod.slug %}" 
+                   class="w-full h-8 px-4 rounded-full bg-[#f5f5f7] hover:bg-[#1d1d1f] hover:text-white text-[#1d1d1f] text-[12px] font-medium transition-all inline-flex items-center justify-center gap-1">
+                  <span>Détails</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </a>
+              </div>
             </div>
-          </div>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="card" style="text-align: center; padding: 3rem;">
-        <p class="text-muted">Aucun produit ne correspond à vos critères de recherche.</p>
-      </div>
-    {% endif %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="bg-white rounded-[18px] p-12 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 text-center">
+          <p class="text-[15px] text-[#6e6e73]">Aucun produit ne correspond à cette sélection.</p>
+        </div>
+      {% endif %}
+    </main>
+
   </div>
+
 </div>
 {% endblock %}

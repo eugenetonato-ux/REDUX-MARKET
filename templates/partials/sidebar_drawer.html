@@ -1,15 +1,15 @@
-{% load static %}
+{% load static i18n %}
 <!-- Tiroir de Navigation Latérale (Navigation Drawer) -->
 <div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
 
-<aside class="sidebar-drawer" id="sidebar-drawer" aria-label="Navigation principale" aria-hidden="true">
+<aside class="sidebar-drawer" id="sidebar-drawer" aria-label="{% trans 'Main menu' %}" aria-hidden="true">
   <!-- En-tête du tiroir -->
   <div class="sidebar-header">
     <a href="/" class="brand-logo" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">
       <img src="{% static 'images/redux_logo.png' %}" alt="REDUX" style="height: 24px; width: auto; max-width: 140px; display: block; object-fit: contain;">
       <span class="brand-badge">Afrique</span>
     </a>
-    <button type="button" class="sidebar-close-btn" id="sidebar-close-btn" aria-label="Fermer le menu">
+    <button type="button" class="sidebar-close-btn" id="sidebar-close-btn" aria-label="{% trans 'Close menu' %}">
       {% include 'partials/icons/close.html' %}
     </button>
   </div>
@@ -17,53 +17,53 @@
   <div class="sidebar-content">
     <!-- Section 1 : Accès Express 1-Clic Démo -->
     <div class="sidebar-section">
-      <div class="sidebar-section-title">ACCÈS 1-CLIC (DÉMO SANS FORMULAIRE)</div>
+      <div class="sidebar-section-title">{% trans "1-CLICK ACCESS (DEMO)" %}</div>
       <div class="sidebar-role-pills">
-        <a href="{% url 'accounts:quick_login' role='buyer' %}" class="sidebar-role-btn buyer" title="Connexion immédiate Acheteur">
+        <a href="{% url 'accounts:quick_login' role='buyer' %}" class="sidebar-role-btn buyer" title="{% trans 'Buyer' %}">
           {% include 'partials/icons/user.html' %}
-          <span>Acheteur</span>
+          <span>{% trans "Buyer" %}</span>
         </a>
-        <a href="{% url 'accounts:quick_login' role='merchant' %}" class="sidebar-role-btn merchant" title="Connexion immédiate Commerçant">
+        <a href="{% url 'accounts:quick_login' role='merchant' %}" class="sidebar-role-btn merchant" title="{% trans 'Merchant' %}">
           {% include 'partials/icons/store.html' %}
-          <span>Commerçant</span>
+          <span>{% trans "Merchant" %}</span>
         </a>
       </div>
     </div>
 
     <!-- Section 2 : Navigation Principale -->
     <div class="sidebar-section">
-      <div class="sidebar-section-title">NAVIGATION</div>
+      <div class="sidebar-section-title">{% trans "NAVIGATION" %}</div>
       <nav class="sidebar-nav">
         <a href="/explorer" class="sidebar-nav-item">
           {% include 'partials/icons/search.html' %}
-          <span>Explorer les offres</span>
+          <span>{% trans "Explore all offers" %}</span>
         </a>
         <a href="/campaigns/" class="sidebar-nav-item">
           {% include 'partials/icons/box.html' %}
-          <span>Campagnes en cours</span>
+          <span>{% trans "Active campaigns" %}</span>
         </a>
         <a href="/requests/" class="sidebar-nav-item">
           {% include 'partials/icons/user.html' %}
-          <span>Demandes groupées</span>
+          <span>{% trans "Group requests" %}</span>
         </a>
         <a href="/categories/" class="sidebar-nav-item">
           {% include 'partials/icons/tag.html' %}
-          <span>Catégories de produits</span>
+          <span>{% trans "Product categories" %}</span>
         </a>
         <a href="/stores/" class="sidebar-nav-item">
           {% include 'partials/icons/store.html' %}
-          <span>Boutiques partenaires</span>
+          <span>{% trans "Partner stores" %}</span>
         </a>
         <a href="{% url 'pages:how_it_works' %}" class="sidebar-nav-item">
           {% include 'partials/icons/shield.html' %}
-          <span>Comment ça marche ?</span>
+          <span>{% trans "How it works" %}</span>
         </a>
       </nav>
     </div>
 
     <!-- Section 3 : Espace Utilisateur -->
     <div class="sidebar-section">
-      <div class="sidebar-section-title">MON COMPTE</div>
+      <div class="sidebar-section-title">{% trans "MY ACCOUNT" %}</div>
       {% if user.is_authenticated %}
         <div class="sidebar-user-card">
           <div class="sidebar-user-avatar">
@@ -81,60 +81,97 @@
           {% if user.is_merchant %}
             <a href="/merchant/dashboard/" class="sidebar-nav-item" style="color: var(--primary);">
               {% include 'partials/icons/store.html' %}
-              <span>Portail Marchand</span>
+              <span>{% trans "Merchant dashboard" %}</span>
             </a>
           {% elif not user.is_admin %}
             <a href="/dashboard/" class="sidebar-nav-item" style="color: var(--primary);">
               {% include 'partials/icons/user.html' %}
-              <span>Tableau de bord Acheteur</span>
+              <span>{% trans "Buyer dashboard" %}</span>
             </a>
             <a href="/dashboard/orders/" class="sidebar-nav-item">
               {% include 'partials/icons/box.html' %}
-              <span>Mes Commandes</span>
+              <span>{% trans "My orders" %}</span>
             </a>
           {% endif %}
           <a href="/notifications/" class="sidebar-nav-item">
             {% include 'partials/icons/bell.html' %}
-            <span>Notifications</span>
+            <span>{% trans "Notifications" %}</span>
           </a>
           <form action="{% url 'accounts:logout' %}" method="post" style="margin-top: 0.5rem;">
             {% csrf_token %}
             <button type="submit" class="sidebar-logout-btn">
-              Se déconnecter
+              {% trans "Logout" %}
             </button>
           </form>
         </nav>
       {% else %}
         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <a href="{% url 'accounts:login' %}" class="btn btn-outline-dark btn-block">Se connecter</a>
-          <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-block">Créer un compte</a>
+          <a href="{% url 'accounts:login' %}" class="btn btn-outline-dark btn-block">{% trans "Sign in" %}</a>
+          <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-block">{% trans "Create account" %}</a>
           <a href="{% url 'accounts:register_merchant' %}" style="font-size: 0.8rem; color: #94A3B8; text-align: center; margin-top: 0.25rem;">
-            Devenir commerçant partenaire
+            {% trans "Become a partner merchant" %}
           </a>
         </div>
       {% endif %}
     </div>
 
-    <!-- Section 4 : Pays & Devises Africaines -->
+    <!-- Section 4 : Pays & Devises Africaines + Switch langue -->
     <div class="sidebar-section">
-      <div class="sidebar-section-title">PAYS & DEVISES ACTIFS</div>
+      <div class="sidebar-section-title">{% trans "COUNTRIES & CURRENCIES" %}</div>
       <div style="font-size: 0.82rem; color: #94A3B8; margin-bottom: 0.5rem;">
-        Zone monétaire active : <strong style="color: #FFFFFF;">{{ current_country.name }} ({{ current_country.currency.code }})</strong>
+        {% trans "Active monetary zone" %} : <strong style="color: #FFFFFF;">{{ current_country.flag_emoji }} {{ current_country.name }} ({{ current_country.currency.code }})</strong>
       </div>
+
+      <!-- Switcher Pays dynamique depuis la BDD -->
+      <form method="get" action="{% url 'countries:change' %}" style="margin-bottom: 1rem;">
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <select name="country" onchange="this.form.submit();"
+          style="width: 100%; background: rgba(255,255,255,0.08); color: #FFFFFF; border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 0.5rem 0.75rem; font-size: 0.82rem; outline: none; cursor: pointer;">
+          {% for c in available_countries %}
+            <option value="{{ c.code }}" {% if current_country and current_country.code == c.code %}selected{% endif %}
+              style="background: #1a2035; color: #fff;">
+              {{ c.flag_emoji }} {{ c.name }} — {{ c.currency.symbol }} {{ c.currency.code }}
+            </option>
+          {% endfor %}
+        </select>
+      </form>
+
+      <!-- Switcher langue FR / EN dans sidebar -->
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 0.75rem;">
+        {% for lang in AVAILABLE_LANGUAGES %}
+          <form method="post" action="{% url 'set_language' %}" style="margin: 0; flex: 1;">
+            {% csrf_token %}
+            <input type="hidden" name="language" value="{{ lang.code }}">
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <button type="submit"
+              style="width: 100%; padding: 0.4rem; border-radius: 8px; font-size: 0.8rem; font-weight: 600; border: none; cursor: pointer;
+                {% if CURRENT_LANGUAGE == lang.code %}
+                  background: var(--primary); color: #fff;
+                {% else %}
+                  background: rgba(255,255,255,0.08); color: #94A3B8;
+                {% endif %}
+                transition: all 0.2s;">
+              {{ lang.flag }} {{ lang.label }}
+            </button>
+          </form>
+        {% endfor %}
+      </div>
+
       <div class="sidebar-countries-grid">
-        <span class="country-pill active">BJ &bull; Bénin</span>
-        <span class="country-pill">CI &bull; Côte d'Ivoire</span>
-        <span class="country-pill">SN &bull; Sénégal</span>
-        <span class="country-pill">TG &bull; Togo</span>
-        <span class="country-pill">CM &bull; Cameroun</span>
-        <span class="country-pill">BF &bull; Burkina</span>
-        <span class="country-pill">ML &bull; Mali</span>
-        <span class="country-pill">NE &bull; Niger</span>
-        <span class="country-pill">GA &bull; Gabon</span>
-        <span class="country-pill">CD &bull; RD Congo</span>
-        <span class="country-pill">GN &bull; Guinée</span>
-        <span class="country-pill">NG &bull; Nigeria</span>
-        <span class="country-pill">GH &bull; Ghana</span>
+        {% for c in available_countries %}
+          <a href="{% url 'countries:change' %}?country={{ c.code }}&next={{ request.get_full_path }}"
+             class="country-pill {% if current_country and current_country.code == c.code %}active{% endif %}">
+            {{ c.flag_emoji }} {{ c.code }}
+          </a>
+        {% empty %}
+          <span class="country-pill active">BJ &bull; Bénin</span>
+          <span class="country-pill">CI &bull; Côte d'Ivoire</span>
+          <span class="country-pill">SN &bull; Sénégal</span>
+          <span class="country-pill">TG &bull; Togo</span>
+          <span class="country-pill">CM &bull; Cameroun</span>
+          <span class="country-pill">NG &bull; Nigeria</span>
+          <span class="country-pill">GH &bull; Ghana</span>
+        {% endfor %}
       </div>
     </div>
   </div>

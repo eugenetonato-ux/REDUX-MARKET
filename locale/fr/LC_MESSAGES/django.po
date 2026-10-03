@@ -1,0 +1,278 @@
+# REDUX - Fichier de traduction Français (langue par défaut)
+# Ce fichier .po contient les chaînes UI de la plateforme.
+# Compilé via : python manage.py compilemessages
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: REDUX 1.0\n"
+"Report-Msgid-Bugs-To: support@redux.app\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+# ── Navigation ──────────────────────────────────────────────────────────
+msgid "Campaigns"
+msgstr "Campagnes"
+
+msgid "Requests"
+msgstr "Demandes"
+
+msgid "Categories"
+msgstr "Catégories"
+
+msgid "Stores"
+msgstr "Boutiques"
+
+msgid "How it works"
+msgstr "Comment ça marche"
+
+msgid "Login"
+msgstr "Connexion"
+
+msgid "Sign up"
+msgstr "Rejoindre"
+
+msgid "My Account"
+msgstr "Mon Espace"
+
+msgid "Seller Portal"
+msgstr "Portail Vendeur"
+
+msgid "Logout"
+msgstr "Déconnexion"
+
+msgid "Notifications"
+msgstr "Notifications"
+
+# ── Header / Sidebar ─────────────────────────────────────────────────────
+msgid "Main menu"
+msgstr "Menu principal"
+
+msgid "Close menu"
+msgstr "Fermer le menu"
+
+msgid "Select country and currency"
+msgstr "Sélectionner le pays et la monnaie"
+
+msgid "Search"
+msgstr "Explorer et rechercher"
+
+msgid "My orders / Cart"
+msgstr "Mes commandes / Panier"
+
+msgid "1-CLICK ACCESS (DEMO)"
+msgstr "ACCÈS 1-CLIC (DÉMO)"
+
+msgid "Buyer"
+msgstr "Acheteur"
+
+msgid "Merchant"
+msgstr "Commerçant"
+
+msgid "NAVIGATION"
+msgstr "NAVIGATION"
+
+msgid "Explore all offers"
+msgstr "Explorer les offres"
+
+msgid "Active campaigns"
+msgstr "Campagnes en cours"
+
+msgid "Group requests"
+msgstr "Demandes groupées"
+
+msgid "Product categories"
+msgstr "Catégories de produits"
+
+msgid "Partner stores"
+msgstr "Boutiques partenaires"
+
+msgid "MY ACCOUNT"
+msgstr "MON COMPTE"
+
+msgid "Buyer dashboard"
+msgstr "Tableau de bord Acheteur"
+
+msgid "My orders"
+msgstr "Mes Commandes"
+
+msgid "Merchant dashboard"
+msgstr "Portail Marchand"
+
+msgid "Sign in"
+msgstr "Se connecter"
+
+msgid "Create account"
+msgstr "Créer un compte"
+
+msgid "Become a partner merchant"
+msgstr "Devenir commerçant partenaire"
+
+msgid "COUNTRIES & CURRENCIES"
+msgstr "PAYS & DEVISES ACTIFS"
+
+msgid "Active monetary zone"
+msgstr "Zone monétaire active"
+
+# ── Footer ────────────────────────────────────────────────────────────────
+msgid "The pan-African collective commerce platform. Join together to get the best prices with your local merchants."
+msgstr "La plateforme panafricaine de commerce collectif. Regroupez-vous pour obtenir les meilleurs prix avec vos commerçants de proximité."
+
+msgid "Discover"
+msgstr "Découvrir"
+
+msgid "All offers"
+msgstr "Toutes les offres"
+
+msgid "Verified stores"
+msgstr "Boutiques vérifiées"
+
+msgid "Active campaigns"
+msgstr "Campagnes en cours"
+
+msgid "Group requests"
+msgstr "Demandes groupées"
+
+msgid "Merchants"
+msgstr "Commerçants"
+
+msgid "Seller space"
+msgstr "Espace Vendeur"
+
+msgid "Verify my store"
+msgstr "Vérifier ma boutique"
+
+msgid "Terms & Conditions"
+msgstr "Conditions générales"
+
+msgid "Support"
+msgstr "Assistance"
+
+msgid "Help center"
+msgstr "Centre d'aide"
+
+msgid "Privacy & Security"
+msgstr "Confidentialité & Sécurité"
+
+msgid "Collective & fair commerce in Africa"
+msgstr "Commerce collectif & équitable en Afrique"
+
+msgid "All rights reserved."
+msgstr "Tous droits réservés."
+
+# ── Catalogue & Campagnes ─────────────────────────────────────────────────
+msgid "Group buying campaign"
+msgstr "Campagne d'achat groupé"
+
+msgid "Add to group order"
+msgstr "Rejoindre la commande groupée"
+
+msgid "Tier price"
+msgstr "Prix palier"
+
+msgid "Current participants"
+msgstr "Participants actuels"
+
+msgid "Campaign ends in"
+msgstr "Campagne se termine dans"
+
+msgid "Available quantity"
+msgstr "Quantité disponible"
+
+msgid "Price per unit"
+msgstr "Prix unitaire"
+
+msgid "Original price"
+msgstr "Prix initial"
+
+msgid "You save"
+msgstr "Vous économisez"
+
+# ── Commandes ─────────────────────────────────────────────────────────────
+msgid "Order"
+msgstr "Commande"
+
+msgid "Orders"
+msgstr "Commandes"
+
+msgid "Order status"
+msgstr "Statut de la commande"
+
+msgid "Order date"
+msgstr "Date de commande"
+
+msgid "Total amount"
+msgstr "Montant total"
+
+msgid "Payment status"
+msgstr "Statut du paiement"
+
+msgid "Pending"
+msgstr "En attente"
+
+msgid "Confirmed"
+msgstr "Confirmée"
+
+msgid "Shipped"
+msgstr "Expédiée"
+
+msgid "Delivered"
+msgstr "Livrée"
+
+msgid "Cancelled"
+msgstr "Annulée"
+
+msgid "Disputed"
+msgstr "En litige"
+
+# ── Notifications ─────────────────────────────────────────────────────────
+msgid "REDUX Notification"
+msgstr "Notification REDUX"
+
+msgid "View"
+msgstr "Consulter"
+
+msgid "Close"
+msgstr "Fermer"
+
+msgid "New tier reached!"
+msgstr "Nouveau palier atteint !"
+
+msgid "Your order status has changed"
+msgstr "Le statut de votre commande a changé"
+
+# ── Formulaires généraux ──────────────────────────────────────────────────
+msgid "Save"
+msgstr "Enregistrer"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Confirm"
+msgstr "Confirmer"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Edit"
+msgstr "Modifier"
+
+msgid "Back"
+msgstr "Retour"
+
+msgid "Next"
+msgstr "Suivant"
+
+msgid "Submit"
+msgstr "Soumettre"
+
+msgid "Loading..."
+msgstr "Chargement..."
+
+msgid "No results found."
+msgstr "Aucun résultat trouvé."
+
+msgid "Error occurred. Please try again."
+msgstr "Une erreur s'est produite. Veuillez réessayer."
