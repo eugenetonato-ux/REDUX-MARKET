@@ -157,6 +157,13 @@ def handle_webhook(provider_code: str, payload_bytes: bytes, signature: str):
             notes=f"Payé via webhook {provider_code} (Événement #{parsed.event_id})",
         )
 
+        # Calcul et enregistrement de la commission plateforme
+        try:
+            from apps.commissions.services import record_commission
+            record_commission(order=payment.order, actor=None)
+        except Exception:
+            pass  # La commission ne bloque jamais la confirmation du paiement
+
         AuditLog.objects.create(
             actor=None,
             action="PAYMENT_SUCCESS_CONFIRMED",
