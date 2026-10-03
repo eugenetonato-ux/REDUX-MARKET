@@ -182,7 +182,7 @@ if USE_SUPABASE_STORAGE and not IS_TESTING:
     AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default="eu-central-1")
     AWS_S3_ENDPOINT_URL = config(
         "AWS_S3_ENDPOINT_URL",
-        default=f"https://{SUPABASE_PROJECT_REF}.supabase.co/storage/v1/s3"
+        default=f"https://{SUPABASE_PROJECT_REF}.storage.supabase.co/storage/v1/s3"
     )
     AWS_S3_FILE_OVERWRITE = False
     AWS_DEFAULT_ACL = None
