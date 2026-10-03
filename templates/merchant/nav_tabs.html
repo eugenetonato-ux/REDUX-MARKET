@@ -1,5 +1,5 @@
 {% load static %}
-<div class="flex items-center gap-2 overflow-x-auto pb-1 mb-8 no-scrollbar">
+<div class="flex items-center gap-2 flex-wrap mb-8">
   <a href="{% url 'merchants:dashboard' %}" 
      class="h-8 px-4 rounded-full {% if request.resolver_match.url_name == 'dashboard' %}bg-[#1d1d1f] text-white shadow-xs{% else %}bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] border border-black/5{% endif %} text-[12px] font-medium transition-all inline-flex items-center gap-1.5 whitespace-nowrap">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

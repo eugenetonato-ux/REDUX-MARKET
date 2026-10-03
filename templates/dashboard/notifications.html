@@ -32,8 +32,8 @@
     {% endif %}
   </div>
 
-  <!-- Segmented Subnav Pills -->
-  <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+  <!-- Segmented Subnav Pills (Tous les boutons restent visibles sur la page) -->
+  <div class="flex items-center gap-2 flex-wrap">
     <a href="{% url 'dashboard:index' %}" 
        class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
       Vue d'ensemble

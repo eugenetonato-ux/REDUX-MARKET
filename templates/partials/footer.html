@@ -1,8 +1,8 @@
 {% load static i18n %}
 <footer class="site-footer">
   <div class="container">
-    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem;">
-      <div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
+      <div class="sm:col-span-2 md:col-span-2">
         <div class="brand-logo" style="margin-bottom: 1rem;">
           <img src="{% static 'images/redux_logo.png' %}" alt="REDUX" style="height: 26px; width: auto; max-width: 150px; display: block;">
         </div>
@@ -14,34 +14,34 @@
       <div>
         <h4 style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1rem;">{% trans "Discover" %}</h4>
         <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
-          <li><a href="/explorer">{% trans "All offers" %}</a></li>
-          <li><a href="/stores/">{% trans "Verified stores" %}</a></li>
-          <li><a href="/campaigns/">{% trans "Active campaigns" %}</a></li>
-          <li><a href="/requests/">{% trans "Group requests" %}</a></li>
+          <li><a href="{% url 'pages:explorer' %}">{% trans "All offers" %}</a></li>
+          <li><a href="{% url 'stores:list' %}">{% trans "Verified stores" %}</a></li>
+          <li><a href="{% url 'campaigns:list' %}">{% trans "Active campaigns" %}</a></li>
+          <li><a href="{% url 'purchase_requests:list' %}">{% trans "Group requests" %}</a></li>
         </ul>
       </div>
 
       <div>
         <h4 style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1rem;">{% trans "Merchants" %}</h4>
         <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
-          <li><a href="/merchant/dashboard/">{% trans "Seller space" %}</a></li>
-          <li><a href="/merchant/verification/">{% trans "Verify my store" %}</a></li>
-          <li><a href="/how-it-works/">{% trans "How it works" %}</a></li>
-          <li><a href="/terms/">{% trans "Terms & Conditions" %}</a></li>
+          <li><a href="{% url 'merchants:dashboard' %}">{% trans "Seller space" %}</a></li>
+          <li><a href="{% url 'merchants:verification' %}">{% trans "Verify my store" %}</a></li>
+          <li><a href="{% url 'pages:how_it_works' %}">{% trans "How it works" %}</a></li>
+          <li><a href="{% url 'pages:terms' %}">{% trans "Terms & Conditions" %}</a></li>
         </ul>
       </div>
 
       <div>
         <h4 style="color: #FFFFFF; font-size: 1rem; margin-bottom: 1rem;">{% trans "Support" %}</h4>
         <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem;">
-          <li><a href="/help/">{% trans "Help center" %}</a></li>
-          <li><a href="/privacy/">{% trans "Privacy & Security" %}</a></li>
+          <li><a href="{% url 'pages:help' %}">{% trans "Help center" %}</a></li>
+          <li><a href="{% url 'pages:privacy' %}">{% trans "Privacy & Security" %}</a></li>
           <li><span style="color:#94A3B8;">support@redux.app</span></li>
         </ul>
       </div>
     </div>
 
-    <div class="footer-bottom">
+    <div class="footer-bottom flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
       <p>&copy; 2026 REDUX Platform. {% trans "All rights reserved." %}</p>
       <p style="color: var(--primary); font-weight: 600;">{% trans "Collective & fair commerce in Africa" %}</p>
     </div>

@@ -8,7 +8,7 @@
     <span>Accueil</span>
   </a>
 
-  <a href="/explorer" class="mobile-nav-item {% if '/explorer' in request.path %}active{% endif %}">
+  <a href="{% url 'pages:explorer' %}" class="mobile-nav-item {% if '/explorer' in request.path %}active{% endif %}">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="11" cy="11" r="8"/>
       <path d="m21 21-4.3-4.3"/>

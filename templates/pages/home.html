@@ -5,61 +5,128 @@
 {% block meta_description %}Plateforme africaine d'achats groupés. Plus le groupe grandit, plus le prix diminue pour tous.{% endblock %}
 
 {% block content %}
-<div class="py-8 md:py-12 space-y-12">
+<div class="space-y-8 md:space-y-12">
 
-  <!-- Apple Store Style Hero Section -->
-  <div class="bg-white rounded-[18px] p-8 md:p-14 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 relative overflow-hidden">
-    <div class="max-w-[720px] relative z-10">
-      <span class="inline-block text-[11px] font-semibold uppercase tracking-wider text-[#0071e3] bg-[#0071e3]/10 px-3 py-1 rounded-full mb-4">
-        Commerce Collectif & Paliers Dégressifs
-      </span>
-
-      <h1 class="text-[36px] sm:text-[44px] md:text-[52px] font-bold tracking-tight text-[#1d1d1f] leading-tight mb-4">
-        Achetez ensemble, <br>
-        <span class="text-[#0071e3]">payez beaucoup moins.</span>
-      </h1>
-
-      <p class="text-[17px] text-[#6e6e73] leading-relaxed mb-8 max-w-[580px]">
-        Rejoignez des groupes d'acheteurs sur des produits authentiques de vos commerçants locaux. Plus vous êtes nombreux, plus le prix baisse automatiquement pour chaque participant.
-      </p>
-
-      <div class="flex items-center gap-3 flex-wrap">
-        <a href="{% url 'campaigns:list' %}" 
-           class="h-9 px-6 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium transition-all duration-200 inline-flex items-center justify-center shadow-xs" 
-           id="hero-btn-campaigns">
-          Voir les offres en cours
-        </a>
-        <a href="{% url 'pages:how_it_works' %}" 
-           class="h-9 px-6 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[12px] font-medium transition-all duration-200 inline-flex items-center justify-center" 
-           id="hero-btn-how">
-          Comment ça marche
-        </a>
-      </div>
+  <!-- Hero Section avec Image Officielle REDUX Haute Définition -->
+  <div class="bg-white rounded-[18px] sm:rounded-[22px] md:rounded-[24px] shadow-[0_4px_24px_rgba(0,0,0,0.06)] border border-black/5 overflow-hidden transition-all duration-300 hover:shadow-[0_12px_36px_rgba(0,0,0,0.09)]">
+    
+    <!-- Hero Banner Image (Rendu Ultra-Net & Responsive Retina @2x pour Mobile & Desktop) -->
+    <div class="relative w-full overflow-hidden bg-[#071318]">
+      <picture class="block w-full">
+        <!-- WebP Haute Définition (Sélection automatique 1x ou 2x selon la densité d'écran du smartphone) -->
+        <source type="image/webp" 
+                srcset="{% static 'images/hero_redux.webp' %} 1024w, {% static 'images/hero_redux_2x.webp' %} 2048w" 
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 95vw, 980px">
+        <!-- JPEG Haute Qualité de secours -->
+        <source type="image/jpeg" 
+                srcset="{% static 'images/hero_redux.jpg' %} 1024w, {% static 'images/hero_redux_2x.jpg' %} 2048w" 
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 95vw, 980px">
+        <img src="{% static 'images/hero_redux_2x.jpg' %}" 
+             alt="REDUX — Plus nous sommes nombreux, moins nous payons. Achats groupés au Bénin" 
+             width="2048" 
+             height="1024"
+             fetchpriority="high"
+             loading="eager"
+             decoding="async"
+             class="w-full h-auto block select-none transition-transform duration-700 ease-out hover:scale-[1.01]"
+             style="aspect-ratio: 2 / 1; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;"
+             id="hero-main-banner">
+      </picture>
     </div>
 
-    <!-- Bandeau Accès Test Instantané (Acheteur & Commerçant uniquement - ZÉRO Admin) -->
-    <div class="mt-10 pt-6 border-t border-black/5 flex items-center justify-between flex-wrap gap-3">
-      <div class="text-[12px] text-[#86868b] font-medium">
-        Accès test 1-clic :
+    <!-- Barre d'Action & Découverte sous le Banner (Optimisée Mobile & Tactile) -->
+    <div class="p-4 sm:p-6 md:p-8 bg-white border-t border-black/5">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5 sm:gap-6">
+        
+        <!-- Proposition de Valeur & Titre -->
+        <div class="space-y-1.5">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="inline-block text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-[#0071e3] bg-[#0071e3]/10 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full">
+              Commerce Collectif
+            </span>
+            <span class="inline-flex items-center text-[10px] sm:text-[11px] font-medium text-[#34c759] bg-[#34c759]/10 px-2.5 py-0.5 rounded-full">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#34c759] mr-1.5 animate-pulse"></span>
+              En direct de Cotonou
+            </span>
+          </div>
+          <h1 class="text-[20px] sm:text-[24px] md:text-[26px] font-bold text-[#1d1d1f] tracking-tight leading-snug">
+            Plus nous sommes nombreux, moins nous payons.
+          </h1>
+          <p class="text-[13px] sm:text-[14px] text-[#6e6e73] leading-relaxed max-w-[620px]">
+            Rejoignez des groupes d'acheteurs sur des produits certifiés de vos commerçants locaux. Plus le groupe grandit, plus le tarif baisse pour tous.
+          </p>
+
+          <!-- Badges de réassurance lisibles sur mobile (en rappel des icônes du banner) -->
+          <div class="pt-2 flex items-center gap-3 text-[11px] text-[#6e6e73] flex-wrap">
+            <span class="inline-flex items-center gap-1">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#34c759" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Paiement Sécurisé
+            </span>
+            <span class="inline-flex items-center gap-1">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0071e3" stroke-width="2.5"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              Livraison partout au Bénin
+            </span>
+            <span class="inline-flex items-center gap-1">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ff9500" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Énergie Collective
+            </span>
+          </div>
+        </div>
+
+        <!-- Boutons d'Action Principaux (Ergonomie tactile mobile 44px+) -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 shrink-0 pt-1 sm:pt-0">
+          <a href="{% url 'campaigns:list' %}" 
+             class="h-11 sm:h-10 px-6 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[13px] font-medium transition-all duration-200 inline-flex items-center justify-center shadow-sm hover:shadow text-center" 
+             id="hero-btn-campaigns">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            Voir les offres en cours
+          </a>
+          <a href="{% url 'pages:how_it_works' %}" 
+             class="h-11 sm:h-10 px-6 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[13px] font-medium transition-all duration-200 inline-flex items-center justify-center border border-black/5 text-center" 
+             id="hero-btn-how">
+            Comment ça marche
+          </a>
+        </div>
       </div>
-      <div class="flex items-center gap-2 flex-wrap">
-        <a href="{% url 'accounts:quick_login' role='buyer' %}" 
-           class="h-7 px-3 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[11px] font-medium transition-all inline-flex items-center gap-1.5 border border-black/5">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-          <span>Accès Acheteur</span>
-        </a>
-        <a href="{% url 'accounts:quick_login' role='merchant' %}" 
-           class="h-7 px-3 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[11px] font-medium transition-all inline-flex items-center gap-1.5 border border-black/5">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-          </svg>
-          <span>Accès Commerçant</span>
-        </a>
+
+      <!-- Bandeau Raccourcis de Catégories (Tous les boutons restent 100% visibles et dans le champ de vision) -->
+      <div class="mt-5 pt-4 border-t border-black/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div class="flex items-center gap-2 flex-wrap text-[12px]">
+          <span class="text-[#86868b] font-medium mr-1 text-[11px] uppercase tracking-wide">Rayons :</span>
+          <a href="{% url 'campaigns:list' %}?q=sneakers" class="px-3 py-1.5 rounded-full bg-[#f5f5f7] active:bg-[#ebebee] hover:bg-[#ebebee] text-[#1d1d1f] font-medium transition-colors text-[12px]">👟 Sneakers</a>
+          <a href="{% url 'campaigns:list' %}?q=smartphones" class="px-3 py-1.5 rounded-full bg-[#f5f5f7] active:bg-[#ebebee] hover:bg-[#ebebee] text-[#1d1d1f] font-medium transition-colors text-[12px]">📱 Smartphones</a>
+          <a href="{% url 'campaigns:list' %}?q=electronique" class="px-3 py-1.5 rounded-full bg-[#f5f5f7] active:bg-[#ebebee] hover:bg-[#ebebee] text-[#1d1d1f] font-medium transition-colors text-[12px]">💻 Électronique</a>
+          <a href="{% url 'campaigns:list' %}?q=mode" class="px-3 py-1.5 rounded-full bg-[#f5f5f7] active:bg-[#ebebee] hover:bg-[#ebebee] text-[#1d1d1f] font-medium transition-colors text-[12px]">👔 Vêtements</a>
+          <a href="{% url 'campaigns:list' %}?q=resto" class="px-3 py-1.5 rounded-full bg-[#f5f5f7] active:bg-[#ebebee] hover:bg-[#ebebee] text-[#1d1d1f] font-medium transition-colors text-[12px]">🍲 Restaurants</a>
+          <a href="{% url 'pages:categories' %}" class="px-3 py-1.5 rounded-full text-[#0071e3] font-medium hover:underline text-[12px]">Toutes &rarr;</a>
+        </div>
+
+        <!-- Accès test 1-clic toujours visible sur la page -->
+        <div class="flex items-center gap-2 flex-wrap shrink-0">
+          <span class="text-[11px] text-[#86868b] font-medium">Test 1-clic :</span>
+          <a href="{% url 'accounts:quick_login' role='buyer' %}" 
+             class="h-7 px-3 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[11px] font-medium transition-all inline-flex items-center gap-1.5 border border-black/5">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Acheteur</span>
+          </a>
+          <a href="{% url 'accounts:quick_login' role='merchant' %}" 
+             class="h-7 px-3 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[11px] font-medium transition-all inline-flex items-center gap-1.5 border border-black/5">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            <span>Commerçant</span>
+          </a>
+        </div>
       </div>
+
     </div>
   </div>
 

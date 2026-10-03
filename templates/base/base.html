@@ -1,9 +1,9 @@
 {% load static i18n %}
 <!DOCTYPE html>
-<html lang="{{ CURRENT_LANGUAGE|default:'fr' }}" class="h-full bg-[#f5f5f7] text-[#1d1d1f] antialiased">
+<html lang="{{ CURRENT_LANGUAGE|default:'fr' }}" class="h-full bg-[#f5f5f7] text-[#1d1d1f] antialiased overflow-x-hidden w-full">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>{% block title %}REDUX — Achat Groupé & Économie Collaborative{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}Plateforme africaine d'achats groupés inspirée par la simplicité et l'élégance.{% endblock %}">
 
@@ -51,17 +51,17 @@
     }
   </script>
 
-  <link rel="stylesheet" href="{% static 'css/base.css' %}?v=3">
-  <link rel="stylesheet" href="{% static 'css/components.css' %}?v=3">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}?v=4">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}?v=4">
   {% block extra_css %}{% endblock %}
 </head>
-<body class="bg-[#f5f5f7] text-[#1d1d1f] min-h-screen flex flex-col font-sans selection:bg-[#0071e3] selection:text-white">
+<body class="bg-[#f5f5f7] text-[#1d1d1f] min-h-screen flex flex-col font-sans selection:bg-[#0071e3] selection:text-white overflow-x-hidden w-full relative">
   {% include 'partials/sidebar_drawer.html' %}
   {% include 'partials/header.html' %}
 
-  <!-- Contenu Principal Centré (Max 980px Apple Layout) -->
-  <main id="main-content" class="flex-1 pt-[44px]">
-    <div class="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+  <!-- Contenu Principal Centré (Max 980px Apple Layout, Garanti Sans Débordement Horizontal) -->
+  <main id="main-content" class="flex-1 pt-[44px] overflow-x-hidden w-full">
+    <div class="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 w-full">
       {% include 'partials/messages.html' %}
       {% block content %}{% endblock %}
     </div>

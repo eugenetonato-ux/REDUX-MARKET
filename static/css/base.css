@@ -1,4 +1,4 @@
-﻿/* ==============================================================================
+/* ==============================================================================
    REDUX DESIGN SYSTEM - STYLE FONDAMENTAL
    - Noir de marque : #0A0A0F
    - Blanc de marque : #FFFFFF
@@ -69,6 +69,14 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html, body {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  width: 100% !important;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
