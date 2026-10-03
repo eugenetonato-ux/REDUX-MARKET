@@ -1,4 +1,4 @@
-﻿/* ==============================================================================
+/* ==============================================================================
    REDUX DESIGN SYSTEM - STYLE FONDAMENTAL
    SpÃ©cifications conformes Ã  REDUX_skills-design.md :
    - Noir de marque : #0A0A0F
@@ -88,6 +88,66 @@ body {
 main {
   flex: 1;
 }
+
+/* ── Messages Django (alerts) ─────────────────────────────────── */
+.messages-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  border: 1px solid transparent;
+  animation: alertSlideIn 0.25s ease;
+}
+
+@keyframes alertSlideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.alert::before {
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.alert-success {
+  background: #f2fcf5;
+  border-color: rgba(52, 199, 89, 0.25);
+  color: #1a6b34;
+}
+.alert-success::before { content: "✓"; color: #34c759; font-weight: 700; }
+
+.alert-danger, .alert-error {
+  background: #fff2f1;
+  border-color: rgba(255, 59, 48, 0.2);
+  color: #c0392b;
+}
+.alert-danger::before, .alert-error::before { content: "✕"; color: #ff3b30; font-weight: 700; }
+
+.alert-warning {
+  background: #fff9f0;
+  border-color: rgba(255, 149, 0, 0.25);
+  color: #7a4500;
+}
+.alert-warning::before { content: "⚠"; color: #ff9500; }
+
+.alert-info {
+  background: #f0f7ff;
+  border-color: rgba(0, 113, 227, 0.15);
+  color: #004b99;
+}
+.alert-info::before { content: "ℹ"; color: #0071e3; }
+/* ────────────────────────────────────────────────────────────── */
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
