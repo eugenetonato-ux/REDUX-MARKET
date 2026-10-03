@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <div class="campaign-card">
   <!-- Média Produit -->
   <div class="campaign-card-media">
@@ -24,7 +24,7 @@
     <div class="campaign-card-merchant">
       <span>{{ camp.merchant.business_name }}</span>
       {% if camp.merchant.is_verified %}
-        <span title="Commerçant certifié" style="color: var(--primary); display: inline-flex; align-items: center;">
+        <span title="{% trans 'Commerçant certifié' %}" style="color: var(--primary); display: inline-flex; align-items: center;">
           {% include 'partials/icons/check.html' %}
         </span>
       {% endif %}
@@ -40,9 +40,9 @@
     <!-- Progression compacte -->
     <div style="margin-top: 0.25rem;">
       <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.25rem;">
-        <span>{{ camp.current_participants_count }} / {{ camp.target_participants }} personnes</span>
+        <span>{{ camp.current_participants_count }} / {{ camp.target_participants }} {% trans "personnes" %}</span>
         {% if summ.remaining_for_next %}
-          <span style="color: var(--primary);">Encore {{ summ.remaining_for_next }} pers.</span>
+          <span style="color: var(--primary);">{% trans "Encore" %} {{ summ.remaining_for_next }} {% trans "pers." %}</span>
         {% endif %}
       </div>
       <div class="progress-track" style="margin: 0; height: 8px;">
@@ -62,7 +62,7 @@
 
     <div style="display: grid; grid-template-columns: 1fr; margin-top: 0.5rem;">
       <a href="{% url 'campaigns:detail' slug=camp.slug %}" class="btn btn-primary btn-block btn-sm" id="btn-join-card-{{ camp.id }}">
-        REJOINDRE L'OFFRE
+        {% trans "REJOINDRE L'OFFRE" %}
       </a>
     </div>
   </div>

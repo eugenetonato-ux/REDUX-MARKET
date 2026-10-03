@@ -11,40 +11,35 @@ from apps.purchase_requests.selectors import get_active_purchase_requests
 from apps.stores.models import Store
 
 
+from django.core.cache import cache
+
+
 def home(request):
     current_country = getattr(request, "country", None)
+    country_code = current_country.code if current_country else "ALL"
 
-    # Campagnes actives avec résumé tarifaire
-    campaigns_qs = list_active_campaigns(country=current_country)[:6]
-    campaign_cards = []
-    for c in campaigns_qs:
-        campaign_cards.append({
-            "campaign": c,
-            "summary": get_campaign_summary(c),
-        })
+    # Cache des cartes de campagnes actives (60 secondes)
+    cache_key_cards = f"home_campaign_cards_{country_code}"
+    campaign_cards = cache.get(cache_key_cards)
+    if campaign_cards is None:
+        campaigns_qs = list_active_campaigns(country=current_country)[:6]
+        campaign_cards = []
+        for c in campaigns_qs:
+            campaign_cards.append({
+                "campaign": c,
+                "summary": get_campaign_summary(c),
+            })
+        cache.set(cache_key_cards, campaign_cards, 60)
 
-    # Catégories racines
-    categories = Category.objects.filter(is_active=True, parent__isnull=True).annotate(
-        products_count=Count("products", filter=Q(products__is_active=True))
-    )[:8]
-
-    # Boutiques de commerçants vérifiés
-    verified_stores = Store.objects.filter(
-        is_active=True,
-        merchant__verification_status=VerificationStatus.VERIFIED,
-    ).select_related("merchant", "country")[:4]
-
-    # Demandes d'achats groupés récentes
-    purchase_requests = get_active_purchase_requests(
-        country_code=current_country.code if current_country else None
-    )[:3]
-
-    # Métriques globales REDUX
-    stats = {
-        "active_campaigns_count": Campaign.objects.filter(status__in=[CampaignStatus.ACTIVE, CampaignStatus.TARGET_REACHED]).count(),
-        "verified_merchants_count": Store.objects.filter(merchant__verification_status=VerificationStatus.VERIFIED, is_active=True).count(),
-        "countries_count": Country.objects.filter(is_active=True).count(),
-    }
+    # Cache des catégories racines (15 minutes)
+    categories = cache.get("home_root_categories")
+    if categories is None:
+        categories = list(
+            Category.objects.filter(is_active=True, parent__isnull=True).annotate(
+                products_count=Count("products", filter=Q(products__is_active=True))
+            )[:8]
+        )
+        cache.set("home_root_categories", categories, 900)
 
     return render(
         request,
@@ -52,9 +47,6 @@ def home(request):
         {
             "campaign_cards": campaign_cards,
             "categories": categories,
-            "verified_stores": verified_stores,
-            "purchase_requests": purchase_requests,
-            "stats": stats,
             "current_country": current_country,
         },
     )

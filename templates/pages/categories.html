@@ -1,19 +1,19 @@
 {% extends 'base/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Toutes les Catégories — REDUX{% endblock %}
-{% block meta_description %}Explorez les catégories de produits disponibles en achat groupé sur REDUX : High-Tech, Électroménager, Mode, Maison.{% endblock %}
+{% block title %}{% trans "Toutes les Catégories — REDUX" %}{% endblock %}
+{% block meta_description %}{% trans "Explorez les catégories de produits disponibles en achat groupé sur REDUX : High-Tech, Électroménager, Mode, Maison." %}{% endblock %}
 
 {% block content %}
 <div style="display: flex; flex-direction: column; gap: 2rem;">
 
   <div>
     <span class="badge" style="background: var(--primary-light); color: var(--primary); margin-bottom: 0.5rem;">
-      RAYONS REDUX
+      {% trans "RAYONS REDUX" %}
     </span>
-    <h1 style="font-size: 1.85rem; color: var(--text-primary); margin: 0.25rem 0;">Toutes les Catégories</h1>
+    <h1 style="font-size: 1.85rem; color: var(--text-primary); margin: 0.25rem 0;">{% trans "Toutes les Catégories" %}</h1>
     <p style="color: var(--text-secondary); font-size: 0.95rem;">
-      Trouvez vos produits préférés et regroupez-vous avec d'autres acheteurs pour faire baisser les prix.
+      {% trans "Trouvez vos produits préférés et regroupez-vous avec d'autres acheteurs pour faire baisser les prix." %}
     </p>
   </div>
 
@@ -26,14 +26,15 @@
         <div>
           <h3 style="font-size: 1.05rem; color: var(--text-primary); margin: 0;">{{ cat.name }}</h3>
           <span style="font-size: 0.82rem; color: var(--text-secondary);">
-            {{ cat.products_count|default:"0" }} produit{{ cat.products_count|pluralize }} disponible{{ cat.products_count|pluralize }}
+            {{ cat.products_count|default:"0" }} {% trans "produit" %}{{ cat.products_count|pluralize }} {% trans "disponible" %}{{ cat.products_count|pluralize }}
           </span>
         </div>
       </a>
     {% empty %}
-      <p style="color: var(--text-muted);">Aucune catégorie disponible.</p>
+      <p style="color: var(--text-muted);">{% trans "Aucune catégorie disponible." %}</p>
     {% endfor %}
   </div>
 
 </div>
 {% endblock %}
+

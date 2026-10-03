@@ -1,8 +1,8 @@
 {% extends 'base/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Toutes les Campagnes en Cours — REDUX{% endblock %}
-{% block meta_description %}Explorez toutes les offres groupées actives et achetez à prix dégressifs avec la communauté.{% endblock %}
+{% block title %}{% trans "Toutes les Campagnes en Cours — REDUX" %}{% endblock %}
+{% block meta_description %}{% trans "Explorez toutes les offres groupées actives et achetez à prix dégressifs avec la communauté." %}{% endblock %}
 
 {% block content %}
 <div class="py-8 md:py-12 space-y-8">
@@ -11,13 +11,13 @@
   <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
     <div>
       <span class="inline-block text-[11px] font-semibold uppercase tracking-wider text-[#0071e3] bg-[#0071e3]/10 px-3 py-1 rounded-full mb-3">
-        Économie du Collectif
+        {% trans "Économie du Collectif" %}
       </span>
       <h1 class="text-[32px] md:text-[44px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
-        Offres groupées en cours
+        {% trans "Offres groupées en cours" %}
       </h1>
       <p class="text-[17px] text-[#6e6e73] mt-1 font-normal max-w-[620px]">
-        Rejoignez un groupe actif. Dès qu'un palier de participants est franchi, le prix baisse pour tous.
+        {% trans "Rejoignez un groupe actif. Dès qu'un palier de participants est franchi, le prix baisse pour tous." %}
       </p>
     </div>
 
@@ -25,7 +25,7 @@
     <div class="flex items-center gap-2 flex-wrap">
       <a href="{% url 'campaigns:list' %}" 
          class="h-8 px-4 rounded-full {% if not current_category_slug %}bg-[#1d1d1f] text-white shadow-xs{% else %}bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] border border-black/5{% endif %} text-[12px] font-medium transition-all inline-flex items-center">
-        Toutes
+        {% trans "Toutes" %}
       </a>
       {% for cat in categories %}
         <a href="{% url 'campaigns:list' %}?category={{ cat.slug }}" 
@@ -51,13 +51,13 @@
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
       </div>
-      <h3 class="text-[17px] font-bold text-[#1d1d1f]">Aucune offre ne correspond à vos critères</h3>
+      <h3 class="text-[17px] font-bold text-[#1d1d1f]">{% trans "Aucune offre ne correspond à vos critères" %}</h3>
       <p class="text-[14px] text-[#6e6e73] max-w-[440px] mx-auto mt-1 mb-6">
-        Revenez régulièrement ou explorez d'autres catégories pour découvrir de nouvelles campagnes lancées par nos commerçants partenaires.
+        {% trans "Revenez régulièrement ou explorez d'autres catégories pour découvrir de nouvelles campagnes lancées par nos commerçants partenaires." %}
       </p>
       <a href="{% url 'campaigns:list' %}" 
          class="h-9 px-6 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium inline-flex items-center justify-center shadow-xs transition-all">
-        Afficher toutes les campagnes
+        {% trans "Afficher toutes les campagnes" %}
       </a>
     </div>
   {% endif %}

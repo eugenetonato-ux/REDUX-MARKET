@@ -1,17 +1,18 @@
 {% extends 'base/base.html' %}
-{% block title %}Comment ça marche ? — REDUX{% endblock %}
+{% load static i18n %}
+{% block title %}{% trans "Comment ça marche ? — REDUX" %}{% endblock %}
 
 {% block content %}
 <div style="max-width: 800px; margin: 0 auto; padding: 2rem 0;">
   <div style="text-align: center; margin-bottom: 3rem;">
     <span class="badge" style="background: var(--primary-light); color: var(--primary); font-size: 0.85rem; font-weight: 700; margin-bottom: 0.5rem;">
-      Transparence & Règles du Jeu
+      {% trans "Transparence & Règles du Jeu" %}
     </span>
     <h1 style="font-size: 2.5rem; color: var(--secondary); margin-bottom: 1rem;">
-      Comment fonctionne REDUX ?
+      {% trans "Comment fonctionne REDUX ?" %}
     </h1>
     <p class="text-muted" style="font-size: 1.15rem; line-height: 1.6;">
-      REDUX réinvente le commerce en Afrique en combinant la force du groupe, la vérification rigoureuse des marchands et la sécurité absolue du séquestre financier.
+      {% trans "REDUX réinvente le commerce en Afrique en combinant la force du groupe, la vérification rigoureuse des marchands et la sécurité absolue du séquestre financier." %}
     </p>
   </div>
 
@@ -19,35 +20,35 @@
   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3.5rem;">
     <div class="card" style="border-top: 4px solid var(--primary);">
       <h3 style="font-size: 1.35rem; color: var(--secondary); margin-bottom: 0.75rem;">
-        1. L'Offre Groupée (Campagnes)
+        {% trans "1. L'Offre Groupée (Campagnes)" %}
       </h3>
       <p class="text-muted" style="font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem;">
-        Un commerçant ou grossiste vérifié met en vente un produit avec des <strong>paliers de prix dégressifs</strong>.
+        {% trans "Un commerçant ou grossiste vérifié met en vente un produit avec des paliers de prix dégressifs." %}
       </p>
       <ul style="font-size: 0.9rem; line-height: 1.6; color: var(--text-main); padding-left: 1.25rem;">
-        <li>Exemple : 1 à 9 unités = 10 000 FCFA</li>
-        <li>10 à 24 unités = 8 500 FCFA (-15%)</li>
-        <li>25 unités et + = 7 000 FCFA (-30%)</li>
+        <li>{% trans "Exemple : 1 à 9 unités = 10 000 FCFA" %}</li>
+        <li>{% trans "10 à 24 unités = 8 500 FCFA (-15%)" %}</li>
+        <li>{% trans "25 unités et + = 7 000 FCFA (-30%)" %}</li>
       </ul>
       <p style="margin-top: 1rem; font-size: 0.85rem; color: #059669; font-weight: 600;">
-        Tous les acheteurs profitent du prix final le plus bas atteint par le groupe !
+        {% trans "Tous les acheteurs profitent du prix final le plus bas atteint par le groupe !" %}
       </p>
     </div>
 
     <div class="card" style="border-top: 4px solid var(--secondary);">
       <h3 style="font-size: 1.35rem; color: var(--secondary); margin-bottom: 0.75rem;">
-        2. La Demande Groupée (Marché Inversé)
+        {% trans "2. La Demande Groupée (Marché Inversé)" %}
       </h3>
       <p class="text-muted" style="font-size: 0.95rem; line-height: 1.5; margin-bottom: 1rem;">
-        Un acheteur ou un groupe exprime un besoin précis avec un <strong>volume visé</strong> et un <strong>prix cible</strong>.
+        {% trans "Un acheteur ou un groupe exprime un besoin précis avec un volume visé et un prix cible." %}
       </p>
       <ul style="font-size: 0.9rem; line-height: 1.6; color: var(--text-main); padding-left: 1.25rem;">
-        <li>D'autres consommateurs rejoignent la demande</li>
-        <li>Les commerçants vérifiés déposent leurs offres</li>
-        <li>L'initiateur valide la meilleure offre pour le groupe</li>
+        <li>{% trans "D'autres consommateurs rejoignent la demande" %}</li>
+        <li>{% trans "Les commerçants vérifiés déposent leurs offres" %}</li>
+        <li>{% trans "L'initiateur valide la meilleure offre pour le groupe" %}</li>
       </ul>
       <p style="margin-top: 1rem; font-size: 0.85rem; color: #2563EB; font-weight: 600;">
-        Les grossistes accèdent directement à une demande agrégée qualifiée.
+        {% trans "Les grossistes accèdent directement à une demande agrégée qualifiée." %}
       </p>
     </div>
   </div>
@@ -55,30 +56,30 @@
   <!-- Le Séquestre REDUX -->
   <div class="card" style="background: linear-gradient(135deg, #0B2447, #19376D); color: #fff; padding: 2.5rem; margin-bottom: 3.5rem;">
     <h2 style="font-size: 1.75rem; color: #fff; margin-bottom: 1rem;">
-      La Sécurité REDUX : Le Séquestre Bancaire & Mobile
+      {% trans "La Sécurité REDUX : Le Séquestre Bancaire & Mobile" %}
     </h2>
     <p style="color: #CBD5E1; font-size: 1.05rem; line-height: 1.6; margin-bottom: 1.5rem;">
-      Lorsque vous payez par Mobile Money (MTN, Moov, Orange, Wave), votre argent ne va pas directement au vendeur. Il est consigné sur un compte séquestre technique sécurisé par REDUX.
+      {% trans "Lorsque vous payez par Mobile Money (MTN, Moov, Orange, Wave), votre argent ne va pas directement au vendeur. Il est consigné sur un compte séquestre technique sécurisé par REDUX." %}
     </p>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
       <div style="background: rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: var(--radius-sm);">
-        <strong style="display: block; color: var(--primary); margin-bottom: 0.25rem;">1. Commande réglée</strong>
-        <small style="color: #E2E8F0;">Les fonds sont bloqués sous séquestre.</small>
+        <strong style="display: block; color: var(--primary); margin-bottom: 0.25rem;">{% trans "1. Commande réglée" %}</strong>
+        <small style="color: #E2E8F0;">{% trans "Les fonds sont bloqués sous séquestre." %}</small>
       </div>
       <div style="background: rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: var(--radius-sm);">
-        <strong style="display: block; color: var(--primary); margin-bottom: 0.25rem;">2. Livraison effectuée</strong>
-        <small style="color: #E2E8F0;">Vous vérifiez la conformité de vos colis.</small>
+        <strong style="display: block; color: var(--primary); margin-bottom: 0.25rem;">{% trans "2. Livraison effectuée" %}</strong>
+        <small style="color: #E2E8F0;">{% trans "Vous vérifiez la conformité de vos colis." %}</small>
       </div>
       <div style="background: rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: var(--radius-sm);">
-        <strong style="display: block; color: var(--primary); margin-bottom: 0.25rem;">3. Déblocage vendeur</strong>
-        <small style="color: #E2E8F0;">Le commerçant reçoit ses fonds sous 24h.</small>
+        <strong style="display: block; color: var(--primary); margin-bottom: 0.25rem;">{% trans "3. Déblocage vendeur" %}</strong>
+        <small style="color: #E2E8F0;">{% trans "Le commerçant reçoit ses fonds sous 24h." %}</small>
       </div>
     </div>
   </div>
 
   <div style="text-align: center;">
-    <a href="/campaigns/" class="btn btn-primary" style="padding: 0.85rem 2rem; font-size: 1.05rem;">
-      Prêt à économiser ? Découvrir les campagnes →
+    <a href="{% url 'campaigns:list' %}" class="btn btn-primary" style="padding: 0.85rem 2rem; font-size: 1.05rem;">
+      {% trans "Prêt à économiser ? Découvrir les campagnes →" %}
     </a>
   </div>
 </div>

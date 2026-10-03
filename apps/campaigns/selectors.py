@@ -54,7 +54,8 @@ def get_campaign_summary(campaign):
     if not campaign:
         return {}
 
-    tiers = list(campaign.tiers.all().order_by("min_participants"))
+    # Utilise le cache prefetch_related en mémoire sans requêter la base de données
+    tiers = sorted(campaign.tiers.all(), key=lambda t: t.min_participants)
     current_count = campaign.current_participants_count
     current_tier = calculate_current_tier(tiers, current_count)
     next_tier = get_next_tier(tiers, current_count)

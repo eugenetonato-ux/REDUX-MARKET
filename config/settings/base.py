@@ -238,12 +238,25 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": config("REDIS_URL", default="redis://127.0.0.1:6379/0"),
+REDIS_URL = config("REDIS_URL", default="").strip()
+USE_REDIS = config("USE_REDIS", default=False, cast=bool)
+
+if REDIS_URL and USE_REDIS and not IS_TESTING:
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": REDIS_URL,
+            "TIMEOUT": 300,
+        }
     }
-}
+else:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "redux-locmem-cache",
+            "TIMEOUT": 300,
+        }
+    }
 
 CELERY_BROKER_URL = config("CELERY_BROKER_URL", default="redis://127.0.0.1:6379/1")
 CELERY_TASK_ALWAYS_EAGER = False

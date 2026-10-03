@@ -275,3 +275,261 @@ msgstr "No results found."
 
 msgid "Error occurred. Please try again."
 msgstr "An error occurred. Please try again."
+
+# ── Home Page ─────────────────────────────────────────────────────────────────
+msgid "REDUX — Achetez ensemble, payez moins"
+msgstr "REDUX — Buy together, pay less"
+
+msgid "Plateforme africaine d'achats groupés. Plus le groupe grandit, plus le prix diminue pour tous."
+msgstr "The pan-African group buying platform. The bigger the group, the lower the price for everyone."
+
+msgid "Commerce Collectif"
+msgstr "Collective Commerce"
+
+msgid "En direct de Cotonou"
+msgstr "Live from Cotonou"
+
+msgid "Plus nous sommes nombreux, moins nous payons."
+msgstr "The more of us there are, the less we pay."
+
+msgid "Rejoignez des groupes d'acheteurs sur des produits certifiés de vos commerçants locaux. Plus le groupe grandit, plus le tarif baisse pour tous."
+msgstr "Join buyer groups on certified products from your local merchants. The bigger the group, the lower the price for everyone."
+
+msgid "Paiement Sécurisé"
+msgstr "Secure Payment"
+
+msgid "Livraison partout au Bénin"
+msgstr "Delivery across Benin"
+
+msgid "Énergie Collective"
+msgstr "Collective Power"
+
+msgid "Voir les offres en cours"
+msgstr "View current offers"
+
+msgid "Comment ça marche"
+msgstr "How it works"
+
+msgid "Rayons :"
+msgstr "Categories:"
+
+msgid "Sneakers"
+msgstr "Sneakers"
+
+msgid "Smartphones"
+msgstr "Smartphones"
+
+msgid "Électronique"
+msgstr "Electronics"
+
+msgid "Vêtements"
+msgstr "Clothing"
+
+msgid "Restaurants"
+msgstr "Restaurants"
+
+msgid "Toutes les catégories"
+msgstr "All categories"
+
+msgid "Groupes Ouverts"
+msgstr "Open Groups"
+
+msgid "Campagnes d'achats groupés en cours"
+msgstr "Ongoing group buying campaigns"
+
+msgid "Toutes les offres"
+msgstr "All offers"
+
+msgid "Aucune campagne active actuellement. Découvrez les catégories !"
+msgstr "No active campaigns currently. Explore the categories!"
+
+msgid "Explorez par Catégorie"
+msgstr "Explore by Category"
+
+msgid "Sélectionnez un rayon pour trouver les offres collectives."
+msgstr "Select a category to find group buying offers."
+
+msgid "Voir tout"
+msgstr "See all"
+
+msgid "produit"
+msgstr "product"
+
+msgid "Confiance & Simplicité"
+msgstr "Trust & Simplicity"
+
+msgid "Le principe REDUX en 3 étapes"
+msgstr "The REDUX principle in 3 steps"
+
+msgid "Inspiré de l'énergie des tontines et de l'achat en volume, sécurisé par notre plateforme."
+msgstr "Inspired by the energy of tontines and bulk buying, secured by our platform."
+
+msgid "Rejoignez une offre"
+msgstr "Join an offer"
+
+msgid "Choisissez un produit parmi les campagnes publiées par nos commerçants partenaires vérifiés."
+msgstr "Choose a product from campaigns published by our verified partner merchants."
+
+msgid "Le groupe grandit"
+msgstr "The group grows"
+
+msgid "Partagez le lien avec votre entourage. Dès que le seuil de participants est atteint, le tarif réduit s'applique à tous."
+msgstr "Share the link with your circle. Once the participant threshold is reached, the reduced price applies to everyone."
+
+msgid "Paiement & Livraison"
+msgstr "Payment & Delivery"
+
+msgid "Réglez par Mobile Money ou carte bancaire en toute sécurité. Recevez votre commande à domicile ou en point relais."
+msgstr "Pay via Mobile Money or bank card securely. Receive your order at home or at a pickup point."
+
+msgid "Espace Commerçants & Distributeurs"
+msgstr "Merchants & Distributors Space"
+
+msgid "Vendez en gros volumes garantis"
+msgstr "Sell in guaranteed bulk volumes"
+
+msgid "Devenez boutique partenaire certifiée sur REDUX. Fixez vos prix selon les volumes commandés et encaissez en toute sérénité."
+msgstr "Become a certified partner store on REDUX. Set your prices based on ordered volumes and collect payments with peace of mind."
+
+msgid "Ouvrir ma boutique"
+msgstr "Open my store"
+
+# ── Campaign List Page ────────────────────────────────────────────────────────
+msgid "Toutes les Campagnes en Cours — REDUX"
+msgstr "All Ongoing Campaigns — REDUX"
+
+msgid "Explorez toutes les offres groupées actives et achetez à prix dégressifs avec la communauté."
+msgstr "Explore all active group offers and buy at decreasing prices with the community."
+
+msgid "Économie du Collectif"
+msgstr "Collective Economy"
+
+msgid "Offres groupées en cours"
+msgstr "Ongoing group offers"
+
+msgid "Rejoignez un groupe actif. Dès qu'un palier de participants est franchi, le prix baisse pour tous."
+msgstr "Join an active group. Once a participant tier is crossed, the price drops for everyone."
+
+msgid "Toutes"
+msgstr "All"
+
+msgid "Aucune offre ne correspond à vos critères"
+msgstr "No offer matches your criteria"
+
+msgid "Revenez régulièrement ou explorez d'autres catégories pour découvrir de nouvelles campagnes lancées par nos commerçants partenaires."
+msgstr "Come back regularly or explore other categories to discover new campaigns launched by our partner merchants."
+
+msgid "Afficher toutes les campagnes"
+msgstr "Show all campaigns"
+
+# ── Campaign Card ─────────────────────────────────────────────────────────────
+msgid "Commerçant certifié"
+msgstr "Certified merchant"
+
+msgid "personnes"
+msgstr "people"
+
+msgid "Encore"
+msgstr "Only"
+
+msgid "pers."
+msgstr "more."
+
+msgid "REJOINDRE L'OFFRE"
+msgstr "JOIN THE OFFER"
+
+# ── How It Works Page ─────────────────────────────────────────────────────────
+msgid "Comment ça marche ? — REDUX"
+msgstr "How does it work? — REDUX"
+
+msgid "Transparence & Règles du Jeu"
+msgstr "Transparency & Rules of the Game"
+
+msgid "Comment fonctionne REDUX ?"
+msgstr "How does REDUX work?"
+
+msgid "REDUX réinvente le commerce en Afrique en combinant la force du groupe, la vérification rigoureuse des marchands et la sécurité absolue du séquestre financier."
+msgstr "REDUX reinvents commerce in Africa by combining the power of the group, rigorous merchant verification and the absolute security of financial escrow."
+
+msgid "1. L'Offre Groupée (Campagnes)"
+msgstr "1. The Group Offer (Campaigns)"
+
+msgid "Un commerçant ou grossiste vérifié met en vente un produit avec des paliers de prix dégressifs."
+msgstr "A verified merchant or wholesaler lists a product with tiered decreasing prices."
+
+msgid "Exemple : 1 à 9 unités = 10 000 FCFA"
+msgstr "Example: 1 to 9 units = 10,000 FCFA"
+
+msgid "10 à 24 unités = 8 500 FCFA (-15%)"
+msgstr "10 to 24 units = 8,500 FCFA (-15%)"
+
+msgid "25 unités et + = 7 000 FCFA (-30%)"
+msgstr "25 units and more = 7,000 FCFA (-30%)"
+
+msgid "Tous les acheteurs profitent du prix final le plus bas atteint par le groupe !"
+msgstr "All buyers benefit from the lowest final price reached by the group!"
+
+msgid "2. La Demande Groupée (Marché Inversé)"
+msgstr "2. The Group Request (Reverse Market)"
+
+msgid "Un acheteur ou un groupe exprime un besoin précis avec un volume visé et un prix cible."
+msgstr "A buyer or group expresses a precise need with a target volume and target price."
+
+msgid "D'autres consommateurs rejoignent la demande"
+msgstr "Other consumers join the request"
+
+msgid "Les commerçants vérifiés déposent leurs offres"
+msgstr "Verified merchants submit their offers"
+
+msgid "L'initiateur valide la meilleure offre pour le groupe"
+msgstr "The initiator validates the best offer for the group"
+
+msgid "Les grossistes accèdent directement à une demande agrégée qualifiée."
+msgstr "Wholesalers gain direct access to a qualified aggregated demand."
+
+msgid "La Sécurité REDUX : Le Séquestre Bancaire & Mobile"
+msgstr "REDUX Security: Banking & Mobile Escrow"
+
+msgid "Lorsque vous payez par Mobile Money (MTN, Moov, Orange, Wave), votre argent ne va pas directement au vendeur. Il est consigné sur un compte séquestre technique sécurisé par REDUX."
+msgstr "When you pay by Mobile Money (MTN, Moov, Orange, Wave), your money does not go directly to the seller. It is held in a technical escrow account secured by REDUX."
+
+msgid "1. Commande réglée"
+msgstr "1. Order paid"
+
+msgid "Les fonds sont bloqués sous séquestre."
+msgstr "Funds are held in escrow."
+
+msgid "2. Livraison effectuée"
+msgstr "2. Delivery completed"
+
+msgid "Vous vérifiez la conformité de vos colis."
+msgstr "You verify the conformity of your packages."
+
+msgid "3. Déblocage vendeur"
+msgstr "3. Seller release"
+
+msgid "Le commerçant reçoit ses fonds sous 24h."
+msgstr "The merchant receives their funds within 24 hours."
+
+msgid "Prêt à économiser ? Découvrir les campagnes →"
+msgstr "Ready to save? Discover campaigns →"
+
+# ── Categories Page ───────────────────────────────────────────────────────────
+msgid "Toutes les Catégories — REDUX"
+msgstr "All Categories — REDUX"
+
+msgid "RAYONS REDUX"
+msgstr "REDUX CATEGORIES"
+
+msgid "Toutes les Catégories"
+msgstr "All Categories"
+
+msgid "Trouvez vos produits préférés et regroupez-vous avec d'autres acheteurs pour faire baisser les prix."
+msgstr "Find your favorite products and group up with other buyers to lower prices."
+
+msgid "Aucune catégorie disponible."
+msgstr "No categories available."
+
+msgid "disponible"
+msgstr "available"
+

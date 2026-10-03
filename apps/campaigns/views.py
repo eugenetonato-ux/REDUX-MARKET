@@ -12,17 +12,30 @@ def campaign_list_view(request):
     category_slug = request.GET.get("category")
     search = request.GET.get("q")
     country = getattr(request, "country", None)
+    country_code = country.code if country else "ALL"
 
-    campaigns = list_active_campaigns(category_slug=category_slug, country=country, search=search)
-    categories = list_categories()
+    from django.core.cache import cache
 
-    # Enrich each campaign with summary data
-    campaign_cards = []
-    for camp in campaigns:
-        campaign_cards.append({
-            "campaign": camp,
-            "summary": get_campaign_summary(camp),
-        })
+    # Cache categories (15 min)
+    categories = cache.get("campaign_list_categories")
+    if categories is None:
+        categories = list(list_categories())
+        cache.set("campaign_list_categories", categories, 900)
+
+    # Only cache when no search query is active
+    cache_key = f"campaign_list_{country_code}_{category_slug or 'all'}"
+    campaign_cards = None if search else cache.get(cache_key)
+
+    if campaign_cards is None:
+        campaigns = list_active_campaigns(category_slug=category_slug, country=country, search=search)
+        campaign_cards = []
+        for camp in campaigns:
+            campaign_cards.append({
+                "campaign": camp,
+                "summary": get_campaign_summary(camp),
+            })
+        if not search:
+            cache.set(cache_key, campaign_cards, 60)
 
     context = {
         "campaign_cards": campaign_cards,
