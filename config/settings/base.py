@@ -72,10 +72,21 @@ LOGIN_URL = "/login"
 LOGIN_REDIRECT_URL = "/dashboard"
 LOGOUT_REDIRECT_URL = "/"
 
+import sys
+
+IS_TESTING = "test" in sys.argv or any("pytest" in arg for arg in sys.argv) or "pytest" in sys.modules
+
 DATABASE_URL = config("DATABASE_URL", default="").strip()
 DB_ENGINE = config("DB_ENGINE", default="sqlite")
 
-if DATABASE_URL:
+if IS_TESTING:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",
+        }
+    }
+elif DATABASE_URL:
     import dj_database_url
 
     DATABASES = {
