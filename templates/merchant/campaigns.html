@@ -4,72 +4,112 @@
 {% block title %}Mes Campagnes — Espace Commerçant REDUX{% endblock %}
 
 {% block content %}
-<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-8">
+  <!-- Onglets Commerçant Apple -->
   {% include 'merchant/nav_tabs.html' %}
 
-  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+  <!-- En-tête de page -->
+  <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col md:flex-row md:items-center justify-between gap-6">
     <div>
-      <h1 style="font-size: 1.5rem; color: var(--text-primary);">Gestion de vos Campagnes Collectives</h1>
-      <p style="color: var(--text-secondary); font-size: 0.9rem;">Suivez la progression des groupes d'acheteurs et gérez les paliers.</p>
+      <h1 class="text-[26px] md:text-[30px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+        Gestion de vos Campagnes Collectives
+      </h1>
+      <p class="text-[14px] text-[#6e6e73] mt-1">
+        Suivez la progression des groupes d'acheteurs en temps réel et pilotez les paliers dégressifs.
+      </p>
     </div>
-    <a href="{% url 'merchants:campaign_create' %}" class="btn btn-primary btn-sm">+ Lancer une nouvelle campagne</a>
+    <div>
+      <a href="{% url 'merchants:campaign_create' %}" 
+         class="h-10 px-6 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[13px] font-medium transition-all inline-flex items-center justify-center shadow-xs gap-2">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>Lancer une campagne</span>
+      </a>
+    </div>
   </div>
 
-  <div class="card">
+  <!-- Liste des campagnes -->
+  <div class="space-y-4">
     {% if campaigns %}
-      <div style="display: flex; flex-direction: column; gap: 1rem;">
-        {% for item in campaigns %}
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: 1.25rem; border: 1px solid var(--border); border-radius: var(--radius-md); flex-wrap: wrap; gap: 1rem;">
-            <div style="flex: 1; min-width: 260px;">
-              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-                <span class="badge badge-status {% if item.campaign.status == 'ACTIVE' %}active{% else %}pending{% endif %}">
+      {% for item in campaigns %}
+        <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col lg:flex-row lg:items-center justify-between gap-6 hover:border-black/10 transition-all">
+          <div class="flex-1 min-w-[280px] space-y-3">
+            <div class="flex items-center gap-3 flex-wrap">
+              {% if item.campaign.status == 'ACTIVE' %}
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium bg-[#34c759]/10 text-[#248a3d]">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#34c759]"></span>
                   {{ item.campaign.get_status_display }}
                 </span>
-                <span style="font-size: 0.8rem; color: var(--text-muted);">
-                  Fin le {{ item.campaign.end_date|date:"d M Y" }}
+              {% else %}
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium bg-[#86868b]/10 text-[#86868b]">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#86868b]"></span>
+                  {{ item.campaign.get_status_display }}
                 </span>
-              </div>
+              {% endif %}
+              <span class="text-[12px] text-[#86868b]">
+                Fin le {{ item.campaign.end_date|date:"d M Y à H:i" }}
+              </span>
+            </div>
 
-              <a href="{% url 'merchants:campaign_detail' campaign_id=item.campaign.id %}" style="font-weight: 700; color: var(--text-primary); font-size: 1.05rem;">
+            <div>
+              <a href="{% url 'merchants:campaign_detail' campaign_id=item.campaign.id %}" 
+                 class="text-[18px] md:text-[20px] font-bold text-[#1d1d1f] hover:text-[#0071e3] transition-colors">
                 {{ item.campaign.title }}
               </a>
-              <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
-                Produit : {{ item.campaign.product.name }} • Prix actuel : <strong style="color: var(--success);">{{ item.campaign.current_price }} {{ item.campaign.product.store.country.currency.code }}</strong>
-              </div>
-
-              <!-- Jauge de progression -->
-              <div style="margin-top: 0.65rem; max-width: 450px;">
-                <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.2rem;">
-                  <span>{{ item.campaign.current_participants_count }} / {{ item.campaign.target_participants }} participants</span>
-                  <span>{{ item.summary.progress_pct }}%</span>
-                </div>
-                <div class="progress-track" style="margin: 0; height: 8px;">
-                  <div class="progress-bar-fill" style="width: {{ item.summary.progress_pct }}%;"></div>
-                </div>
-              </div>
+              <p class="text-[13px] text-[#6e6e73] mt-1">
+                Produit : <span class="font-medium text-[#1d1d1f]">{{ item.campaign.product.name }}</span> • 
+                Prix débloqué : <span class="font-bold text-[#34c759]">{{ item.campaign.current_price }} {{ item.campaign.product.store.country.currency.code }}</span>
+              </p>
             </div>
 
-            <div style="display: flex; gap: 0.5rem;">
-              <a href="{% url 'merchants:campaign_detail' campaign_id=item.campaign.id %}" class="btn btn-outline btn-sm">
-                Tableau de bord campagne
-              </a>
-              <a href="{% url 'campaigns:detail' slug=item.campaign.slug %}" class="btn btn-sm btn-outline-dark" target="_blank">
-                Aperçu public ↗
-              </a>
+            <!-- Barre de progression Apple -->
+            <div class="max-w-md pt-1">
+              <div class="flex justify-between items-center text-[12px] font-medium text-[#6e6e73] mb-1.5">
+                <span>{{ item.campaign.current_participants_count }} / {{ item.campaign.target_participants }} participants</span>
+                <span class="font-bold text-[#1d1d1f]">{{ item.summary.progress_pct }}%</span>
+              </div>
+              <div class="w-full bg-[#f5f5f7] h-2.5 rounded-full overflow-hidden">
+                <div class="bg-[#0071e3] h-full rounded-full transition-all duration-500" style="width: {{ item.summary.progress_pct }}%;"></div>
+              </div>
             </div>
           </div>
-        {% endfor %}
-      </div>
-    {% else %}
-      <div class="empty-state-box">
-        <div class="empty-state-icon">
-          {% include 'partials/icons/trending.html' %}
+
+          <!-- Actions -->
+          <div class="flex items-center gap-3 shrink-0 pt-2 lg:pt-0">
+            <a href="{% url 'merchants:campaign_detail' campaign_id=item.campaign.id %}" 
+               class="h-10 px-5 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[13px] font-medium transition-all inline-flex items-center justify-center">
+              Tableau de bord
+            </a>
+            <a href="{% url 'campaigns:detail' slug=item.campaign.slug %}" 
+               target="_blank" 
+               class="h-10 px-5 rounded-full border border-[#d2d2d7] hover:border-[#86868b] text-[#1d1d1f] text-[13px] font-medium transition-all inline-flex items-center justify-center gap-1.5">
+              <span>Voir l'offre</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+          </div>
         </div>
-        <h3 class="empty-state-title">Aucune campagne active pour le moment</h3>
-        <p class="empty-state-desc">
-          Lancez une campagne pour vendre en grand volume grâce aux paliers de prix dégressifs.
+      {% endfor %}
+    {% else %}
+      <div class="bg-white rounded-[18px] p-12 md:p-16 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 text-center max-w-lg mx-auto">
+        <div class="w-16 h-16 rounded-2xl bg-[#f5f5f7] text-[#86868b] flex items-center justify-center mx-auto mb-4 border border-black/5">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+            <polyline points="17 6 23 6 23 12"></polyline>
+          </svg>
+        </div>
+        <h3 class="text-[18px] font-bold text-[#1d1d1f]">Aucune campagne en cours</h3>
+        <p class="text-[14px] text-[#6e6e73] mt-2 mb-6">
+          Lancez une campagne pour vendre vos volumes plus rapidement grâce aux paliers de prix dégressifs.
         </p>
-        <a href="{% url 'merchants:campaign_create' %}" class="btn btn-primary">+ Créer ma première campagne</a>
+        <a href="{% url 'merchants:campaign_create' %}" 
+           class="h-10 px-6 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[13px] font-medium transition-all inline-flex items-center justify-center shadow-xs">
+          + Créer ma première campagne
+        </a>
       </div>
     {% endif %}
   </div>

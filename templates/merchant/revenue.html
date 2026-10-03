@@ -4,74 +4,123 @@
 {% block title %}Chiffre d'Affaires & Revenus — Espace Commerçant REDUX{% endblock %}
 
 {% block content %}
-<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-8">
+  <!-- Onglets Commerçant Apple -->
   {% include 'merchant/nav_tabs.html' %}
 
-  <div>
-    <h1 style="font-size: 1.5rem; color: var(--text-primary);">Suivi Financier & Chiffre d'Affaires</h1>
-    <p style="color: var(--text-secondary); font-size: 0.9rem;">
-      Récapitulatif transparent de vos ventes collectives, commissions plateforme et montants nets.
+  <!-- En-tête de page -->
+  <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+    <h1 class="text-[26px] md:text-[30px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+      Suivi Financier & Chiffre d'Affaires
+    </h1>
+    <p class="text-[14px] text-[#6e6e73] mt-1">
+      Récapitulatif transparent de vos ventes groupées, commissions plateforme et montants nets disponibles.
     </p>
   </div>
 
-  <!-- Cartes financières -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem;">
-    <div class="card">
-      <span style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">Volume Brut Réalisé</span>
-      <div style="font-size: 1.75rem; font-weight: 800; color: var(--success); margin: 0.25rem 0;">
-        {{ stats.total_sales }} {{ merchant.stores.first.country.currency.code }}
+  <!-- Cartes Chiffrées Financières Apple -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col justify-between">
+      <div class="flex items-center justify-between">
+        <span class="text-[12px] font-medium uppercase tracking-wider text-[#6e6e73]">Volume Brut Réalisé</span>
+        <div class="w-8 h-8 rounded-full bg-[#f2fcf5] text-[#34c759] flex items-center justify-center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+            <polyline points="17 6 23 6 23 12"></polyline>
+          </svg>
+        </div>
       </div>
-      <span style="font-size: 0.8rem; color: var(--text-muted);">Sur les commandes confirmées</span>
+      <div class="mt-6">
+        <div class="text-[32px] font-bold tracking-tight text-[#1d1d1f] leading-none">
+          {{ stats.total_sales }} <span class="text-[16px] font-semibold text-[#6e6e73]">{{ merchant.stores.first.country.currency.code }}</span>
+        </div>
+        <p class="text-[12px] text-[#6e6e73] mt-2">Sur l'ensemble des commandes confirmées</p>
+      </div>
     </div>
 
-    <div class="card">
-      <span style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">Commission Plateforme (5%)</span>
-      <div style="font-size: 1.75rem; font-weight: 800; color: var(--danger); margin: 0.25rem 0;">
-        -{{ stats.platform_commission }} {{ merchant.stores.first.country.currency.code }}
+    <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col justify-between">
+      <div class="flex items-center justify-between">
+        <span class="text-[12px] font-medium uppercase tracking-wider text-[#6e6e73]">Commission Plateforme (5%)</span>
+        <div class="w-8 h-8 rounded-full bg-[#fef2f2] text-[#ff3b30] flex items-center justify-center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </div>
       </div>
-      <span style="font-size: 0.8rem; color: var(--text-muted);">Frais de service & séquestre</span>
+      <div class="mt-6">
+        <div class="text-[32px] font-bold tracking-tight text-[#ff3b30] leading-none">
+          -{{ stats.platform_commission }} <span class="text-[16px] font-semibold text-[#6e6e73]">{{ merchant.stores.first.country.currency.code }}</span>
+        </div>
+        <p class="text-[12px] text-[#6e6e73] mt-2">Frais de service, hébergement et séquestre</p>
+      </div>
     </div>
 
-    <div class="card" style="background: #ECFDF3; border-color: #A6F4C5;">
-      <span style="font-size: 0.82rem; font-weight: 700; color: #027A48; text-transform: uppercase;">Revenu Net Commerçant</span>
-      <div style="font-size: 1.75rem; font-weight: 800; color: #027A48; margin: 0.25rem 0;">
-        {{ stats.net_revenue }} {{ merchant.stores.first.country.currency.code }}
+    <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-[#34c759]/30 bg-gradient-to-br from-white to-[#f2fcf5] flex flex-col justify-between">
+      <div class="flex items-center justify-between">
+        <span class="text-[12px] font-medium uppercase tracking-wider text-[#248a3d]">Revenu Net Vendeur</span>
+        <div class="w-8 h-8 rounded-full bg-[#34c759]/15 text-[#248a3d] flex items-center justify-center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
       </div>
-      <span style="font-size: 0.8rem; color: #05603A;">Disponible pour reversement</span>
+      <div class="mt-6">
+        <div class="text-[32px] font-bold tracking-tight text-[#248a3d] leading-none">
+          {{ stats.net_revenue }} <span class="text-[16px] font-semibold text-[#248a3d]/80">{{ merchant.stores.first.country.currency.code }}</span>
+        </div>
+        <p class="text-[12px] text-[#248a3d] mt-2 font-medium">Disponible pour virement bancaire / Mobile Money</p>
+      </div>
     </div>
   </div>
 
-  <!-- Liste des transactions payées -->
-  <div class="card">
-    <h3 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 1rem;">
-      Historique des Ventes Confirmées
-    </h3>
+  <!-- Historique des ventes confirmées -->
+  <div class="bg-white rounded-[18px] shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 overflow-hidden">
+    <div class="p-6 md:p-8 border-b border-[#f5f5f7]">
+      <h2 class="text-[18px] font-bold text-[#1d1d1f]">
+        Historique des Ventes Confirmées
+      </h2>
+    </div>
 
     {% if paid_orders %}
-      <div style="overflow-x: auto;">
-        <table class="tier-table-wrap">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
           <thead>
-            <tr>
-              <th>Commande</th>
-              <th>Date de paiement</th>
-              <th>Campagne</th>
-              <th>Montant Brut</th>
-              <th>Commission</th>
-              <th>Net Commerçant</th>
-              <th>Statut</th>
+            <tr class="border-b border-[#f5f5f7] bg-[#fbfbfd]">
+              <th class="py-4 px-6 text-[12px] font-semibold uppercase tracking-wider text-[#86868b]">Commande</th>
+              <th class="py-4 px-6 text-[12px] font-semibold uppercase tracking-wider text-[#86868b]">Date de paiement</th>
+              <th class="py-4 px-6 text-[12px] font-semibold uppercase tracking-wider text-[#86868b]">Campagne</th>
+              <th class="py-4 px-6 text-[12px] font-semibold uppercase tracking-wider text-[#86868b]">Montant Brut</th>
+              <th class="py-4 px-6 text-[12px] font-semibold uppercase tracking-wider text-[#86868b]">Frais (5%)</th>
+              <th class="py-4 px-6 text-[12px] font-semibold uppercase tracking-wider text-[#86868b]">Net Commerçant</th>
+              <th class="py-4 px-6 text-[12px] font-semibold uppercase tracking-wider text-[#86868b] text-right">Statut</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="divide-y divide-[#f5f5f7] text-[14px]">
             {% for ord in paid_orders %}
-              <tr>
-                <td><strong>#{{ ord.order_number }}</strong></td>
-                <td style="font-size: 0.85rem; color: var(--text-secondary);">{{ ord.created_at|date:"d M Y H:i" }}</td>
-                <td>{{ ord.campaign.title|truncatechars:30 }}</td>
-                <td><strong>{{ ord.final_amount }} {{ ord.currency.code }}</strong></td>
-                <td style="color: var(--danger);">-5%</td>
-                <td style="color: var(--success); font-weight: 700;">{{ ord.final_amount }} {{ ord.currency.code }}</td>
-                <td>
-                  <span class="badge badge-status active">{% include 'partials/icons/check.html' %} Confirmé</span>
+              <tr class="hover:bg-[#fbfbfd] transition-colors">
+                <td class="py-4 px-6 font-semibold text-[#0071e3]">
+                  #{{ ord.order_number }}
+                </td>
+                <td class="py-4 px-6 text-[13px] text-[#6e6e73]">
+                  {{ ord.created_at|date:"d M Y H:i" }}
+                </td>
+                <td class="py-4 px-6 text-[13px] text-[#6e6e73]">
+                  {{ ord.campaign.title|truncatechars:32 }}
+                </td>
+                <td class="py-4 px-6 font-semibold text-[#1d1d1f]">
+                  {{ ord.final_amount }} {{ ord.currency.code }}
+                </td>
+                <td class="py-4 px-6 text-[#ff3b30] font-medium">
+                  -5%
+                </td>
+                <td class="py-4 px-6 font-bold text-[#34c759]">
+                  {{ ord.final_amount }} {{ ord.currency.code }}
+                </td>
+                <td class="py-4 px-6 text-right">
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium bg-[#34c759]/10 text-[#248a3d]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#34c759]"></span>
+                    Confirmé
+                  </span>
                 </td>
               </tr>
             {% endfor %}
@@ -79,13 +128,16 @@
         </table>
       </div>
     {% else %}
-      <div class="empty-state-box">
-        <div class="empty-state-icon">
-          {% include 'partials/icons/wallet.html' %}
+      <div class="py-16 px-6 text-center max-w-md mx-auto">
+        <div class="w-16 h-16 rounded-2xl bg-[#f5f5f7] text-[#86868b] flex items-center justify-center mx-auto mb-4 border border-black/5">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+          </svg>
         </div>
-        <h3 class="empty-state-title">Aucune vente payée pour l'instant</h3>
-        <p class="empty-state-desc">
-          Vos fonds apparaîtront ici dès les premiers règlements confirmés de vos campagnes.
+        <h3 class="text-[18px] font-bold text-[#1d1d1f]">Aucune vente payée pour l'instant</h3>
+        <p class="text-[14px] text-[#6e6e73] mt-2">
+          Vos fonds nets apparaîtront ici dès les premiers règlements confirmés de vos campagnes.
         </p>
       </div>
     {% endif %}

@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "corsheaders",
     "django_filters",
+    "storages",
 
     # Apps Redux
     "apps.core",
@@ -166,8 +167,58 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
+# ==============================================================================
+# MEDIA & STOCKAGE CLOUD (SUPABASE STORAGE S3)
+# ==============================================================================
+USE_SUPABASE_STORAGE = config("USE_SUPABASE_STORAGE", default=False, cast=bool)
+SUPABASE_STORAGE_BUCKET = config("SUPABASE_STORAGE_BUCKET", default="redux-media")
+SUPABASE_PROJECT_REF = config("SUPABASE_PROJECT_REF", default="wztfqyeegftiazuxbgod")
+SUPABASE_URL = config("SUPABASE_URL", default=f"https://{SUPABASE_PROJECT_REF}.supabase.co")
+
+if USE_SUPABASE_STORAGE and not IS_TESTING:
+    AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID", default="")
+    AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY", default="")
+    AWS_STORAGE_BUCKET_NAME = SUPABASE_STORAGE_BUCKET
+    AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", default="eu-central-1")
+    AWS_S3_ENDPOINT_URL = config(
+        "AWS_S3_ENDPOINT_URL",
+        default=f"https://{SUPABASE_PROJECT_REF}.supabase.co/storage/v1/s3"
+    )
+    AWS_S3_FILE_OVERWRITE = False
+    AWS_DEFAULT_ACL = None
+    AWS_QUERYSTRING_AUTH = False
+    AWS_S3_SIGNATURE_VERSION = "s3v4"
+
+    # URL publique directe pour servir les médias via le CDN Supabase
+    supabase_custom_domain = config(
+        "AWS_S3_CUSTOM_DOMAIN",
+        default=f"{SUPABASE_PROJECT_REF}.supabase.co/storage/v1/object/public/{SUPABASE_STORAGE_BUCKET}"
+    )
+    if supabase_custom_domain:
+        AWS_S3_CUSTOM_DOMAIN = supabase_custom_domain
+        MEDIA_URL = f"https://{supabase_custom_domain}/"
+    else:
+        MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{SUPABASE_STORAGE_BUCKET}/"
+
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+else:
+    MEDIA_URL = "media/"
+    MEDIA_ROOT = BASE_DIR / "media"
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

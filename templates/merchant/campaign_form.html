@@ -4,118 +4,206 @@
 {% block title %}Créer une Campagne Collective — Espace Commerçant REDUX{% endblock %}
 
 {% block content %}
-<div style="max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 md:py-12 space-y-8">
+  <!-- Onglets Commerçant Apple -->
   {% include 'merchant/nav_tabs.html' %}
 
-  <div>
-    <span class="badge" style="background: var(--primary-light); color: var(--primary); margin-bottom: 0.5rem;">Vente en Volume</span>
-    <h1 style="font-size: 1.6rem; color: var(--text-primary);">Lancer une Nouvelle Campagne à Paliers</h1>
-    <p style="color: var(--text-secondary); font-size: 0.95rem;">
-      Configurez votre offre collective et définissez les paliers de prix pour attirer et regrouper les acheteurs.
+  <!-- En-tête -->
+  <div class="text-center md:text-left">
+    <a href="{% url 'merchants:campaigns' %}" class="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#0071e3] hover:underline mb-3">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Retour aux campagnes
+    </a>
+    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium bg-[#0071e3]/10 text-[#0071e3] mb-3 ml-2">
+      Vente Groupée en Volume
+    </div>
+    <h1 class="text-[26px] md:text-[32px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+      Lancer une Campagne à Paliers Dégressifs
+    </h1>
+    <p class="text-[14px] text-[#6e6e73] mt-1">
+      Configurez votre offre collective et définissez les paliers de prix pour attirer et fédérer les acheteurs.
     </p>
   </div>
 
-  <div class="card">
-    <form method="post" id="campaign-create-form">
+  <!-- Formulaire Apple -->
+  <div class="bg-white rounded-[18px] p-6 md:p-10 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+    <form method="post" id="campaign-create-form" class="space-y-8">
       {% csrf_token %}
 
-      <h3 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 1rem; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">
-        1. Informations Générales
-      </h3>
+      <!-- Section 1 : Informations Générales -->
+      <div>
+        <h2 class="text-[18px] font-bold text-[#1d1d1f] pb-3 border-b border-[#f5f5f7]">
+          1. Informations Générales
+        </h2>
+        <div class="space-y-5 mt-5">
+          <div>
+            <label for="{{ form.product.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+              {{ form.product.label }} <span class="text-[#ff3b30]">*</span>
+            </label>
+            <div class="[&>select]:w-full [&>select]:px-4 [&>select]:py-3 [&>select]:bg-[#f5f5f7] [&>select]:border [&>select]:border-transparent [&>select]:focus:border-[#0071e3] [&>select]:focus:bg-white [&>select]:rounded-xl [&>select]:text-[14px] [&>select]:text-[#1d1d1f] [&>select]:transition-all [&>select]:outline-none">
+              {{ form.product }}
+            </div>
+            {% if form.product.errors %}
+              <p class="text-[12px] text-[#ff3b30] mt-1.5 font-medium">{{ form.product.errors.0 }}</p>
+            {% endif %}
+          </div>
 
-      <div class="form-group">
-        <label for="{{ form.product.id_for_label }}" class="form-label">{{ form.product.label }} *</label>
-        {{ form.product }}
-        {% if form.product.errors %}
-          <div class="form-error">{{ form.product.errors.0 }}</div>
-        {% endif %}
+          <div>
+            <label for="{{ form.title.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+              {{ form.title.label }} <span class="text-[#ff3b30]">*</span>
+            </label>
+            <div class="[&>input]:w-full [&>input]:px-4 [&>input]:py-3 [&>input]:bg-[#f5f5f7] [&>input]:border [&>input]:border-transparent [&>input]:focus:border-[#0071e3] [&>input]:focus:bg-white [&>input]:rounded-xl [&>input]:text-[14px] [&>input]:text-[#1d1d1f] [&>input]:transition-all [&>input]:outline-none">
+              {{ form.title }}
+            </div>
+            {% if form.title.errors %}
+              <p class="text-[12px] text-[#ff3b30] mt-1.5 font-medium">{{ form.title.errors.0 }}</p>
+            {% endif %}
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label for="{{ form.target_participants.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+                {{ form.target_participants.label }} <span class="text-[#ff3b30]">*</span>
+              </label>
+              <div class="[&>input]:w-full [&>input]:px-4 [&>input]:py-3 [&>input]:bg-[#f5f5f7] [&>input]:border [&>input]:border-transparent [&>input]:focus:border-[#0071e3] [&>input]:focus:bg-white [&>input]:rounded-xl [&>input]:text-[14px] [&>input]:text-[#1d1d1f] [&>input]:transition-all [&>input]:outline-none">
+                {{ form.target_participants }}
+              </div>
+            </div>
+
+            <div>
+              <label for="{{ form.days_duration.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+                {{ form.days_duration.label }} <span class="text-[#ff3b30]">*</span>
+              </label>
+              <div class="[&>input]:w-full [&>input]:px-4 [&>input]:py-3 [&>input]:bg-[#f5f5f7] [&>input]:border [&>input]:border-transparent [&>input]:focus:border-[#0071e3] [&>input]:focus:bg-white [&>input]:rounded-xl [&>input]:text-[14px] [&>input]:text-[#1d1d1f] [&>input]:transition-all [&>input]:outline-none">
+                {{ form.days_duration }}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label for="{{ form.pricing_policy.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+              {{ form.pricing_policy.label }} <span class="text-[#ff3b30]">*</span>
+            </label>
+            <div class="[&>select]:w-full [&>select]:px-4 [&>select]:py-3 [&>select]:bg-[#f5f5f7] [&>select]:border [&>select]:border-transparent [&>select]:focus:border-[#0071e3] [&>select]:focus:bg-white [&>select]:rounded-xl [&>select]:text-[14px] [&>select]:text-[#1d1d1f] [&>select]:transition-all [&>select]:outline-none">
+              {{ form.pricing_policy }}
+            </div>
+            <p class="text-[12px] text-[#6e6e73] mt-1.5">
+              Recommandé : « Prix du palier final atteint » (stimule le bouche-à-oreille et le partage par les clients).
+            </p>
+          </div>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="{{ form.title.id_for_label }}" class="form-label">{{ form.title.label }} *</label>
-        {{ form.title }}
-        {% if form.title.errors %}
-          <div class="form-error">{{ form.title.errors.0 }}</div>
-        {% endif %}
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-        <div class="form-group">
-          <label for="{{ form.target_participants.id_for_label }}" class="form-label">{{ form.target_participants.label }} *</label>
-          {{ form.target_participants }}
+      <!-- Section 2 : Configuration des Paliers -->
+      <div>
+        <div class="flex items-center justify-between pb-3 border-b border-[#f5f5f7] flex-wrap gap-3">
+          <div>
+            <h2 class="text-[18px] font-bold text-[#1d1d1f]">
+              2. Configuration des Paliers Dégressifs
+            </h2>
+            <p class="text-[13px] text-[#6e6e73] mt-0.5">
+              Les prix doivent être décroissants et respecter le prix plancher du produit.
+            </p>
+          </div>
+          <button type="button" 
+                  id="btn-add-tier" 
+                  onclick="addTierRow()"
+                  class="h-9 px-4 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#0071e3] text-[12px] font-medium transition-all inline-flex items-center justify-center gap-1.5">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Ajouter un palier
+          </button>
         </div>
 
-        <div class="form-group">
-          <label for="{{ form.days_duration.id_for_label }}" class="form-label">{{ form.days_duration.label }} *</label>
-          {{ form.days_duration }}
+        <div class="overflow-x-auto mt-4 rounded-xl border border-black/5 bg-[#fbfbfd]">
+          <table class="w-full text-left border-collapse" id="tiers-table">
+            <thead>
+              <tr class="border-b border-black/5">
+                <th class="py-3 px-4 text-[12px] font-semibold uppercase tracking-wider text-[#86868b] w-40">Min Acheteurs</th>
+                <th class="py-3 px-4 text-[12px] font-semibold uppercase tracking-wider text-[#86868b] w-40">Max Acheteurs</th>
+                <th class="py-3 px-4 text-[12px] font-semibold uppercase tracking-wider text-[#86868b]">Prix Unitaire Remisé</th>
+                <th class="py-3 px-4 text-[12px] font-semibold uppercase tracking-wider text-[#86868b] text-center w-20">Action</th>
+              </tr>
+            </thead>
+            <tbody id="tiers-body" class="divide-y divide-black/5 bg-white">
+              <!-- Palier 1 -->
+              <tr>
+                <td class="p-3">
+                  <input type="number" name="tier_min[]" class="w-full px-3 py-2 bg-[#f5f5f7] border border-transparent focus:border-[#0071e3] focus:bg-white rounded-lg text-[13px] outline-none transition-all" value="1" min="1" required>
+                </td>
+                <td class="p-3">
+                  <input type="number" name="tier_max[]" class="w-full px-3 py-2 bg-[#f5f5f7] border border-transparent focus:border-[#0071e3] focus:bg-white rounded-lg text-[13px] outline-none transition-all" value="4" min="1">
+                </td>
+                <td class="p-3">
+                  <input type="number" step="0.01" name="tier_price[]" class="w-full px-3 py-2 bg-[#f5f5f7] border border-transparent focus:border-[#0071e3] focus:bg-white rounded-lg text-[13px] outline-none transition-all" placeholder="ex: 15000" required>
+                </td>
+                <td class="p-3 text-center text-[12px] text-[#86868b] font-medium">Base</td>
+              </tr>
+              <!-- Palier 2 -->
+              <tr>
+                <td class="p-3">
+                  <input type="number" name="tier_min[]" class="w-full px-3 py-2 bg-[#f5f5f7] border border-transparent focus:border-[#0071e3] focus:bg-white rounded-lg text-[13px] outline-none transition-all" value="5" min="2" required>
+                </td>
+                <td class="p-3">
+                  <input type="number" name="tier_max[]" class="w-full px-3 py-2 bg-[#f5f5f7] border border-transparent focus:border-[#0071e3] focus:bg-white rounded-lg text-[13px] outline-none transition-all" value="9" min="2">
+                </td>
+                <td class="p-3">
+                  <input type="number" step="0.01" name="tier_price[]" class="w-full px-3 py-2 bg-[#f5f5f7] border border-transparent focus:border-[#0071e3] focus:bg-white rounded-lg text-[13px] outline-none transition-all" placeholder="ex: 13500" required>
+                </td>
+                <td class="p-3 text-center">
+                  <button type="button" onclick="removeTierRow(this)" class="w-7 h-7 rounded-full bg-[#ff3b30]/10 hover:bg-[#ff3b30]/20 text-[#ff3b30] text-[12px] inline-flex items-center justify-center transition-colors" title="Supprimer">✕</button>
+                </td>
+              </tr>
+              <!-- Palier 3 -->
+              <tr>
+                <td class="p-3">
+                  <input type="number" name="tier_min[]" class="w-full px-3 py-2 bg-[#f5f5f7] border border-transparent focus:border-[#0071e3] focus:bg-white rounded-lg text-[13px] outline-none transition-all" value="10" min="3" required>
+                </td>
+                <td class="p-3">
+                  <input type="number" name="tier_max[]" class="w-full px-3 py-2 bg-[#f5f5f7] border border-transparent focus:border-[#0071e3] focus:bg-white rounded-lg text-[13px] outline-none transition-all" placeholder="Vide pour +">
+                </td>
+                <td class="p-3">
+                  <input type="number" step="0.01" name="tier_price[]" class="w-full px-3 py-2 bg-[#f5f5f7] border border-transparent focus:border-[#0071e3] focus:bg-white rounded-lg text-[13px] outline-none transition-all" placeholder="ex: 11000" required>
+                </td>
+                <td class="p-3 text-center">
+                  <button type="button" onclick="removeTierRow(this)" class="w-7 h-7 rounded-full bg-[#ff3b30]/10 hover:bg-[#ff3b30]/20 text-[#ff3b30] text-[12px] inline-flex items-center justify-center transition-colors" title="Supprimer">✕</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="{{ form.pricing_policy.id_for_label }}" class="form-label">{{ form.pricing_policy.label }} *</label>
-        {{ form.pricing_policy }}
-        <small style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.25rem; display: block;">
-          Recommandé : « Prix du palier final atteint » (stimule le partage viral par les acheteurs).
-        </small>
+      <!-- Section 3 : Conditions -->
+      <div>
+        <h2 class="text-[18px] font-bold text-[#1d1d1f] pb-3 border-b border-[#f5f5f7]">
+          3. Conditions et Engagements
+        </h2>
+        <div class="mt-4">
+          <label for="{{ form.terms.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+            {{ form.terms.label }}
+          </label>
+          <div class="[&>textarea]:w-full [&>textarea]:px-4 [&>textarea]:py-3 [&>textarea]:bg-[#f5f5f7] [&>textarea]:border [&>textarea]:border-transparent [&>textarea]:focus:border-[#0071e3] [&>textarea]:focus:bg-white [&>textarea]:rounded-xl [&>textarea]:text-[14px] [&>textarea]:text-[#1d1d1f] [&>textarea]:transition-all [&>textarea]:outline-none [&>textarea]:min-h-[80px]">
+            {{ form.terms }}
+          </div>
+        </div>
       </div>
 
-      <!-- SECTION PALIERS DYNAMIQUES (Spec 6) -->
-      <h3 style="font-size: 1.15rem; color: var(--text-primary); margin: 2rem 0 0.5rem; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
-        <span>2. Configuration des Paliers de Prix Dégressifs</span>
-        <button type="button" class="btn btn-outline btn-sm" id="btn-add-tier" onclick="addTierRow()">+ Ajouter un palier</button>
-      </h3>
-      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
-        Les prix doivent être strictement décroissants et respecter le prix plancher minimum défini sur votre produit.
-      </p>
-
-      <div style="overflow-x: auto; margin-bottom: 1.5rem;">
-        <table class="tier-table-wrap" id="tiers-table">
-          <thead>
-            <tr>
-              <th style="width: 140px;">Min Participants</th>
-              <th style="width: 140px;">Max Participants</th>
-              <th>Prix Unitaire (Devise boutique)</th>
-              <th style="width: 80px; text-align: center;">Action</th>
-            </tr>
-          </thead>
-          <tbody id="tiers-body">
-            <!-- Palier 1 -->
-            <tr>
-              <td><input type="number" name="tier_min[]" class="form-input" value="1" min="1" required style="padding: 0.45rem;"></td>
-              <td><input type="number" name="tier_max[]" class="form-input" value="4" min="1" style="padding: 0.45rem;"></td>
-              <td><input type="number" step="0.01" name="tier_price[]" class="form-input" placeholder="ex: 15000" required style="padding: 0.45rem;"></td>
-              <td style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">Base</td>
-            </tr>
-            <!-- Palier 2 -->
-            <tr>
-              <td><input type="number" name="tier_min[]" class="form-input" value="5" min="2" required style="padding: 0.45rem;"></td>
-              <td><input type="number" name="tier_max[]" class="form-input" value="9" min="2" style="padding: 0.45rem;"></td>
-              <td><input type="number" step="0.01" name="tier_price[]" class="form-input" placeholder="ex: 13500" required style="padding: 0.45rem;"></td>
-              <td style="text-align: center;"><button type="button" class="btn btn-outline btn-sm" onclick="removeTierRow(this)" style="color: var(--danger); border-color: var(--danger); padding: 0.35rem 0.6rem;" title="Supprimer ce palier">✕</button></td>
-            </tr>
-            <!-- Palier 3 -->
-            <tr>
-              <td><input type="number" name="tier_min[]" class="form-input" value="10" min="3" required style="padding: 0.45rem;"></td>
-              <td><input type="number" name="tier_max[]" class="form-input" placeholder="Laisser vide pour +" style="padding: 0.45rem;"></td>
-              <td><input type="number" step="0.01" name="tier_price[]" class="form-input" placeholder="ex: 11000" required style="padding: 0.45rem;"></td>
-              <td style="text-align: center;"><button type="button" class="btn btn-outline btn-sm" onclick="removeTierRow(this)" style="color: var(--danger); border-color: var(--danger); padding: 0.35rem 0.6rem;" title="Supprimer ce palier">✕</button></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="pt-6 border-t border-[#f5f5f7] flex items-center justify-end gap-3">
+        <a href="{% url 'merchants:campaigns' %}" 
+           class="h-11 px-6 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[13px] font-medium transition-all inline-flex items-center justify-center">
+          Annuler
+        </a>
+        <button type="submit" 
+                class="h-11 px-8 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[13px] font-medium transition-all inline-flex items-center justify-center shadow-xs">
+          Publier et activer la campagne
+        </button>
       </div>
-
-      <h3 style="font-size: 1.15rem; color: var(--text-primary); margin: 1.5rem 0 0.5rem; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem;">
-        3. Conditions et Engagements
-      </h3>
-
-      <div class="form-group">
-        <label for="{{ form.terms.id_for_label }}" class="form-label">{{ form.terms.label }}</label>
-        {{ form.terms }}
-      </div>
-
-      <button type="submit" class="btn btn-gradient btn-block btn-lg" style="margin-top: 1.5rem;">
-        Publier et activer la campagne collective
-      </button>
     </form>
   </div>
 </div>
@@ -125,10 +213,18 @@ function addTierRow() {
   const tbody = document.getElementById('tiers-body');
   const tr = document.createElement('tr');
   tr.innerHTML = `
-    <td><input type="number" name="tier_min[]" class="form-input" required style="padding: 0.45rem;"></td>
-    <td><input type="number" name="tier_max[]" class="form-input" placeholder="Laisser vide pour +" style="padding: 0.45rem;"></td>
-    <td><input type="number" step="0.01" name="tier_price[]" class="form-input" placeholder="Prix dégressif" required style="padding: 0.45rem;"></td>
-    <td style="text-align: center;"><button type="button" class="btn btn-outline btn-sm" onclick="removeTierRow(this)" style="color: var(--danger); border-color: var(--danger); padding: 0.35rem 0.6rem;" title="Supprimer ce palier">✕</button></td>
+    <td class="p-3">
+      <input type="number" name="tier_min[]" class="w-full px-3 py-2 bg-[#f5f5f7] border border-transparent focus:border-[#0071e3] focus:bg-white rounded-lg text-[13px] outline-none transition-all" required>
+    </td>
+    <td class="p-3">
+      <input type="number" name="tier_max[]" class="w-full px-3 py-2 bg-[#f5f5f7] border border-transparent focus:border-[#0071e3] focus:bg-white rounded-lg text-[13px] outline-none transition-all" placeholder="Vide pour +">
+    </td>
+    <td class="p-3">
+      <input type="number" step="0.01" name="tier_price[]" class="w-full px-3 py-2 bg-[#f5f5f7] border border-transparent focus:border-[#0071e3] focus:bg-white rounded-lg text-[13px] outline-none transition-all" placeholder="Prix dégressif" required>
+    </td>
+    <td class="p-3 text-center">
+      <button type="button" onclick="removeTierRow(this)" class="w-7 h-7 rounded-full bg-[#ff3b30]/10 hover:bg-[#ff3b30]/20 text-[#ff3b30] text-[12px] inline-flex items-center justify-center transition-colors" title="Supprimer">✕</button>
+    </td>
   `;
   tbody.appendChild(tr);
 }
@@ -138,7 +234,7 @@ function removeTierRow(btn) {
   if (document.querySelectorAll('#tiers-body tr').length > 2) {
     row.remove();
   } else {
-    alert("Une campagne doit comporter au minimum 2 paliers.");
+    alert("Une campagne collective doit comporter au minimum 2 paliers de réduction.");
   }
 }
 </script>

@@ -4,76 +4,119 @@
 {% block title %}Ajouter un Produit — Espace Commerçant REDUX{% endblock %}
 
 {% block content %}
-<div style="max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+<div class="max-w-3xl mx-auto px-4 sm:px-6 py-8 md:py-12 space-y-8">
+  <!-- Onglets Commerçant Apple -->
   {% include 'merchant/nav_tabs.html' %}
 
-  <div>
-    <h1 style="font-size: 1.5rem; color: var(--text-primary);">Nouveau Produit au Catalogue</h1>
-    <p style="color: var(--text-secondary); font-size: 0.9rem;">
-      Définissez les caractéristiques et les limites de prix de votre produit.
+  <!-- En-tête -->
+  <div class="text-center md:text-left">
+    <a href="{% url 'merchants:products' %}" class="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#0071e3] hover:underline mb-3">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Retour au catalogue
+    </a>
+    <h1 class="text-[26px] md:text-[32px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+      Nouveau Produit au Catalogue
+    </h1>
+    <p class="text-[14px] text-[#6e6e73] mt-1">
+      Définissez les caractéristiques et les limites de prix de votre produit pour les campagnes collectives.
     </p>
   </div>
 
-  <div class="card">
-    <form method="post">
+  <!-- Formulaire Apple -->
+  <div class="bg-white rounded-[18px] p-6 md:p-10 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+    <form method="post" class="space-y-6">
       {% csrf_token %}
 
-      <div class="form-group">
-        <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }} *</label>
-        {{ form.name }}
+      <div>
+        <label for="{{ form.name.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+          {{ form.name.label }} <span class="text-[#ff3b30]">*</span>
+        </label>
+        <div class="[&>input]:w-full [&>input]:px-4 [&>input]:py-3 [&>input]:bg-[#f5f5f7] [&>input]:border [&>input]:border-transparent [&>input]:focus:border-[#0071e3] [&>input]:focus:bg-white [&>input]:rounded-xl [&>input]:text-[14px] [&>input]:text-[#1d1d1f] [&>input]:transition-all [&>input]:outline-none">
+          {{ form.name }}
+        </div>
         {% if form.name.errors %}
-          <div class="form-error">{{ form.name.errors.0 }}</div>
+          <p class="text-[12px] text-[#ff3b30] mt-1.5 font-medium">{{ form.name.errors.0 }}</p>
         {% endif %}
       </div>
 
-      <div class="form-group">
-        <label for="{{ form.category.id_for_label }}" class="form-label">{{ form.category.label }}</label>
-        {{ form.category }}
+      <div>
+        <label for="{{ form.category.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+          {{ form.category.label }}
+        </label>
+        <div class="[&>select]:w-full [&>select]:px-4 [&>select]:py-3 [&>select]:bg-[#f5f5f7] [&>select]:border [&>select]:border-transparent [&>select]:focus:border-[#0071e3] [&>select]:focus:bg-white [&>select]:rounded-xl [&>select]:text-[14px] [&>select]:text-[#1d1d1f] [&>select]:transition-all [&>select]:outline-none">
+          {{ form.category }}
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }}</label>
-        {{ form.description }}
+      <div>
+        <label for="{{ form.description.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+          {{ form.description.label }}
+        </label>
+        <div class="[&>textarea]:w-full [&>textarea]:px-4 [&>textarea]:py-3 [&>textarea]:bg-[#f5f5f7] [&>textarea]:border [&>textarea]:border-transparent [&>textarea]:focus:border-[#0071e3] [&>textarea]:focus:bg-white [&>textarea]:rounded-xl [&>textarea]:text-[14px] [&>textarea]:text-[#1d1d1f] [&>textarea]:transition-all [&>textarea]:outline-none [&>textarea]:min-h-[100px]">
+          {{ form.description }}
+        </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-        <div class="form-group">
-          <label for="{{ form.original_price.id_for_label }}" class="form-label">
-            {{ form.original_price.label }} (Prix unitaire) *
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
+        <div>
+          <label for="{{ form.original_price.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+            {{ form.original_price.label }} (Prix unitaire normal) <span class="text-[#ff3b30]">*</span>
           </label>
-          {{ form.original_price }}
+          <div class="[&>input]:w-full [&>input]:px-4 [&>input]:py-3 [&>input]:bg-[#f5f5f7] [&>input]:border [&>input]:border-transparent [&>input]:focus:border-[#0071e3] [&>input]:focus:bg-white [&>input]:rounded-xl [&>input]:text-[14px] [&>input]:text-[#1d1d1f] [&>input]:transition-all [&>input]:outline-none">
+            {{ form.original_price }}
+          </div>
           {% if form.original_price.errors %}
-            <div class="form-error">{{ form.original_price.errors.0 }}</div>
+            <p class="text-[12px] text-[#ff3b30] mt-1.5 font-medium">{{ form.original_price.errors.0 }}</p>
           {% endif %}
         </div>
 
-        <div class="form-group">
-          <label for="{{ form.minimum_price.id_for_label }}" class="form-label">
-            {{ form.minimum_price.label }} (Plancher) *
+        <div>
+          <label for="{{ form.minimum_price.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+            {{ form.minimum_price.label }} (Prix plancher absolu) <span class="text-[#ff3b30]">*</span>
           </label>
-          {{ form.minimum_price }}
+          <div class="[&>input]:w-full [&>input]:px-4 [&>input]:py-3 [&>input]:bg-[#f5f5f7] [&>input]:border [&>input]:border-transparent [&>input]:focus:border-[#0071e3] [&>input]:focus:bg-white [&>input]:rounded-xl [&>input]:text-[14px] [&>input]:text-[#1d1d1f] [&>input]:transition-all [&>input]:outline-none">
+            {{ form.minimum_price }}
+          </div>
           {% if form.minimum_price.errors %}
-            <div class="form-error">{{ form.minimum_price.errors.0 }}</div>
+            <p class="text-[12px] text-[#ff3b30] mt-1.5 font-medium">{{ form.minimum_price.errors.0 }}</p>
           {% endif %}
-          <small style="color: var(--text-muted); font-size: 0.78rem;">Aucun palier de campagne ne pourra être inférieur à ce montant.</small>
+          <p class="text-[11px] text-[#86868b] mt-1.5">Aucun palier dégressif ne pourra descendre sous ce tarif.</p>
         </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-        <div class="form-group">
-          <label for="{{ form.stock.id_for_label }}" class="form-label">{{ form.stock.label }} *</label>
-          {{ form.stock }}
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div>
+          <label for="{{ form.stock.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+            {{ form.stock.label }} <span class="text-[#ff3b30]">*</span>
+          </label>
+          <div class="[&>input]:w-full [&>input]:px-4 [&>input]:py-3 [&>input]:bg-[#f5f5f7] [&>input]:border [&>input]:border-transparent [&>input]:focus:border-[#0071e3] [&>input]:focus:bg-white [&>input]:rounded-xl [&>input]:text-[14px] [&>input]:text-[#1d1d1f] [&>input]:transition-all [&>input]:outline-none">
+            {{ form.stock }}
+          </div>
         </div>
 
-        <div class="form-group">
-          <label for="{{ form.unit.id_for_label }}" class="form-label">{{ form.unit.label }}</label>
-          {{ form.unit }}
+        <div>
+          <label for="{{ form.unit.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+            {{ form.unit.label }}
+          </label>
+          <div class="[&>input]:w-full [&>input]:px-4 [&>input]:py-3 [&>input]:bg-[#f5f5f7] [&>input]:border [&>input]:border-transparent [&>input]:focus:border-[#0071e3] [&>input]:focus:bg-white [&>input]:rounded-xl [&>input]:text-[14px] [&>input]:text-[#1d1d1f] [&>input]:transition-all [&>input]:outline-none">
+            {{ form.unit }}
+          </div>
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
-        Enregistrer le produit
-      </button>
+      <div class="pt-6 border-t border-[#f5f5f7] flex items-center justify-end gap-3">
+        <a href="{% url 'merchants:products' %}" 
+           class="h-11 px-6 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[13px] font-medium transition-all inline-flex items-center justify-center">
+          Annuler
+        </a>
+        <button type="submit" 
+                class="h-11 px-8 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[13px] font-medium transition-all inline-flex items-center justify-center shadow-xs">
+          Enregistrer le produit
+        </button>
+      </div>
     </form>
   </div>
 </div>

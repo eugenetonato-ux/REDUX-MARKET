@@ -4,55 +4,120 @@
 {% block title %}Statistiques de Performance — Espace Commerçant REDUX{% endblock %}
 
 {% block content %}
-<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-8">
+  <!-- Onglets Commerçant Apple -->
   {% include 'merchant/nav_tabs.html' %}
 
-  <div>
-    <h1 style="font-size: 1.5rem; color: var(--text-primary);">Statistiques de Performance</h1>
-    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+  <!-- En-tête de page -->
+  <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+    <h1 class="text-[26px] md:text-[30px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+      Statistiques de Performance
+    </h1>
+    <p class="text-[14px] text-[#6e6e73] mt-1">
       Analysez la dynamique de vos campagnes et l'engagement de votre communauté d'acheteurs.
     </p>
   </div>
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
-    <div class="card">
-      <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Taux de conversion commandes</span>
-      <div style="font-size: 1.85rem; font-weight: 800; color: var(--primary); margin: 0.25rem 0;">
-        {% if stats.total_participants > 0 %}
-          {{ stats.paid_orders_count|default:0 }} / {{ stats.total_participants }}
-        {% else %}
-          100%
-        {% endif %}
+  <!-- Cartes KPI de performance -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col justify-between">
+      <div class="flex items-center justify-between">
+        <span class="text-[12px] font-medium uppercase tracking-wider text-[#6e6e73]">Taux de Conversion</span>
+        <div class="w-8 h-8 rounded-full bg-[#f0f7ff] text-[#0071e3] flex items-center justify-center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+          </svg>
+        </div>
       </div>
-      <span style="font-size: 0.8rem; color: var(--text-muted);">Acheteurs passés à la commande</span>
+      <div class="mt-6">
+        <div class="text-[32px] font-bold tracking-tight text-[#0071e3] leading-none">
+          {% if stats.total_participants > 0 %}
+            {{ stats.paid_orders_count|default:0 }} / {{ stats.total_participants }}
+          {% else %}
+            100%
+          {% endif %}
+        </div>
+        <p class="text-[12px] text-[#6e6e73] mt-2">Acheteurs inscrits passés à la commande</p>
+      </div>
     </div>
 
-    <div class="card">
-      <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Campagnes réussies</span>
-      <div style="font-size: 1.85rem; font-weight: 800; color: var(--success); margin: 0.25rem 0;">
-        {{ stats.active_campaigns_count }}
+    <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col justify-between">
+      <div class="flex items-center justify-between">
+        <span class="text-[12px] font-medium uppercase tracking-wider text-[#6e6e73]">Campagnes Réussies</span>
+        <div class="w-8 h-8 rounded-full bg-[#f2fcf5] text-[#34c759] flex items-center justify-center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
       </div>
-      <span style="font-size: 0.8rem; color: var(--text-muted);">Paliers atteints</span>
+      <div class="mt-6">
+        <div class="text-[32px] font-bold tracking-tight text-[#34c759] leading-none">
+          {{ stats.active_campaigns_count }}
+        </div>
+        <p class="text-[12px] text-[#6e6e73] mt-2">Paliers de volume débloqués avec succès</p>
+      </div>
     </div>
 
-    <div class="card">
-      <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Note moyenne boutique</span>
-      <div style="font-size: 1.85rem; font-weight: 800; color: #D97706; margin: 0.25rem 0; display: flex; align-items: center; gap: 0.4rem;">
-        {% include 'partials/icons/star.html' %} 4.9 / 5
+    <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col justify-between">
+      <div class="flex items-center justify-between">
+        <span class="text-[12px] font-medium uppercase tracking-wider text-[#6e6e73]">Note Moyenne Boutique</span>
+        <div class="w-8 h-8 rounded-full bg-[#fffbeb] text-[#f59e0b] flex items-center justify-center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        </div>
       </div>
-      <span style="font-size: 0.8rem; color: var(--text-muted);">Basé sur les avis certifiés</span>
+      <div class="mt-6">
+        <div class="text-[32px] font-bold tracking-tight text-[#1d1d1f] leading-none flex items-center gap-2">
+          <span>4.9</span>
+          <span class="text-[16px] font-semibold text-[#86868b]">/ 5.0</span>
+        </div>
+        <p class="text-[12px] text-[#6e6e73] mt-2">Basé sur les avis clients certifiés</p>
+      </div>
     </div>
   </div>
 
-  <div class="card">
-    <h3 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 0.75rem;">
-      Conseils pour maximiser vos ventes collectives
-    </h3>
-    <ul style="padding-left: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
-      <li><strong>Fixez des paliers progressifs accessibles</strong> (ex: 5 personnes, 10 personnes, 20 personnes) pour motiver les premiers acheteurs.</li>
-      <li><strong>Activez l'option « Prix du palier final atteint »</strong> pour que chaque participant ait un intérêt direct à partager le lien WhatsApp à son entourage.</li>
-      <li><strong>Mettez à jour le statut d'expédition sous 24h</strong> pour bâtir une réputation de commerçant de confiance sur la plateforme.</li>
-    </ul>
+  <!-- Conseils Apple Store Partner -->
+  <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-8 h-8 rounded-full bg-[#0071e3]/10 text-[#0071e3] flex items-center justify-center">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+      </div>
+      <h2 class="text-[18px] font-bold text-[#1d1d1f]">
+        Bonnes pratiques pour maximiser vos ventes collectives
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+      <div class="p-5 rounded-2xl bg-[#fbfbfd] border border-black/5">
+        <div class="w-7 h-7 rounded-full bg-[#0071e3] text-white text-[12px] font-bold flex items-center justify-center mb-3">1</div>
+        <h3 class="font-semibold text-[15px] text-[#1d1d1f] mb-1">Paliers progressifs</h3>
+        <p class="text-[13px] text-[#6e6e73] leading-relaxed">
+          Fixez des paliers initiaux faciles à franchir (ex: 5, 10, 25 unités) pour encourager les premiers acheteurs sans hésitation.
+        </p>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-[#fbfbfd] border border-black/5">
+        <div class="w-7 h-7 rounded-full bg-[#0071e3] text-white text-[12px] font-bold flex items-center justify-center mb-3">2</div>
+        <h3 class="font-semibold text-[15px] text-[#1d1d1f] mb-1">Partage viral incitatif</h3>
+        <p class="text-[13px] text-[#6e6e73] leading-relaxed">
+          Utilisez le « Prix du palier final » : chaque inscrit devient ambassadeur et partage le lien WhatsApp à son cercle pour faire baisser le prix.
+        </p>
+      </div>
+
+      <div class="p-5 rounded-2xl bg-[#fbfbfd] border border-black/5">
+        <div class="w-7 h-7 rounded-full bg-[#0071e3] text-white text-[12px] font-bold flex items-center justify-center mb-3">3</div>
+        <h3 class="font-semibold text-[15px] text-[#1d1d1f] mb-1">Expédition rapide</h3>
+        <p class="text-[13px] text-[#6e6e73] leading-relaxed">
+          Traitez vos expéditions en moins de 24h ouvrées pour obtenir le statut « Marchand Élite » et une mise en avant prioritaire.
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

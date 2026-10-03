@@ -4,58 +4,90 @@
 {% block title %}Paramètres de la Boutique — Espace Commerçant REDUX{% endblock %}
 
 {% block content %}
-<div style="max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+<div class="max-w-3xl mx-auto px-4 sm:px-6 py-8 md:py-12 space-y-8">
+  <!-- Onglets Commerçant Apple -->
   {% include 'merchant/nav_tabs.html' %}
 
-  <div>
-    <h1 style="font-size: 1.5rem; color: var(--text-primary);">Configuration de votre Boutique</h1>
-    <p style="color: var(--text-secondary); font-size: 0.9rem;">
-      Coordonnées publiques visibles par les acheteurs sur vos fiches de campagnes.
+  <!-- En-tête -->
+  <div class="text-center md:text-left">
+    <h1 class="text-[26px] md:text-[32px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+      Configuration de votre Boutique
+    </h1>
+    <p class="text-[14px] text-[#6e6e73] mt-1">
+      Coordonnées et informations publiques affichées aux acheteurs sur vos fiches de campagnes collectives.
     </p>
   </div>
 
-  <div class="card">
-    <form method="post">
+  <!-- Formulaire Apple -->
+  <div class="bg-white rounded-[18px] p-6 md:p-10 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+    <form method="post" class="space-y-6">
       {% csrf_token %}
 
       {% if form %}
-        <div class="form-group">
-          <label for="{{ form.name.id_for_label }}" class="form-label">Nom de la boutique *</label>
-          {{ form.name }}
-        </div>
-
-        <div class="form-group">
-          <label for="{{ form.city.id_for_label }}" class="form-label">Ville / Emplacement *</label>
-          {{ form.city }}
-        </div>
-
-        <div class="form-group">
-          <label for="{{ form.address.id_for_label }}" class="form-label">Adresse physique du point de vente</label>
-          {{ form.address }}
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-          <div class="form-group">
-            <label for="{{ form.phone.id_for_label }}" class="form-label">Téléphone / WhatsApp</label>
-            {{ form.phone }}
-          </div>
-
-          <div class="form-group">
-            <label for="{{ form.email.id_for_label }}" class="form-label">Email professionnel</label>
-            {{ form.email }}
+        <div>
+          <label for="{{ form.name.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+            Nom commercial de la boutique <span class="text-[#ff3b30]">*</span>
+          </label>
+          <div class="[&>input]:w-full [&>input]:px-4 [&>input]:py-3 [&>input]:bg-[#f5f5f7] [&>input]:border [&>input]:border-transparent [&>input]:focus:border-[#0071e3] [&>input]:focus:bg-white [&>input]:rounded-xl [&>input]:text-[14px] [&>input]:text-[#1d1d1f] [&>input]:transition-all [&>input]:outline-none">
+            {{ form.name }}
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="{{ form.description.id_for_label }}" class="form-label">Description & Spécialités</label>
-          {{ form.description }}
+        <div>
+          <label for="{{ form.city.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+            Ville / Emplacement <span class="text-[#ff3b30]">*</span>
+          </label>
+          <div class="[&>input]:w-full [&>input]:px-4 [&>input]:py-3 [&>input]:bg-[#f5f5f7] [&>input]:border [&>input]:border-transparent [&>input]:focus:border-[#0071e3] [&>input]:focus:bg-white [&>input]:rounded-xl [&>input]:text-[14px] [&>input]:text-[#1d1d1f] [&>input]:transition-all [&>input]:outline-none">
+            {{ form.city }}
+          </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
-          Enregistrer les coordonnées de la boutique
-        </button>
+        <div>
+          <label for="{{ form.address.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+            Adresse physique du point de vente
+          </label>
+          <div class="[&>input]:w-full [&>input]:px-4 [&>input]:py-3 [&>input]:bg-[#f5f5f7] [&>input]:border [&>input]:border-transparent [&>input]:focus:border-[#0071e3] [&>input]:focus:bg-white [&>input]:rounded-xl [&>input]:text-[14px] [&>input]:text-[#1d1d1f] [&>input]:transition-all [&>input]:outline-none">
+            {{ form.address }}
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label for="{{ form.phone.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+              Téléphone / Contact WhatsApp
+            </label>
+            <div class="[&>input]:w-full [&>input]:px-4 [&>input]:py-3 [&>input]:bg-[#f5f5f7] [&>input]:border [&>input]:border-transparent [&>input]:focus:border-[#0071e3] [&>input]:focus:bg-white [&>input]:rounded-xl [&>input]:text-[14px] [&>input]:text-[#1d1d1f] [&>input]:transition-all [&>input]:outline-none">
+              {{ form.phone }}
+            </div>
+          </div>
+
+          <div>
+            <label for="{{ form.email.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+              Email professionnel
+            </label>
+            <div class="[&>input]:w-full [&>input]:px-4 [&>input]:py-3 [&>input]:bg-[#f5f5f7] [&>input]:border [&>input]:border-transparent [&>input]:focus:border-[#0071e3] [&>input]:focus:bg-white [&>input]:rounded-xl [&>input]:text-[14px] [&>input]:text-[#1d1d1f] [&>input]:transition-all [&>input]:outline-none">
+              {{ form.email }}
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label for="{{ form.description.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+            Description & Spécialités
+          </label>
+          <div class="[&>textarea]:w-full [&>textarea]:px-4 [&>textarea]:py-3 [&>textarea]:bg-[#f5f5f7] [&>textarea]:border [&>textarea]:border-transparent [&>textarea]:focus:border-[#0071e3] [&>textarea]:focus:bg-white [&>textarea]:rounded-xl [&>textarea]:text-[14px] [&>textarea]:text-[#1d1d1f] [&>textarea]:transition-all [&>textarea]:outline-none [&>textarea]:min-h-[100px]">
+            {{ form.description }}
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-[#f5f5f7] flex items-center justify-end">
+          <button type="submit" 
+                  class="h-11 px-8 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[13px] font-medium transition-all inline-flex items-center justify-center shadow-xs">
+            Enregistrer les modifications
+          </button>
+        </div>
       {% else %}
-        <p style="color: var(--text-secondary);">Aucune boutique configurée.</p>
+        <p class="text-[14px] text-[#6e6e73]">Aucune boutique n'est associée à ce compte.</p>
       {% endif %}
     </form>
   </div>

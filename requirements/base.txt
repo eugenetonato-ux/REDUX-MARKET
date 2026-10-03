@@ -13,3 +13,5 @@ django-redis
 phonenumbers
 psycopg2-binary
 dj-database-url
+django-storages[s3]
+boto3

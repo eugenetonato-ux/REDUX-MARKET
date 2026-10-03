@@ -4,25 +4,41 @@
 {% block title %}Accréditation & Vérification — Espace Commerçant REDUX{% endblock %}
 
 {% block content %}
-<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-8">
+  <!-- Onglets Commerçant Apple -->
   {% include 'merchant/nav_tabs.html' %}
 
-  <div>
-    <h1 style="font-size: 1.5rem; color: var(--text-primary);">Vérification d'Identité & Entreprise (KYC)</h1>
-    <p style="color: var(--text-secondary); font-size: 0.9rem;">
-      Soumettez vos pièces justificatives pour obtenir le badge officiel « Commerçant Vérifié » et rassurer les acheteurs.
+  <!-- En-tête de page -->
+  <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium bg-[#34c759]/10 text-[#248a3d] mb-3">
+      Vérification d'Identité & Entreprise (KYC)
+    </div>
+    <h1 class="text-[26px] md:text-[30px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+      Certification de la Boutique
+    </h1>
+    <p class="text-[14px] text-[#6e6e73] mt-1">
+      Soumettez vos pièces administratives pour obtenir le badge officiel « Boutique Vérifiée » et maximiser la confiance des acheteurs.
     </p>
   </div>
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start;">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
     <!-- Formulaire de soumission -->
-    <div class="card">
-      <h3 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 1rem;">Soumettre une pièce justificative</h3>
-      <form method="post" enctype="multipart/form-data">
+    <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+      <h2 class="text-[18px] font-bold text-[#1d1d1f] mb-2">
+        Soumettre une pièce justificative
+      </h2>
+      <p class="text-[13px] text-[#6e6e73] mb-6">
+        Sélectionnez le type de document légal et joignez une version numérisée lisible.
+      </p>
+
+      <form method="post" enctype="multipart/form-data" class="space-y-5">
         {% csrf_token %}
-        <div class="form-group">
-          <label class="form-label" for="id_doc_type">Type de document *</label>
-          <select name="document_type" id="id_doc_type" class="form-select">
+
+        <div>
+          <label class="block text-[13px] font-semibold text-[#1d1d1f] mb-2" for="id_doc_type">
+            Type de document <span class="text-[#ff3b30]">*</span>
+          </label>
+          <select name="document_type" id="id_doc_type" class="w-full px-4 py-3 bg-[#f5f5f7] border border-transparent focus:border-[#0071e3] focus:bg-white rounded-xl text-[14px] text-[#1d1d1f] transition-all outline-none">
             <option value="Registre de Commerce (RCCM)">Registre du Commerce et du Crédit Mobilier (RCCM)</option>
             <option value="IFU / Numéro Fiscal">Numéro d'Identification Fiscale (IFU / NINEA)</option>
             <option value="Carte Nationale d'Identité / CIP">Pièce d'Identité du Gérant (CNI, CIP, Passeport)</option>
@@ -30,46 +46,65 @@
           </select>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="id_doc_file">Fichier du document (PDF, PNG, JPG) *</label>
-          <input type="file" name="document_file" id="id_doc_file" class="form-input" required>
-          <small style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.25rem; display: block;">Document lisible, en cours de validité (max 5 Mo).</small>
+        <div>
+          <label class="block text-[13px] font-semibold text-[#1d1d1f] mb-2" for="id_doc_file">
+            Fichier numérique (PDF, PNG, JPG) <span class="text-[#ff3b30]">*</span>
+          </label>
+          <input type="file" name="document_file" id="id_doc_file" class="w-full px-4 py-2.5 bg-[#f5f5f7] border border-transparent focus:border-[#0071e3] focus:bg-white rounded-xl text-[13px] text-[#1d1d1f] transition-all outline-none" required>
+          <p class="text-[11px] text-[#86868b] mt-1.5">Document officiel lisible en cours de validité (max 5 Mo).</p>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
+        <button type="submit" 
+                class="w-full h-11 px-8 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[13px] font-medium transition-all inline-flex items-center justify-center shadow-xs">
           Envoyer pour vérification
         </button>
       </form>
     </div>
 
-    <!-- Historique des pièces soumises -->
-    <div class="card">
-      <h3 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 1rem;">Statut de vos documents</h3>
+    <!-- Statut des pièces soumises -->
+    <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+      <h2 class="text-[18px] font-bold text-[#1d1d1f] mb-2">
+        Historique de Vérification
+      </h2>
+      <p class="text-[13px] text-[#6e6e73] mb-6">
+        État d'examen de vos documents par l'équipe de modération REDUX.
+      </p>
+
       {% if verifications %}
-        <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+        <div class="space-y-4">
           {% for v in verifications %}
-            <div style="border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-                <strong style="color: var(--text-primary); font-size: 0.95rem;">{{ v.document_type }}</strong>
-                <span class="badge badge-status {% if v.status == 'VERIFIED' %}active{% else %}pending{% endif %}">
-                  {{ v.get_status_display }}
-                </span>
+            <div class="p-4 bg-[#fbfbfd] rounded-2xl border border-black/5">
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="font-semibold text-[14px] text-[#1d1d1f]">{{ v.document_type }}</span>
+                {% if v.status == 'VERIFIED' %}
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium bg-[#34c759]/10 text-[#248a3d]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#34c759]"></span>
+                    {{ v.get_status_display }}
+                  </span>
+                {% else %}
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium bg-[#ff9500]/10 text-[#b25e00]">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#ff9500]"></span>
+                    {{ v.get_status_display }}
+                  </span>
+                {% endif %}
               </div>
-              <div style="font-size: 0.8rem; color: var(--text-muted);">
+              <div class="text-[12px] text-[#86868b]">
                 Soumis le {{ v.submitted_at|date:"d/m/Y à H:i" }}
               </div>
               {% if v.reviewer_notes %}
-                <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary); background: var(--bg-surface); padding: 0.5rem; border-radius: var(--radius-sm);">
-                  Note de l'administrateur : {{ v.reviewer_notes }}
+                <div class="mt-2.5 p-3 rounded-xl bg-white border border-black/5 text-[12px] text-[#6e6e73]">
+                  <strong class="text-[#1d1d1f]">Remarque de modération :</strong> {{ v.reviewer_notes }}
                 </div>
               {% endif %}
             </div>
           {% endfor %}
         </div>
       {% else %}
-        <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
-          Aucun document soumis pour le moment.
-        </p>
+        <div class="py-12 text-center">
+          <p class="text-[14px] text-[#6e6e73]">
+            Aucun document soumis pour le moment.
+          </p>
+        </div>
       {% endif %}
     </div>
   </div>

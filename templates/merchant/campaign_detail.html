@@ -4,107 +4,144 @@
 {% block title %}Gestion Campagne : {{ campaign.title }} — REDUX{% endblock %}
 
 {% block content %}
-<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-8">
+  <!-- Onglets Commerçant Apple -->
   {% include 'merchant/nav_tabs.html' %}
 
-  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+  <!-- En-tête de la campagne -->
+  <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col md:flex-row md:items-center justify-between gap-6">
     <div>
-      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem;">
-        <span class="badge badge-status {% if campaign.status == 'ACTIVE' %}active{% else %}pending{% endif %}">
-          {{ campaign.get_status_display }}
-        </span>
-        <span style="font-size: 0.85rem; color: var(--text-secondary);">
-          Fin le {{ campaign.end_date|date:"d F Y à H:i" }}
+      <div class="flex items-center gap-3 flex-wrap mb-2">
+        {% if campaign.status == 'ACTIVE' %}
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium bg-[#34c759]/10 text-[#248a3d]">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#34c759]"></span>
+            {{ campaign.get_status_display }}
+          </span>
+        {% else %}
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium bg-[#86868b]/10 text-[#86868b]">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#86868b]"></span>
+            {{ campaign.get_status_display }}
+          </span>
+        {% endif %}
+        <span class="text-[12px] text-[#86868b]">
+          Clôture le {{ campaign.end_date|date:"d F Y à H:i" }}
         </span>
       </div>
-      <h1 style="font-size: 1.6rem; color: var(--text-primary); margin: 0;">{{ campaign.title }}</h1>
+      <h1 class="text-[24px] md:text-[28px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+        {{ campaign.title }}
+      </h1>
+      <p class="text-[13px] text-[#6e6e73] mt-1">
+        Produit lié : <span class="font-medium text-[#1d1d1f]">{{ campaign.product.name }}</span>
+      </p>
     </div>
 
-    <div style="display: flex; gap: 0.5rem;">
-      <a href="{% url 'campaigns:detail' slug=campaign.slug %}" target="_blank" class="btn btn-outline btn-sm">
-        Voir page publique ↗
+    <div class="flex items-center gap-3 flex-wrap">
+      <a href="{% url 'campaigns:detail' slug=campaign.slug %}" 
+         target="_blank" 
+         class="h-10 px-5 rounded-full border border-[#d2d2d7] hover:border-[#86868b] text-[#1d1d1f] text-[13px] font-medium transition-all inline-flex items-center justify-center gap-1.5">
+        <span>Page publique</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="7" y1="17" x2="17" y2="7"></line>
+          <polyline points="7 7 17 7 17 17"></polyline>
+        </svg>
       </a>
-      <a href="{% url 'merchants:campaigns' %}" class="btn btn-outline-dark btn-sm">
+      <a href="{% url 'merchants:campaigns' %}" 
+         class="h-10 px-5 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[13px] font-medium transition-all inline-flex items-center justify-center">
         ← Retour aux campagnes
       </a>
     </div>
   </div>
 
-  <!-- Jauge et Stats Campagne -->
-  <div class="card">
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem;">
-      <div>
-        <span style="font-size: 0.82rem; color: var(--text-secondary); text-transform: uppercase;">Participants Actuels</span>
-        <div style="font-size: 1.75rem; font-weight: 800; color: var(--text-primary);">
-          {{ campaign.current_participants_count }} / {{ campaign.target_participants }}
+  <!-- Jauge et Stats de la Campagne -->
+  <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 space-y-6">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div class="bg-[#fbfbfd] p-5 rounded-2xl border border-black/5">
+        <span class="text-[12px] font-semibold uppercase tracking-wider text-[#86868b] block mb-2">Acheteurs Inscrits</span>
+        <div class="text-[28px] md:text-[32px] font-bold text-[#1d1d1f] leading-none">
+          {{ campaign.current_participants_count }} <span class="text-[16px] font-medium text-[#86868b]">/ {{ campaign.target_participants }}</span>
         </div>
       </div>
-      <div>
-        <span style="font-size: 0.82rem; color: var(--text-secondary); text-transform: uppercase;">Prix Actuel Débloqué</span>
-        <div style="font-size: 1.75rem; font-weight: 800; color: var(--success);">
-          {{ campaign.current_price }} {{ campaign.product.store.country.currency.code }}
+
+      <div class="bg-[#fbfbfd] p-5 rounded-2xl border border-black/5">
+        <span class="text-[12px] font-semibold uppercase tracking-wider text-[#86868b] block mb-2">Prix Actuel Débloqué</span>
+        <div class="text-[28px] md:text-[32px] font-bold text-[#34c759] leading-none">
+          {{ campaign.current_price }} <span class="text-[16px] font-semibold text-[#6e6e73]">{{ campaign.product.store.country.currency.code }}</span>
         </div>
       </div>
-      <div>
-        <span style="font-size: 0.82rem; color: var(--text-secondary); text-transform: uppercase;">Prix d'Origine</span>
-        <div style="font-size: 1.75rem; font-weight: 800; color: var(--text-muted); text-decoration: line-through;">
-          {{ campaign.product.original_price }} {{ campaign.product.store.country.currency.code }}
+
+      <div class="bg-[#fbfbfd] p-5 rounded-2xl border border-black/5">
+        <span class="text-[12px] font-semibold uppercase tracking-wider text-[#86868b] block mb-2">Prix Public d'Origine</span>
+        <div class="text-[28px] md:text-[32px] font-bold text-[#86868b] line-through leading-none">
+          {{ campaign.product.original_price }} <span class="text-[16px] font-semibold text-[#86868b]">{{ campaign.product.store.country.currency.code }}</span>
         </div>
       </div>
     </div>
 
-    <div class="progress-track" style="height: 12px; margin-bottom: 0.5rem;">
-      <div class="progress-bar-fill" style="width: {{ summary.progress_pct }}%;"></div>
-    </div>
-    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary);">
-      <span>{{ summary.progress_pct }}% de l'objectif atteint</span>
-      {% if summary.remaining_for_next %}
-        <span style="color: var(--primary); font-weight: 600;">Encore {{ summary.remaining_for_next }} participant(s) pour franchir le prochain palier</span>
-      {% else %}
-        <span style="color: var(--success); font-weight: 700;">Palier maximum franchi !</span>
-      {% endif %}
+    <!-- Barre de Progression -->
+    <div class="pt-2">
+      <div class="flex justify-between items-center text-[13px] font-medium text-[#6e6e73] mb-2">
+        <span class="font-semibold text-[#1d1d1f]">{{ summary.progress_pct }}% atteint</span>
+        {% if summary.remaining_for_next %}
+          <span class="text-[#0071e3] font-medium">Encore {{ summary.remaining_for_next }} participant(s) pour franchir le palier suivant</span>
+        {% else %}
+          <span class="text-[#34c759] font-semibold">Palier maximum débloqué !</span>
+        {% endif %}
+      </div>
+      <div class="w-full bg-[#f5f5f7] h-3 rounded-full overflow-hidden">
+        <div class="bg-[#0071e3] h-full rounded-full transition-all duration-500" style="width: {{ summary.progress_pct }}%;"></div>
+      </div>
     </div>
   </div>
 
   <!-- Paliers configurés & Participants -->
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem;">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
     <!-- Paliers -->
-    <div class="card">
-      <h3 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 1rem;">Paliers Dégressifs Définis</h3>
-      {% include 'partials/tier_table.html' with tiers=campaign.tiers.all %}
+    <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+      <h2 class="text-[18px] font-bold text-[#1d1d1f] mb-4">Paliers Dégressifs Définis</h2>
+      <div class="overflow-x-auto rounded-xl border border-black/5">
+        {% include 'partials/tier_table.html' with tiers=campaign.tiers.all %}
+      </div>
     </div>
 
-    <!-- Liste des Acheteurs Inscrits -->
-    <div class="card">
-      <h3 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 1rem;">
-        Participants au Groupe ({{ participants.count }})
-      </h3>
+    <!-- Acheteurs Inscrits -->
+    <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-[18px] font-bold text-[#1d1d1f]">Participants au Groupe</h2>
+        <span class="px-2.5 py-0.5 rounded-full text-[12px] font-semibold bg-[#f5f5f7] text-[#1d1d1f]">
+          {{ participants.count }}
+        </span>
+      </div>
 
       {% if participants %}
-        <div style="display: flex; flex-direction: column; gap: 0.75rem; max-height: 400px; overflow-y: auto;">
+        <div class="space-y-3 max-h-[380px] overflow-y-auto pr-1 divide-y divide-[#f5f5f7]">
           {% for part in participants %}
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border: 1px solid var(--border-light); border-radius: var(--radius-sm); font-size: 0.9rem;">
+            <div class="pt-3 first:pt-0 flex items-center justify-between gap-3">
               <div>
-                <strong style="color: var(--text-primary);">{{ part.user.full_name|default:part.user.email }}</strong>
-                <div style="font-size: 0.78rem; color: var(--text-secondary);">
-                  {{ part.joined_at|date:"d M Y à H:i" }} • Quantité : x{{ part.quantity }}
-                </div>
+                <p class="font-medium text-[14px] text-[#1d1d1f]">{{ part.user.full_name|default:part.user.email }}</p>
+                <p class="text-[12px] text-[#6e6e73] mt-0.5">
+                  {{ part.joined_at|date:"d M Y à H:i" }} • Quantité : <span class="font-medium text-[#1d1d1f]">x{{ part.quantity }}</span>
+                </p>
               </div>
-              <div style="text-align: right;">
-                <span class="badge badge-status {% if part.status == 'JOINED' %}active{% else %}pending{% endif %}" style="font-size: 0.72rem;">
-                  {{ part.get_status_display }}
-                </span>
+              <div>
+                {% if part.status == 'JOINED' %}
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-[#34c759]/10 text-[#248a3d]">
+                    Inscrit
+                  </span>
+                {% else %}
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-[#86868b]/10 text-[#86868b]">
+                    {{ part.get_status_display }}
+                  </span>
+                {% endif %}
               </div>
             </div>
           {% endfor %}
         </div>
       {% else %}
-        <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
-          Aucun acheteur n'a encore rejoint cette campagne.
-        </p>
+        <div class="py-12 text-center">
+          <p class="text-[14px] text-[#6e6e73]">Aucun acheteur n'a encore rejoint cette campagne.</p>
+        </div>
       {% endif %}
     </div>
   </div>
-
 </div>
 {% endblock %}

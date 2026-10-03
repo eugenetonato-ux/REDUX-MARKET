@@ -4,123 +4,155 @@
 {% block title %}Commande #{{ order.order_number }} — Espace Commerçant REDUX{% endblock %}
 
 {% block content %}
-<div style="max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 space-y-8">
+  <!-- Onglets Commerçant Apple -->
   {% include 'merchant/nav_tabs.html' %}
 
-  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+  <!-- En-tête de commande -->
+  <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col md:flex-row md:items-center justify-between gap-6">
     <div>
-      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
-        <span class="badge badge-status {% if order.status == 'PAID' or order.status == 'DELIVERED' %}active{% else %}pending{% endif %}">
-          {{ order.get_status_display }}
-        </span>
-        <span style="font-size: 0.85rem; color: var(--text-secondary);">
+      <div class="flex items-center gap-3 flex-wrap mb-2">
+        {% if order.status == 'PAID' or order.status == 'DELIVERED' %}
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium bg-[#34c759]/10 text-[#248a3d]">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#34c759]"></span>
+            {{ order.get_status_display }}
+          </span>
+        {% else %}
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium bg-[#ff9500]/10 text-[#b25e00]">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#ff9500]"></span>
+            {{ order.get_status_display }}
+          </span>
+        {% endif %}
+        <span class="text-[12px] text-[#86868b]">
           Passée le {{ order.created_at|date:"d F Y à H:i" }}
         </span>
       </div>
-      <h1 style="font-size: 1.6rem; color: var(--text-primary); margin: 0;">Commande Client #{{ order.order_number }}</h1>
+      <h1 class="text-[26px] md:text-[30px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+        Commande Client #{{ order.order_number }}
+      </h1>
     </div>
 
-    <a href="{% url 'merchants:orders' %}" class="btn btn-outline-dark btn-sm">
-      ← Retour aux commandes
-    </a>
+    <div>
+      <a href="{% url 'merchants:orders' %}" 
+         class="h-10 px-5 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[13px] font-medium transition-all inline-flex items-center justify-center">
+        ← Retour aux commandes
+      </a>
+    </div>
   </div>
 
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start;">
-    <!-- COLONNE GAUCHE : Informations Commande & Client -->
-    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-      <!-- Coordonnées Acheteur & Livraison -->
-      <div class="card">
-        <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.75rem;">
-           Destinataire & Coordonnées
-        </h3>
-        <div style="font-size: 0.95rem; line-height: 1.6;">
-          <div>Client : <strong>{{ order.buyer.full_name|default:order.buyer.email }}</strong></div>
-          <div>Téléphone de livraison : <strong>{{ order.contact_phone }}</strong></div>
-          <div style="margin-top: 0.5rem; padding: 0.75rem; background: var(--bg-surface); border-radius: var(--radius-sm); border: 1px solid var(--border);">
-            <span style="font-size: 0.8rem; color: var(--text-muted); display: block;">Adresse complète :</span>
-            {{ order.shipping_address }}
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+    <!-- COLONNE GAUCHE (2 cols) : Détails Client et Articles -->
+    <div class="lg:col-span-2 space-y-6">
+      <!-- Coordonnées Acheteur -->
+      <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+        <h2 class="text-[18px] font-bold text-[#1d1d1f] mb-4">
+          Destinataire & Coordonnées de Livraison
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-[14px]">
+          <div>
+            <span class="text-[12px] text-[#86868b] block">Nom de l'acheteur</span>
+            <span class="font-medium text-[#1d1d1f]">{{ order.buyer.full_name|default:order.buyer.email }}</span>
           </div>
+          <div>
+            <span class="text-[12px] text-[#86868b] block">Téléphone de contact</span>
+            <span class="font-medium text-[#1d1d1f]">{{ order.contact_phone }}</span>
+          </div>
+        </div>
+        <div class="mt-4 p-4 rounded-xl bg-[#fbfbfd] border border-black/5">
+          <span class="text-[12px] text-[#86868b] block mb-1">Adresse complète :</span>
+          <p class="text-[14px] text-[#1d1d1f] leading-relaxed">{{ order.shipping_address }}</p>
         </div>
       </div>
 
-      <!-- Articles Commandés -->
-      <div class="card">
-        <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.75rem;">
-           Articles de la Commande
-        </h3>
-        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+      <!-- Articles de la commande -->
+      <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+        <h2 class="text-[18px] font-bold text-[#1d1d1f] mb-4">
+          Articles Commandés
+        </h2>
+        <div class="divide-y divide-[#f5f5f7]">
           {% for item in items %}
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--border-light);">
+            <div class="py-4 first:pt-0 last:pb-0 flex items-center justify-between gap-4">
               <div>
-                <strong>{{ item.product.name }}</strong>
-                <div style="font-size: 0.82rem; color: var(--text-secondary);">
-                  Quantité : x{{ item.quantity }} @ {{ item.unit_price }} {{ order.currency.code }}
-                </div>
+                <p class="font-medium text-[15px] text-[#1d1d1f]">{{ item.product.name }}</p>
+                <p class="text-[13px] text-[#6e6e73] mt-0.5">
+                  Quantité : <span class="font-medium text-[#1d1d1f]">x{{ item.quantity }}</span> @ {{ item.unit_price }} {{ order.currency.code }}
+                </p>
               </div>
-              <strong style="color: var(--success); font-size: 1.05rem;">
+              <div class="text-[16px] font-bold text-[#1d1d1f]">
                 {{ item.total_price }} {{ order.currency.code }}
-              </strong>
+              </div>
             </div>
           {% endfor %}
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; font-size: 1.15rem; font-weight: 800;">
-          <span>Total à expédier :</span>
-          <span style="color: var(--success);">{{ order.final_amount }} {{ order.currency.code }}</span>
+        <div class="mt-6 pt-5 border-t border-[#f5f5f7] flex items-center justify-between">
+          <span class="text-[15px] font-bold text-[#1d1d1f]">Total à expédier</span>
+          <span class="text-[22px] font-bold text-[#0071e3]">{{ order.final_amount }} {{ order.currency.code }}</span>
         </div>
       </div>
     </div>
 
-    <!-- COLONNE DROITE : Action de mise à jour d'expédition -->
-    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-      <div class="card" style="border: 2px solid var(--primary-subtle);">
-        <h3 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 0.75rem;">
-           Traitement & Expédition
-        </h3>
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
-          Mettez à jour le statut au fur et à mesure de la préparation et de l'envoi du colis. L'acheteur verra l'avancement en temps réel.
+    <!-- COLONNE DROITE (1 col) : Gestion du Statut et Historique -->
+    <div class="space-y-6">
+      <!-- Traitement & Expédition -->
+      <div class="bg-white rounded-[18px] p-6 md:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+        <h2 class="text-[18px] font-bold text-[#1d1d1f] mb-2">
+          Mise à Jour d'Expédition
+        </h2>
+        <p class="text-[13px] text-[#6e6e73] mb-5">
+          Informez le client de la préparation, de la remise au transporteur ou de la livraison effectuée.
         </p>
 
-        <form method="post">
+        <form method="post" class="space-y-4">
           {% csrf_token %}
 
-          <div class="form-group">
-            <label for="{{ form.status.id_for_label }}" class="form-label">{{ form.status.label }}</label>
-            {{ form.status }}
+          <div>
+            <label for="{{ form.status.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+              {{ form.status.label }}
+            </label>
+            <div class="[&>select]:w-full [&>select]:px-4 [&>select]:py-2.5 [&>select]:bg-[#f5f5f7] [&>select]:border [&>select]:border-transparent [&>select]:focus:border-[#0071e3] [&>select]:focus:bg-white [&>select]:rounded-xl [&>select]:text-[14px] [&>select]:text-[#1d1d1f] [&>select]:transition-all [&>select]:outline-none">
+              {{ form.status }}
+            </div>
           </div>
 
-          <div class="form-group">
-            <label for="{{ form.notes.id_for_label }}" class="form-label">{{ form.notes.label }}</label>
-            {{ form.notes }}
+          <div>
+            <label for="{{ form.notes.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-2">
+              {{ form.notes.label }}
+            </label>
+            <div class="[&>textarea]:w-full [&>textarea]:px-4 [&>textarea]:py-2.5 [&>textarea]:bg-[#f5f5f7] [&>textarea]:border [&>textarea]:border-transparent [&>textarea]:focus:border-[#0071e3] [&>textarea]:focus:bg-white [&>textarea]:rounded-xl [&>textarea]:text-[14px] [&>textarea]:text-[#1d1d1f] [&>textarea]:transition-all [&>textarea]:outline-none [&>textarea]:min-h-[80px]">
+              {{ form.notes }}
+            </div>
           </div>
 
-          <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 0.5rem;">
+          <button type="submit" 
+                  class="w-full h-11 px-6 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[13px] font-medium transition-all inline-flex items-center justify-center shadow-xs">
             Enregistrer le statut
           </button>
         </form>
       </div>
 
-      <!-- Historique des statuts -->
-      <div class="card">
-        <h3 style="font-size: 1.05rem; color: var(--text-primary); margin-bottom: 0.75rem;">
-          Historique de la Commande
+      <!-- Historique des événements -->
+      <div class="bg-white rounded-[18px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+        <h3 class="text-[15px] font-bold text-[#1d1d1f] mb-4">
+          Historique du suivi
         </h3>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem;">
+        <div class="space-y-3">
           {% for h in history %}
-            <div style="padding: 0.5rem; background: var(--bg-surface); border-radius: var(--radius-sm);">
-              <span style="font-weight: 700; color: var(--text-primary);">{{ h.get_new_status_display }}</span>
-              <span style="color: var(--text-muted); font-size: 0.75rem; margin-left: 0.5rem;">{{ h.created_at|date:"d/m/Y H:i" }}</span>
+            <div class="p-3.5 bg-[#fbfbfd] rounded-xl border border-black/5">
+              <div class="flex items-center justify-between text-[13px]">
+                <span class="font-semibold text-[#1d1d1f]">{{ h.get_new_status_display }}</span>
+                <span class="text-[11px] text-[#86868b]">{{ h.created_at|date:"d/m/Y H:i" }}</span>
+              </div>
               {% if h.notes %}
-                <div style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.2rem;">{{ h.notes }}</div>
+                <p class="text-[12px] text-[#6e6e73] mt-1.5">{{ h.notes }}</p>
               {% endif %}
             </div>
           {% empty %}
-            <div style="color: var(--text-muted);">Aucun historique.</div>
+            <p class="text-[13px] text-[#86868b]">Aucun changement enregistré.</p>
           {% endfor %}
         </div>
       </div>
     </div>
   </div>
-
 </div>
 {% endblock %}
