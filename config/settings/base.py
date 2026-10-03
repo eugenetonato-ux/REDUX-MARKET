@@ -247,3 +247,27 @@ CACHES = {
 
 CELERY_BROKER_URL = config("CELERY_BROKER_URL", default="redis://127.0.0.1:6379/1")
 CELERY_TASK_ALWAYS_EAGER = False
+
+# ==============================================================================
+# EMAIL / MAILERS (Django 6.1+ — remplace EMAIL_BACKEND)
+# Docs : https://docs.djangoproject.com/en/6.1/topics/email/#mailers
+# ==============================================================================
+
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="noreply@redux.app")
+SERVER_EMAIL = config("SERVER_EMAIL", default="errors@redux.app")
+
+MAILERS = {
+    # Mailer par défaut — SMTP en production, console en dev (surchargé dans development.py)
+    "default": {
+        "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+        "OPTIONS": {
+            "host": config("EMAIL_HOST", default="smtp.gmail.com"),
+            "port": config("EMAIL_PORT", default=587, cast=int),
+            "username": config("EMAIL_HOST_USER", default=""),
+            "password": config("EMAIL_HOST_PASSWORD", default=""),
+            "use_tls": config("EMAIL_USE_TLS", default=True, cast=bool),
+            "use_ssl": config("EMAIL_USE_SSL", default=False, cast=bool),
+            "timeout": 10,
+        },
+    },
+}
