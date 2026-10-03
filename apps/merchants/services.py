@@ -50,6 +50,15 @@ def submit_verification_document(merchant, document_type, document_file, user=No
         content_object=verification,
         changes={"document_type": document_type},
     )
+
+    # Accusé de réception au commerçant + alerte aux admins
+    try:
+        from .verification import notify_merchant_kyc_document_received, notify_admin_kyc_pending
+        notify_merchant_kyc_document_received(merchant, document_type)
+        notify_admin_kyc_pending(merchant, document_type)
+    except Exception:
+        pass
+
     return verification
 
 
@@ -83,4 +92,15 @@ def review_merchant_verification(verification_id, status, reviewer_notes="", adm
         content_object=merchant,
         changes={"status": status, "notes": reviewer_notes},
     )
+
+    # Notification in-app + email au commerçant
+    try:
+        from .verification import notify_merchant_kyc_approved, notify_merchant_kyc_rejected
+        if status == VerificationStatus.VERIFIED:
+            notify_merchant_kyc_approved(merchant)
+        elif status == VerificationStatus.REJECTED:
+            notify_merchant_kyc_rejected(merchant, reason=reviewer_notes)
+    except Exception:
+        pass
+
     return verification
