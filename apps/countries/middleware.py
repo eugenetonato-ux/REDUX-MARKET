@@ -11,9 +11,9 @@ class CountryMiddleware(MiddlewareMixin):
 
         country = None
         try:
-            country = Country.objects.filter(code=country_code, is_active=True).first()
+            country = Country.objects.select_related("currency").filter(code=country_code, is_active=True).first()
             if not country:
-                country = Country.objects.filter(is_active=True).first()
+                country = Country.objects.select_related("currency").filter(is_active=True).first()
         except Exception:
             country = None
 

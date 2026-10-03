@@ -8,7 +8,7 @@
       "phone_prefix": "+229",
       "currency": 1,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇧🇯",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -22,7 +22,7 @@
       "phone_prefix": "+225",
       "currency": 1,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇨🇮",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -36,7 +36,7 @@
       "phone_prefix": "+221",
       "currency": 1,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇸🇳",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -50,7 +50,7 @@
       "phone_prefix": "+228",
       "currency": 1,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇹🇬",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -64,7 +64,7 @@
       "phone_prefix": "+226",
       "currency": 1,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇧🇫",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -78,7 +78,7 @@
       "phone_prefix": "+223",
       "currency": 1,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇲🇱",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -92,7 +92,7 @@
       "phone_prefix": "+227",
       "currency": 1,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇳🇪",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -106,7 +106,7 @@
       "phone_prefix": "+237",
       "currency": 2,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇨🇲",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -120,7 +120,7 @@
       "phone_prefix": "+241",
       "currency": 2,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇬🇦",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -134,7 +134,7 @@
       "phone_prefix": "+242",
       "currency": 2,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇨🇬",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -148,7 +148,7 @@
       "phone_prefix": "+234",
       "currency": 3,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇳🇬",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -162,7 +162,7 @@
       "phone_prefix": "+233",
       "currency": 4,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇬🇭",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -176,7 +176,7 @@
       "phone_prefix": "+224",
       "currency": 5,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇬🇳",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -190,7 +190,7 @@
       "phone_prefix": "+243",
       "currency": 6,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇨🇩",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -204,7 +204,7 @@
       "phone_prefix": "+254",
       "currency": 7,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇰🇪",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -218,7 +218,7 @@
       "phone_prefix": "+250",
       "currency": 8,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇷🇼",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
@@ -232,7 +232,7 @@
       "phone_prefix": "+212",
       "currency": 9,
       "is_active": true,
-      "flag_emoji": "",
+      "flag_emoji": "🇲🇦",
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
     }
