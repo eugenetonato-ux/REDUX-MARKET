@@ -24,7 +24,7 @@
     <div style="display: flex; gap: 0.75rem;">
       <input type="text" name="q" value="{{ query }}" placeholder="Rechercher un produit, une marque, une demande..." class="form-control" style="flex: 1; font-size: 1rem; padding: 0.75rem 1rem;">
       <button type="submit" class="btn btn-primary" style="padding: 0.75rem 1.75rem;">
-        🔍 Rechercher
+         Rechercher
       </button>
     </div>
 
@@ -83,7 +83,7 @@
     </div>
     <div class="campaign-grid">
       {% for item in campaign_cards %}
-        {% include 'partials/campaign_card.html' with campaign=item.campaign summary=item.summary %}
+        {% include 'partials/campaign_card.html' with card=item %}
       {% endfor %}
     </div>
   </section>
@@ -134,14 +134,18 @@
 {% endif %}
 
 {% if not campaign_cards and not purchase_requests %}
-  <div class="card" style="text-align: center; padding: 4rem 1.5rem;">
-    <div style="font-size: 3rem; margin-bottom: 1rem;">🔍</div>
-    <h2>Aucun résultat ne correspond à vos critères</h2>
-    <p class="text-muted" style="max-width: 480px; margin: 0.5rem auto 1.5rem;">
+  <div class="empty-state-box">
+    <div class="empty-state-icon">
+      {% include 'partials/icons/search.html' %}
+    </div>
+    <h2 class="empty-state-title">Aucun résultat ne correspond à vos critères</h2>
+    <p class="empty-state-desc">
       Essayez de modifier vos filtres ou de lancer vous-même une demande d'achat groupé.
     </p>
-    <a href="{% url 'pages:explorer' %}" class="btn btn-outline" style="margin-right: 0.5rem;">Réinitialiser</a>
-    <a href="{% url 'purchase_requests:create' %}" class="btn btn-primary">Créer une demande</a>
+    <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+      <a href="{% url 'pages:explorer' %}" class="btn btn-outline">Réinitialiser</a>
+      <a href="{% url 'purchase_requests:create' %}" class="btn btn-primary">Créer une demande</a>
+    </div>
   </div>
 {% endif %}
 {% endblock %}

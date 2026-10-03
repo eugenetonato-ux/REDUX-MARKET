@@ -131,6 +131,33 @@ def offline_view(request):
     return render(request, "pages/offline.html")
 
 
+def categories_view(request):
+    categories = Category.objects.filter(is_active=True, parent__isnull=True).prefetch_related("children").annotate(
+        products_count=Count("products", filter=Q(products__is_active=True))
+    )
+    return render(request, "pages/categories.html", {"categories": categories})
+
+
+def category_detail_view(request, slug):
+    from django.shortcuts import get_object_or_404
+    category = get_object_or_404(Category, slug=slug, is_active=True)
+    campaigns_qs = list_active_campaigns(category_slug=slug)
+    campaign_cards = []
+    for c in campaigns_qs:
+        campaign_cards.append({
+            "campaign": c,
+            "summary": get_campaign_summary(c),
+        })
+    return render(
+        request,
+        "pages/category_detail.html",
+        {
+            "category": category,
+            "campaign_cards": campaign_cards,
+        },
+    )
+
+
 def robots_txt(request):
     lines = [
         "User-agent: *",
@@ -144,3 +171,4 @@ def robots_txt(request):
         f"Sitemap: https://{request.get_host()}/sitemap.xml",
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
+

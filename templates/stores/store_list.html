@@ -27,7 +27,7 @@
           </div>
           <p class="store-card-desc">{{ store.description|default:"Boutique partenaire certifiée sur la plateforme REDUX." }}</p>
           <div class="store-card-footer">
-            <span>📍 {{ store.city|default:store.country.name }} ({{ store.country.code }})</span>
+            <span>{{ store.city|default:store.country.name }} ({{ store.country.code }})</span>
             <a href="{% url 'stores:detail' slug=store.slug %}" class="btn btn-outline btn-sm">Découvrir l'offre →</a>
           </div>
         </div>
@@ -35,13 +35,15 @@
     {% endfor %}
   </div>
 {% else %}
-  <div class="card" style="text-align: center; padding: 4rem 1.5rem;">
-    <div style="font-size: 3rem; margin-bottom: 1rem;">🛍️</div>
-    <h2>Bientôt de nouvelles boutiques</h2>
-    <p class="text-muted" style="margin: 0.5rem auto 1.5rem; max-width: 480px;">
+  <div class="empty-state-box">
+    <div class="empty-state-icon">
+      {% include 'partials/icons/store.html' %}
+    </div>
+    <h2 class="empty-state-title">Bientôt de nouvelles boutiques</h2>
+    <p class="empty-state-desc">
       Aucune boutique n'est encore référencée dans cette région. Vous êtes commerçant ? Créez la première boutique dès maintenant !
     </p>
-    <a href="/register/" class="btn btn-primary">Rejoindre comme Commerçant</a>
+    <a href="{% url 'accounts:register_merchant' %}" class="btn btn-primary">Rejoindre comme Commerçant</a>
   </div>
 {% endif %}
 {% endblock %}

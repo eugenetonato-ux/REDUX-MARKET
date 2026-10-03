@@ -1,0 +1,94 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Chiffre d'Affaires & Revenus — Espace Commerçant REDUX{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+  {% include 'merchant/nav_tabs.html' %}
+
+  <div>
+    <h1 style="font-size: 1.5rem; color: var(--text-primary);">Suivi Financier & Chiffre d'Affaires</h1>
+    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+      Récapitulatif transparent de vos ventes collectives, commissions plateforme et montants nets.
+    </p>
+  </div>
+
+  <!-- Cartes financières -->
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem;">
+    <div class="card">
+      <span style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">Volume Brut Réalisé</span>
+      <div style="font-size: 1.75rem; font-weight: 800; color: var(--success); margin: 0.25rem 0;">
+        {{ stats.total_sales }} {{ merchant.stores.first.country.currency.code }}
+      </div>
+      <span style="font-size: 0.8rem; color: var(--text-muted);">Sur les commandes confirmées</span>
+    </div>
+
+    <div class="card">
+      <span style="font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase;">Commission Plateforme (5%)</span>
+      <div style="font-size: 1.75rem; font-weight: 800; color: var(--danger); margin: 0.25rem 0;">
+        -{{ stats.platform_commission }} {{ merchant.stores.first.country.currency.code }}
+      </div>
+      <span style="font-size: 0.8rem; color: var(--text-muted);">Frais de service & séquestre</span>
+    </div>
+
+    <div class="card" style="background: #ECFDF3; border-color: #A6F4C5;">
+      <span style="font-size: 0.82rem; font-weight: 700; color: #027A48; text-transform: uppercase;">Revenu Net Commerçant</span>
+      <div style="font-size: 1.75rem; font-weight: 800; color: #027A48; margin: 0.25rem 0;">
+        {{ stats.net_revenue }} {{ merchant.stores.first.country.currency.code }}
+      </div>
+      <span style="font-size: 0.8rem; color: #05603A;">Disponible pour reversement</span>
+    </div>
+  </div>
+
+  <!-- Liste des transactions payées -->
+  <div class="card">
+    <h3 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 1rem;">
+      Historique des Ventes Confirmées
+    </h3>
+
+    {% if paid_orders %}
+      <div style="overflow-x: auto;">
+        <table class="tier-table-wrap">
+          <thead>
+            <tr>
+              <th>Commande</th>
+              <th>Date de paiement</th>
+              <th>Campagne</th>
+              <th>Montant Brut</th>
+              <th>Commission</th>
+              <th>Net Commerçant</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ord in paid_orders %}
+              <tr>
+                <td><strong>#{{ ord.order_number }}</strong></td>
+                <td style="font-size: 0.85rem; color: var(--text-secondary);">{{ ord.created_at|date:"d M Y H:i" }}</td>
+                <td>{{ ord.campaign.title|truncatechars:30 }}</td>
+                <td><strong>{{ ord.final_amount }} {{ ord.currency.code }}</strong></td>
+                <td style="color: var(--danger);">-5%</td>
+                <td style="color: var(--success); font-weight: 700;">{{ ord.final_amount }} {{ ord.currency.code }}</td>
+                <td>
+                  <span class="badge badge-status active">{% include 'partials/icons/check.html' %} Confirmé</span>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state-box">
+        <div class="empty-state-icon">
+          {% include 'partials/icons/wallet.html' %}
+        </div>
+        <h3 class="empty-state-title">Aucune vente payée pour l'instant</h3>
+        <p class="empty-state-desc">
+          Vos fonds apparaîtront ici dès les premiers règlements confirmés de vos campagnes.
+        </p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

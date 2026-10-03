@@ -4,7 +4,7 @@
 {% block content %}
 <div style="margin-bottom: 2.5rem; display: flex; flex-direction: column; align-items: center; text-align: center;">
   <span class="badge" style="background: var(--primary-light); color: var(--primary); font-size: 0.85rem; margin-bottom: 0.5rem; font-weight: 700;">
-    🔄 Modèle Inversé — Demande Collective
+     Modèle Inversé — Demande Collective
   </span>
   <h1 style="font-size: 2.25rem; margin-bottom: 0.75rem; color: var(--secondary);">Demandes d'Achats Groupés</h1>
   <p class="text-muted" style="font-size: 1.05rem; max-width: 640px; margin: 0 auto 1.5rem;">
@@ -12,7 +12,7 @@
   </p>
   <div>
     <a href="{% url 'purchase_requests:create' %}" class="btn btn-primary" id="btn-create-purchase-request" style="font-size: 1rem; padding: 0.75rem 1.5rem;">
-      ➕ Créer une nouvelle demande groupée
+      + Créer une nouvelle demande groupée
     </a>
   </div>
 </div>
@@ -62,11 +62,11 @@
             </span>
             {% if req.status == 'OPEN' %}
               <span class="badge" style="background: #ECFDF5; color: #059669; font-weight: 600; font-size: 0.75rem;">
-                🟢 Ouverte aux participants
+                Ouverte aux participants
               </span>
             {% elif req.status == 'PROPOSALS_RECEIVED' %}
               <span class="badge" style="background: #EFF6FF; color: #2563EB; font-weight: 600; font-size: 0.75rem;">
-                💬 Offres reçues
+                 Offres reçues
               </span>
             {% else %}
               <span class="badge" style="background: var(--bg-surface); color: var(--text-muted); font-size: 0.75rem;">
@@ -111,10 +111,12 @@
     {% endfor %}
   </div>
 {% else %}
-  <div class="card" style="text-align: center; padding: 4rem 1.5rem;">
-    <div style="font-size: 3rem; margin-bottom: 1rem;">📢</div>
-    <h2>Aucune demande groupée trouvée</h2>
-    <p class="text-muted" style="max-width: 480px; margin: 0.5rem auto 1.5rem;">
+  <div class="empty-state-box">
+    <div class="empty-state-icon">
+      {% include 'partials/icons/tag.html' %}
+    </div>
+    <h2 class="empty-state-title">Aucune demande groupée trouvée</h2>
+    <p class="empty-state-desc">
       Soyez le premier à lancer une demande groupée pour votre produit recherché et mobilisez d'autres acheteurs !
     </p>
     <a href="{% url 'purchase_requests:create' %}" class="btn btn-primary">Lancer une demande</a>

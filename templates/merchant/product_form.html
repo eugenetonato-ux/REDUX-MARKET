@@ -1,0 +1,80 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Ajouter un Produit — Espace Commerçant REDUX{% endblock %}
+
+{% block content %}
+<div style="max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+  {% include 'merchant/nav_tabs.html' %}
+
+  <div>
+    <h1 style="font-size: 1.5rem; color: var(--text-primary);">Nouveau Produit au Catalogue</h1>
+    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+      Définissez les caractéristiques et les limites de prix de votre produit.
+    </p>
+  </div>
+
+  <div class="card">
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="{{ form.name.id_for_label }}" class="form-label">{{ form.name.label }} *</label>
+        {{ form.name }}
+        {% if form.name.errors %}
+          <div class="form-error">{{ form.name.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.category.id_for_label }}" class="form-label">{{ form.category.label }}</label>
+        {{ form.category }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }}</label>
+        {{ form.description }}
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label for="{{ form.original_price.id_for_label }}" class="form-label">
+            {{ form.original_price.label }} (Prix unitaire) *
+          </label>
+          {{ form.original_price }}
+          {% if form.original_price.errors %}
+            <div class="form-error">{{ form.original_price.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.minimum_price.id_for_label }}" class="form-label">
+            {{ form.minimum_price.label }} (Plancher) *
+          </label>
+          {{ form.minimum_price }}
+          {% if form.minimum_price.errors %}
+            <div class="form-error">{{ form.minimum_price.errors.0 }}</div>
+          {% endif %}
+          <small style="color: var(--text-muted); font-size: 0.78rem;">Aucun palier de campagne ne pourra être inférieur à ce montant.</small>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label for="{{ form.stock.id_for_label }}" class="form-label">{{ form.stock.label }} *</label>
+          {{ form.stock }}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.unit.id_for_label }}" class="form-label">{{ form.unit.label }}</label>
+          {{ form.unit }}
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
+        Enregistrer le produit
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

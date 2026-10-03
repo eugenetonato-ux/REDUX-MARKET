@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Signaler un Problème — REDUX Sécurité Séquestre{% endblock %}
+
+{% block content %}
+<div style="max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+  <div>
+    <span class="badge" style="background: var(--warning-light); color: var(--warning); margin-bottom: 0.5rem;">
+      Protection Acheteur REDUX
+    </span>
+    <h1 style="font-size: 1.6rem; color: var(--text-primary);">Ouvrir une Réclamation</h1>
+    <p style="color: var(--text-secondary); font-size: 0.95rem;">
+      Commande <strong>#{{ order.order_number }}</strong> • Les fonds restent sous séquestre jusqu'à la résolution du différend.
+    </p>
+  </div>
+
+  <div class="card">
+    <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem; font-size: 0.9rem;">
+      <div>Montant sous séquestre : <strong style="color: var(--success);">{{ order.final_amount }} {{ order.currency.code }}</strong></div>
+      <div>Boutique concernée : <strong>{{ order.campaign.product.store.name }}</strong></div>
+    </div>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="{{ form.reason.id_for_label }}" class="form-label">{{ form.reason.label }} *</label>
+        {{ form.reason }}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }} *</label>
+        {{ form.description }}
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 1rem;">
+        Soumettre la réclamation
+      </button>
+
+      <a href="{% url 'orders:detail' order_number=order.order_number %}" class="btn btn-outline btn-block btn-sm" style="margin-top: 0.5rem;">
+        Annuler et revenir à la commande
+      </a>
+    </form>
+  </div>
+</div>
+{% endblock %}

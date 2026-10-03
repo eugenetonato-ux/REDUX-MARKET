@@ -1,13 +1,13 @@
 {% if status == "VERIFIED" %}
-  <span class="badge badge-verified"><span class="check-icon">✓</span> Vérifié</span>
+  <span class="badge badge-verified" style="display: inline-flex; align-items: center; gap: 0.25rem;">{% include 'partials/icons/check.html' %} Vérifié</span>
 {% elif status == "PENDING" %}
-  <span class="badge badge-pending">⏳ En attente</span>
+  <span class="badge badge-pending">En attente</span>
 {% elif status == "REJECTED" %}
-  <span class="badge badge-rejected">✕ Rejeté</span>
+  <span class="badge badge-rejected">Rejeté</span>
 {% elif status == "SUSPENDED" %}
-  <span class="badge badge-suspended">⛔ Suspendu</span>
+  <span class="badge badge-suspended">Suspendu</span>
 {% elif status == "ACTIVE" %}
-  <span class="badge" style="background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0;">● Actif</span>
+  <span class="badge" style="background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0;">Actif</span>
 {% else %}
   <span class="badge badge-pending">{{ status }}</span>
 {% endif %}

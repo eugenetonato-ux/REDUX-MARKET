@@ -1,0 +1,119 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Mes Participations — REDUX{% endblock %}
+
+{% block content %}
+<div class="py-8 md:py-12 space-y-8">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-[32px] md:text-[44px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+        Mes Campagnes de Groupe
+      </h1>
+      <p class="text-[17px] text-[#6e6e73] mt-1 font-normal">
+        Suivez la baisse des prix et l'avancement des paliers pour chaque offre collective.
+      </p>
+    </div>
+    <a href="{% url 'campaigns:list' %}" 
+       class="h-9 px-5 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium transition-all inline-flex items-center justify-center self-start md:self-auto shadow-xs">
+      Découvrir d'autres offres
+    </a>
+  </div>
+
+  <!-- Segmented Subnav Pills -->
+  <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+    <a href="{% url 'dashboard:index' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Vue d'ensemble
+    </a>
+    <a href="{% url 'dashboard:campaigns' %}" 
+       class="h-8 px-4 rounded-full bg-[#1d1d1f] text-white text-[12px] font-medium inline-flex items-center whitespace-nowrap shadow-xs">
+      Mes Participations
+    </a>
+    <a href="{% url 'dashboard:orders' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Mes Commandes
+    </a>
+    <a href="{% url 'dashboard:profile' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Adresse & Profil
+    </a>
+    <a href="{% url 'dashboard:notifications' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Notifications
+    </a>
+  </div>
+
+  <!-- Main Content Card -->
+  <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+    {% if participations %}
+      <div class="divide-y divide-black/5">
+        {% for part in participations %}
+          <div class="py-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center gap-4 min-w-0">
+              <div class="w-14 h-14 rounded-xl bg-[#f5f5f7] border border-black/5 flex items-center justify-center shrink-0 overflow-hidden">
+                {% if part.campaign.product.images.first %}
+                  <img src="{{ part.campaign.product.images.first.image.url }}" alt="{{ part.campaign.title }}" class="w-full h-full object-cover">
+                {% else %}
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86868b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  </svg>
+                {% endif %}
+              </div>
+              <div class="min-w-0">
+                <a href="{% url 'campaigns:detail' slug=part.campaign.slug %}" class="text-[15px] font-bold text-[#1d1d1f] hover:text-[#0071e3] transition-colors block truncate max-w-[280px]">
+                  {{ part.campaign.title }}
+                </a>
+                <div class="text-[13px] text-[#6e6e73] mt-0.5">
+                  Boutique : <strong class="font-medium text-[#1d1d1f]">{{ part.campaign.merchant.business_name }}</strong> • Quantité : {{ part.quantity }}
+                </div>
+                <div class="text-[12px] text-[#86868b] mt-0.5">
+                  Rejoint le {{ part.joined_at|date:"d F Y à H:i" }}
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between md:justify-end gap-5">
+              <div class="text-left md:text-right">
+                <div class="text-[16px] font-bold text-[#1d1d1f]">
+                  {{ part.total_amount }} {{ part.campaign.product.store.country.currency.code }}
+                </div>
+                <span class="inline-block text-[11px] font-medium px-2.5 py-0.5 rounded-full {% if part.status == 'JOINED' %}bg-[#34c759]/10 text-[#248a3d]{% else %}bg-black/5 text-[#6e6e73]{% endif %}">
+                  {{ part.get_status_display }}
+                </span>
+              </div>
+              <a href="{% url 'campaigns:detail' slug=part.campaign.slug %}" 
+                 class="h-8 px-4 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[12px] font-medium transition-all inline-flex items-center gap-1.5 justify-center">
+                <span>Voir la campagne</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="py-14 text-center">
+        <div class="w-14 h-14 rounded-full bg-[#f5f5f7] text-[#86868b] flex items-center justify-center mx-auto mb-4">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+            <line x1="7" y1="7" x2="7.01" y2="7"></line>
+          </svg>
+        </div>
+        <h3 class="text-[17px] font-bold text-[#1d1d1f]">Aucune participation active</h3>
+        <p class="text-[14px] text-[#6e6e73] mt-1 mb-6 max-w-[420px] mx-auto">
+          Profitez du pouvoir d'achat groupé en rejoignant nos campagnes actives pour débloquer des réductions substantielles.
+        </p>
+        <a href="{% url 'campaigns:list' %}" 
+           class="h-9 px-6 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium inline-flex items-center justify-center shadow-xs transition-all">
+          Explorer les campagnes
+        </a>
+      </div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

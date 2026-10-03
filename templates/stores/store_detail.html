@@ -16,8 +16,8 @@
             {% include 'partials/verified_badge.html' %}
           </div>
           <p class="text-muted" style="font-size: 0.95rem; margin-top: 0.25rem;">
-            📍 {{ store.city|default:"Afrique" }} &bull; {{ store.country.name }} ({{ store.country.code }})
-            {% if store.phone %} &bull; 📞 {{ store.phone }}{% endif %}
+            {{ store.city|default:"Afrique" }} &bull; {{ store.country.name }} ({{ store.country.code }})
+            {% if store.phone %} &bull; {{ store.phone }}{% endif %}
           </p>
         </div>
       </div>

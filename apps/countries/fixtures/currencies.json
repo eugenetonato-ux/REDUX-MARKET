@@ -1,0 +1,119 @@
+[
+  {
+    "model": "countries.currency",
+    "pk": 1,
+    "fields": {
+      "code": "XOF",
+      "name": "Franc CFA (BCEAO)",
+      "symbol": "CFA",
+      "decimals": 0,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "countries.currency",
+    "pk": 2,
+    "fields": {
+      "code": "XAF",
+      "name": "Franc CFA (BEAC)",
+      "symbol": "FCFA",
+      "decimals": 0,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "countries.currency",
+    "pk": 3,
+    "fields": {
+      "code": "NGN",
+      "name": "Naira Nigérian",
+      "symbol": "₦",
+      "decimals": 0,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "countries.currency",
+    "pk": 4,
+    "fields": {
+      "code": "GHS",
+      "name": "Cedi Ghanéen",
+      "symbol": "GH₵",
+      "decimals": 2,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "countries.currency",
+    "pk": 5,
+    "fields": {
+      "code": "GNF",
+      "name": "Franc Guinéen",
+      "symbol": "FG",
+      "decimals": 0,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "countries.currency",
+    "pk": 6,
+    "fields": {
+      "code": "CDF",
+      "name": "Franc Congolais",
+      "symbol": "FC",
+      "decimals": 0,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "countries.currency",
+    "pk": 7,
+    "fields": {
+      "code": "KES",
+      "name": "Shilling Kényan",
+      "symbol": "KSh",
+      "decimals": 0,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "countries.currency",
+    "pk": 8,
+    "fields": {
+      "code": "RWF",
+      "name": "Franc Rwandais",
+      "symbol": "FRw",
+      "decimals": 0,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  {
+    "model": "countries.currency",
+    "pk": 9,
+    "fields": {
+      "code": "MAD",
+      "name": "Dirham Marocain",
+      "symbol": "DH",
+      "decimals": 2,
+      "is_active": true,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  }
+]

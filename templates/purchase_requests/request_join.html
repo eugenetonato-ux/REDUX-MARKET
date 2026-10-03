@@ -1,0 +1,37 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Rallier la Demande Groupée — REDUX{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+  <div>
+    <span class="badge" style="background: var(--primary-light); color: var(--primary); margin-bottom: 0.5rem;">Marché Inversé</span>
+    <h1 style="font-size: 1.6rem; color: var(--text-primary);">Rallier la Demande Groupée</h1>
+    <p style="color: var(--text-secondary); font-size: 0.95rem;">
+      Indiquez la quantité d'unités que vous souhaitez réserver. Dès que le groupe atteint la cible, les commerçants vérifiés soumettent leurs meilleures offres.
+    </p>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 1rem;">{{ pr.title }}</h3>
+    <form method="post" action="{% url 'purchase_requests:join' pk=pr.pk %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_quantity_pledged" class="form-label">Nombre d'unités souhaitées *</label>
+        <input type="number" name="quantity_pledged" id="id_quantity_pledged" class="form-input" value="1" min="1" max="100" required>
+        <small style="color: var(--text-muted); font-size: 0.8rem; margin-top: 0.25rem; display: block;">
+          Prix cible espéré par le groupe : <strong>{{ pr.target_price }} {{ pr.country.currency.code }}</strong> / unité.
+        </small>
+      </div>
+
+      <button type="submit" class="btn btn-gradient btn-block btn-lg" style="margin-top: 1rem;">
+        Rejoindre le groupe de besoin
+      </button>
+      <a href="{% url 'purchase_requests:detail' pk=pr.pk %}" class="btn btn-outline btn-block btn-sm" style="margin-top: 0.5rem;">
+        Annuler et revenir
+      </a>
+    </form>
+  </div>
+</div>
+{% endblock %}

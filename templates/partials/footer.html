@@ -1,9 +1,10 @@
+{% load static %}
 <footer class="site-footer">
   <div class="container">
     <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem;">
       <div>
-        <div class="brand-logo" style="color: #FFFFFF; margin-bottom: 1rem;">
-          <span>RE<span class="highlight">DUX</span></span>
+        <div class="brand-logo" style="margin-bottom: 1rem;">
+          <img src="{% static 'images/redux_logo.png' %}" alt="REDUX" style="height: 26px; width: auto; max-width: 150px; display: block;">
         </div>
         <p style="color: #94A3B8; font-size: 0.9rem; max-width: 320px; line-height: 1.6;">
           La plateforme panafricaine de commerce collectif. Regroupez-vous pour obtenir les meilleurs prix avec vos commerçants de proximité.

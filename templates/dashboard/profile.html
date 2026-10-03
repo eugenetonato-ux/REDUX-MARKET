@@ -1,0 +1,99 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Mon Profil & Coordonnées — REDUX{% endblock %}
+
+{% block content %}
+<div class="max-w-[720px] mx-auto py-8 md:py-12 space-y-8">
+
+  <!-- Header -->
+  <div>
+    <h1 class="text-[32px] md:text-[44px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+      Mon Profil Acheteur
+    </h1>
+    <p class="text-[17px] text-[#6e6e73] mt-1 font-normal">
+      Gérez vos informations personnelles et vos coordonnées de livraison par défaut.
+    </p>
+  </div>
+
+  <!-- Segmented Subnav Pills -->
+  <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+    <a href="{% url 'dashboard:index' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Vue d'ensemble
+    </a>
+    <a href="{% url 'dashboard:campaigns' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Mes Participations
+    </a>
+    <a href="{% url 'dashboard:orders' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Mes Commandes
+    </a>
+    <a href="{% url 'dashboard:profile' %}" 
+       class="h-8 px-4 rounded-full bg-[#1d1d1f] text-white text-[12px] font-medium inline-flex items-center whitespace-nowrap shadow-xs">
+      Adresse & Profil
+    </a>
+    <a href="{% url 'dashboard:notifications' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Notifications
+    </a>
+  </div>
+
+  <!-- Main Content Card -->
+  <div class="bg-white rounded-[18px] p-8 md:p-10 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+    <form method="post" action="{% url 'dashboard:profile' %}" class="space-y-5">
+      {% csrf_token %}
+
+      <div>
+        <label for="{{ form.full_name.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
+          Nom complet
+        </label>
+        {{ form.full_name }}
+        {% if form.full_name.errors %}
+          <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.full_name.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <div>
+        <label for="{{ form.email.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
+          Adresse email (identifiant du compte)
+        </label>
+        {{ form.email }}
+      </div>
+
+      <div>
+        <label for="{{ form.phone.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
+          Numéro de téléphone / WhatsApp
+        </label>
+        {{ form.phone }}
+        {% if form.phone.errors %}
+          <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.phone.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <div>
+        <label for="city" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
+          Ville de résidence
+        </label>
+        <input type="text" name="city" id="city" class="form-input" value="{{ profile.city|default:'' }}" placeholder="ex: Cotonou, Abidjan, Dakar, Douala, Lomé">
+      </div>
+
+      <div>
+        <label for="shipping_address" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
+          Adresse de livraison par défaut
+        </label>
+        <textarea name="shipping_address" id="shipping_address" class="form-textarea" rows="3" placeholder="Quartier, rue, repère ou indication utile pour le livreur">{{ profile.default_shipping_address|default:'' }}</textarea>
+      </div>
+
+      <div class="pt-3">
+        <button type="submit" 
+                class="w-full h-9 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium transition-all duration-200 flex items-center justify-center shadow-xs">
+          Enregistrer les modifications
+        </button>
+      </div>
+    </form>
+  </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% load static %}
+<div style="background: #0A0A0F; border-radius: var(--radius-lg); padding: 0.6rem 0.85rem; margin-bottom: 2rem; border: 1px solid var(--border-dark); overflow-x: auto; box-shadow: 0 4px 16px rgba(10, 10, 15, 0.15);">
+  <div style="display: flex; gap: 0.5rem; align-items: center; min-width: max-content;">
+    <a href="{% url 'merchants:dashboard' %}" class="btn btn-sm {% if request.resolver_match.url_name == 'dashboard' %}btn-primary{% else %}btn-outline-dark{% endif %}">
+      {% include 'partials/icons/box.html' %} Vue d'ensemble
+    </a>
+    <a href="{% url 'merchants:products' %}" class="btn btn-sm {% if 'product' in request.resolver_match.url_name %}btn-primary{% else %}btn-outline-dark{% endif %}">
+      {% include 'partials/icons/tag.html' %} Produits ({{ merchant.stores.first.products.count|default:0 }})
+    </a>
+    <a href="{% url 'merchants:campaigns' %}" class="btn btn-sm {% if 'campaign' in request.resolver_match.url_name %}btn-primary{% else %}btn-outline-dark{% endif %}">
+      {% include 'partials/icons/trending.html' %} Campagnes Collectives
+    </a>
+    <a href="{% url 'merchants:orders' %}" class="btn btn-sm {% if 'order' in request.resolver_match.url_name %}btn-primary{% else %}btn-outline-dark{% endif %}">
+      {% include 'partials/icons/cart.html' %} Commandes Clients
+    </a>
+    <a href="{% url 'merchants:revenue' %}" class="btn btn-sm {% if request.resolver_match.url_name == 'revenue' %}btn-primary{% else %}btn-outline-dark{% endif %}">
+      {% include 'partials/icons/wallet.html' %} Chiffre d'Affaires
+    </a>
+    <a href="{% url 'merchants:statistics' %}" class="btn btn-sm {% if request.resolver_match.url_name == 'statistics' %}btn-primary{% else %}btn-outline-dark{% endif %}">
+      {% include 'partials/icons/trending.html' %} Statistiques
+    </a>
+    <a href="{% url 'merchants:store' %}" class="btn btn-sm {% if request.resolver_match.url_name == 'store' %}btn-primary{% else %}btn-outline-dark{% endif %}">
+      {% include 'partials/icons/store.html' %} Boutique
+    </a>
+    <a href="{% url 'merchants:verification' %}" class="btn btn-sm {% if request.resolver_match.url_name == 'verification' %}btn-primary{% else %}btn-outline-dark{% endif %}">
+      {% include 'partials/icons/shield.html' %} Accréditation
+    </a>
+  </div>
+</div>

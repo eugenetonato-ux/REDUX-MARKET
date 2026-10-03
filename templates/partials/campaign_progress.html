@@ -1,11 +1,53 @@
-<div class="campaign-progress-wrap">
+{% load static %}
+<div class="campaign-progress-box">
+  <!-- En-tête : Participants réels -->
   <div class="campaign-progress-header">
-    <span class="target">{{ summary.progress_pct }}% atteint</span>
-    <span class="remaining">
-      <strong>{{ campaign.current_participants_count }}</strong> / {{ campaign.target_participants }} acheteurs
-    </span>
+    <div class="campaign-progress-participants">
+      <span>{{ campaign.current_participants_count }}</span>
+      <span style="font-weight: 500; font-size: 0.95rem; color: var(--text-secondary);">
+        / {% if summary.next_tier %}{{ summary.next_tier.min_participants }}{% else %}{{ campaign.target_participants }}{% endif %} participants
+      </span>
+    </div>
+    <div class="campaign-progress-target">
+      {% if summary.remaining_for_next and summary.remaining_for_next > 0 %}
+        <span style="color: var(--primary); font-weight: 700;">Il manque {{ summary.remaining_for_next }} personne{{ summary.remaining_for_next|pluralize }}</span>
+      {% else %}
+        <span class="max-tier-reached" style="display: inline-flex; align-items: center; gap: 0.35rem;">
+          {% include 'partials/icons/check.html' %} Objectif atteint
+        </span>
+      {% endif %}
+    </div>
   </div>
-  <div class="progress-bar-track">
-    <div class="progress-bar-fill" style="width: {{ summary.progress_pct }}%;"></div>
+
+  <!-- Barre de progression signature dégradé Vert -> Bleu -->
+  <div class="progress-track" title="{{ summary.progress_pct }}% atteint">
+    <div class="progress-bar-fill" style="width: {{ summary.progress_pct|default:0 }}%;"></div>
+  </div>
+
+  <!-- Prix et Prochain Palier -->
+  <div class="campaign-progress-prices">
+    <div class="price-current-wrap">
+      <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Prix actuel :</span>
+      <span class="price-current">
+        {{ campaign.current_price }} {{ campaign.product.store.country.currency.code }}
+      </span>
+      {% if campaign.product.original_price > campaign.current_price %}
+        <span class="price-original">
+          {{ campaign.product.original_price }} {{ campaign.product.store.country.currency.code }}
+        </span>
+      {% endif %}
+    </div>
+
+    <div>
+      {% if summary.next_tier %}
+        <span class="next-tier-info">
+          Prochain palier : {{ summary.next_tier.min_participants }} pers. → <strong>{{ summary.next_tier.price }} {{ campaign.product.store.country.currency.code }}</strong>
+        </span>
+      {% else %}
+        <span class="max-tier-reached" style="display: inline-flex; align-items: center; gap: 0.35rem;">
+          {% include 'partials/icons/star.html' %} Meilleur prix garanti atteint !
+        </span>
+      {% endif %}
+    </div>
   </div>
 </div>

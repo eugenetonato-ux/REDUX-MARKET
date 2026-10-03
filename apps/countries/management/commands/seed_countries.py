@@ -1,40 +1,22 @@
+from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from apps.countries.models import Country, Currency
 
 
 class Command(BaseCommand):
-    help = "Seed countries and currencies (Benin, Cote d'Ivoire, Senegal, Togo, etc.)"
+    help = "Charge les devises et pays africains officiels depuis les fichiers JSON de fixtures"
 
     def handle(self, *args, **options):
-        # 1. Currencies
-        xof, _ = Currency.objects.get_or_create(
-            code="XOF",
-            defaults={"name": "Franc CFA BCEAO", "symbol": "CFA", "decimals": 0, "is_active": True},
-        )
-        eur, _ = Currency.objects.get_or_create(
-            code="EUR",
-            defaults={"name": "Euro", "symbol": "€", "decimals": 2, "is_active": True},
-        )
-        usd, _ = Currency.objects.get_or_create(
-            code="USD",
-            defaults={"name": "Dollar Américain", "symbol": "$", "decimals": 2, "is_active": True},
-        )
+        self.stdout.write("Chargement des devises et pays africains...")
+        call_command("loaddata", "currencies", "countries")
+        
+        # S'assurer qu'aucun emoji ne persiste dans les drapeaux
+        Country.objects.update(flag_emoji="")
 
-        countries_data = [
-            {"code": "BJ", "name": "Bénin", "phone_prefix": "+229", "currency": xof, "flag_emoji": "🇧🇯"},
-            {"code": "CI", "name": "Côte d'Ivoire", "phone_prefix": "+225", "currency": xof, "flag_emoji": "🇨🇮"},
-            {"code": "SN", "name": "Sénégal", "phone_prefix": "+221", "currency": xof, "flag_emoji": "🇸🇳"},
-            {"code": "TG", "name": "Togo", "phone_prefix": "+228", "currency": xof, "flag_emoji": "🇹🇬"},
-        ]
-
-        for c_data in countries_data:
-            country, created = Country.objects.get_or_create(
-                code=c_data["code"],
-                defaults=c_data,
+        countries_count = Country.objects.count()
+        currencies_count = Currency.objects.count()
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"[OK] {countries_count} pays africains et {currencies_count} devises chargés avec succès !"
             )
-            if created:
-                self.stdout.write(self.style.SUCCESS(f"Pays créé : {country.name} ({country.code})"))
-            else:
-                self.stdout.write(f"Pays existant : {country.name}")
-
-        self.stdout.write(self.style.SUCCESS("Seeding des pays et devises terminé avec succès."))
+        )

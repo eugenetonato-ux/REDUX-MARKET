@@ -8,7 +8,7 @@
     {% if product.images.first %}
       <img src="{{ product.images.first.image.url }}" alt="{{ product.name }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius-lg);">
     {% else %}
-      📦
+      
     {% endif %}
   </div>
 
@@ -22,7 +22,7 @@
     <h1 style="font-size: 2rem; margin-bottom: 0.75rem;">{{ product.name }}</h1>
     <p class="text-muted" style="font-size: 0.95rem; margin-bottom: 1.5rem;">
       Proposé par <a href="{% url 'stores:detail' slug=product.store.slug %}" style="font-weight: 700;">{{ product.store.name }}</a>
-      (📍 {{ product.store.city|default:product.store.country.name }})
+      ({{ product.store.city|default:product.store.country.name }})
     </p>
 
     <!-- Prix Box -->

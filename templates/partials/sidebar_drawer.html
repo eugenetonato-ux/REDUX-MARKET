@@ -1,0 +1,141 @@
+{% load static %}
+<!-- Tiroir de Navigation Latérale (Navigation Drawer) -->
+<div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
+
+<aside class="sidebar-drawer" id="sidebar-drawer" aria-label="Navigation principale" aria-hidden="true">
+  <!-- En-tête du tiroir -->
+  <div class="sidebar-header">
+    <a href="/" class="brand-logo" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+      <img src="{% static 'images/redux_logo.png' %}" alt="REDUX" style="height: 24px; width: auto; max-width: 140px; display: block; object-fit: contain;">
+      <span class="brand-badge">Afrique</span>
+    </a>
+    <button type="button" class="sidebar-close-btn" id="sidebar-close-btn" aria-label="Fermer le menu">
+      {% include 'partials/icons/close.html' %}
+    </button>
+  </div>
+
+  <div class="sidebar-content">
+    <!-- Section 1 : Accès Express 1-Clic Démo -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">ACCÈS 1-CLIC (DÉMO SANS FORMULAIRE)</div>
+      <div class="sidebar-role-pills">
+        <a href="{% url 'accounts:quick_login' role='buyer' %}" class="sidebar-role-btn buyer" title="Connexion immédiate Acheteur">
+          {% include 'partials/icons/user.html' %}
+          <span>Acheteur</span>
+        </a>
+        <a href="{% url 'accounts:quick_login' role='merchant' %}" class="sidebar-role-btn merchant" title="Connexion immédiate Commerçant">
+          {% include 'partials/icons/store.html' %}
+          <span>Commerçant</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Section 2 : Navigation Principale -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">NAVIGATION</div>
+      <nav class="sidebar-nav">
+        <a href="/explorer" class="sidebar-nav-item">
+          {% include 'partials/icons/search.html' %}
+          <span>Explorer les offres</span>
+        </a>
+        <a href="/campaigns/" class="sidebar-nav-item">
+          {% include 'partials/icons/box.html' %}
+          <span>Campagnes en cours</span>
+        </a>
+        <a href="/requests/" class="sidebar-nav-item">
+          {% include 'partials/icons/user.html' %}
+          <span>Demandes groupées</span>
+        </a>
+        <a href="/categories/" class="sidebar-nav-item">
+          {% include 'partials/icons/tag.html' %}
+          <span>Catégories de produits</span>
+        </a>
+        <a href="/stores/" class="sidebar-nav-item">
+          {% include 'partials/icons/store.html' %}
+          <span>Boutiques partenaires</span>
+        </a>
+        <a href="{% url 'pages:how_it_works' %}" class="sidebar-nav-item">
+          {% include 'partials/icons/shield.html' %}
+          <span>Comment ça marche ?</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- Section 3 : Espace Utilisateur -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">MON COMPTE</div>
+      {% if user.is_authenticated %}
+        <div class="sidebar-user-card">
+          <div class="sidebar-user-avatar">
+            {{ user.full_name|default:user.email|slice:":1"|upper }}
+          </div>
+          <div style="overflow: hidden;">
+            <div style="font-weight: 700; color: #FFFFFF; font-size: 0.9rem; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+              {{ user.full_name|default:user.email }}
+            </div>
+            <div style="font-size: 0.75rem; color: #94A3B8;">{{ user.get_role_display }}</div>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav" style="margin-top: 0.75rem;">
+          {% if user.is_merchant %}
+            <a href="/merchant/dashboard/" class="sidebar-nav-item" style="color: var(--primary);">
+              {% include 'partials/icons/store.html' %}
+              <span>Portail Marchand</span>
+            </a>
+          {% elif not user.is_admin %}
+            <a href="/dashboard/" class="sidebar-nav-item" style="color: var(--primary);">
+              {% include 'partials/icons/user.html' %}
+              <span>Tableau de bord Acheteur</span>
+            </a>
+            <a href="/dashboard/orders/" class="sidebar-nav-item">
+              {% include 'partials/icons/box.html' %}
+              <span>Mes Commandes</span>
+            </a>
+          {% endif %}
+          <a href="/notifications/" class="sidebar-nav-item">
+            {% include 'partials/icons/bell.html' %}
+            <span>Notifications</span>
+          </a>
+          <form action="{% url 'accounts:logout' %}" method="post" style="margin-top: 0.5rem;">
+            {% csrf_token %}
+            <button type="submit" class="sidebar-logout-btn">
+              Se déconnecter
+            </button>
+          </form>
+        </nav>
+      {% else %}
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <a href="{% url 'accounts:login' %}" class="btn btn-outline-dark btn-block">Se connecter</a>
+          <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-block">Créer un compte</a>
+          <a href="{% url 'accounts:register_merchant' %}" style="font-size: 0.8rem; color: #94A3B8; text-align: center; margin-top: 0.25rem;">
+            Devenir commerçant partenaire
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Section 4 : Pays & Devises Africaines -->
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">PAYS & DEVISES ACTIFS</div>
+      <div style="font-size: 0.82rem; color: #94A3B8; margin-bottom: 0.5rem;">
+        Zone monétaire active : <strong style="color: #FFFFFF;">{{ current_country.name }} ({{ current_country.currency.code }})</strong>
+      </div>
+      <div class="sidebar-countries-grid">
+        <span class="country-pill active">BJ &bull; Bénin</span>
+        <span class="country-pill">CI &bull; Côte d'Ivoire</span>
+        <span class="country-pill">SN &bull; Sénégal</span>
+        <span class="country-pill">TG &bull; Togo</span>
+        <span class="country-pill">CM &bull; Cameroun</span>
+        <span class="country-pill">BF &bull; Burkina</span>
+        <span class="country-pill">ML &bull; Mali</span>
+        <span class="country-pill">NE &bull; Niger</span>
+        <span class="country-pill">GA &bull; Gabon</span>
+        <span class="country-pill">CD &bull; RD Congo</span>
+        <span class="country-pill">GN &bull; Guinée</span>
+        <span class="country-pill">NG &bull; Nigeria</span>
+        <span class="country-pill">GH &bull; Ghana</span>
+      </div>
+    </div>
+  </div>
+</aside>

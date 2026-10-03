@@ -1,51 +1,56 @@
-<div class="tier-table-card">
-  <div class="flex items-center justify-between">
-    <h3 style="color: var(--secondary);">Paliers de prix dégressifs</h3>
-    <span class="badge" style="background: var(--primary-light); color: var(--primary);">
-      Prix plancher garanti : {{ campaign.product.minimum_price }} {{ campaign.product.store.country.currency.symbol }}
-    </span>
-  </div>
+{% load static %}
+<div style="margin: 1.5rem 0;">
+  <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between;">
+    <span>Tableau des Paliers Dégressifs</span>
+    <span style="font-size: 0.8rem; font-weight: 500; color: var(--text-secondary);">Garantie prix de groupe</span>
+  </h3>
 
-  <table class="tier-table">
+  <table class="tier-table-wrap">
     <thead>
       <tr>
-        <th>Palier de volume</th>
+        <th>Palier de participants</th>
         <th>Prix unitaire</th>
         <th>Économie</th>
-        <th>Statut</th>
       </tr>
     </thead>
     <tbody>
       {% for tier in tiers %}
-        {% with is_current=False %}
-          {% if summary.current_tier and summary.current_tier.id == tier.id %}
-            <tr class="tier-row-active">
-          {% else %}
-            <tr>
-          {% endif %}
-            <td>
-              <strong>{{ tier.min_participants }}</strong>
-              {% if tier.max_participants %} à {{ tier.max_participants }}{% else %}+{% endif %} acheteurs
-              {% if summary.current_tier and summary.current_tier.id == tier.id %}
-                <span class="tier-current-tag">Palier Actuel</span>
-              {% endif %}
-            </td>
-            <td>
-              <span style="font-size: 1.1rem; font-weight: 700;">{{ tier.price }} {{ campaign.product.store.country.currency.symbol }}</span>
-            </td>
-            <td>
-              <span style="color: var(--primary); font-weight: 700;">-{{ tier.discount_percentage }}%</span>
-            </td>
-            <td>
-              {% if campaign.current_participants_count >= tier.min_participants %}
-                <span style="color: var(--success); font-weight: 700;">✓ Débloqué</span>
-              {% else %}
-                <span class="text-muted">À débloquer</span>
-              {% endif %}
-            </td>
-          </tr>
-        {% endwith %}
+        <tr class="{% if summary.current_tier and summary.current_tier.id == tier.id %}active-tier{% endif %}">
+          <td>
+            <strong>{{ tier.min_participants }}</strong>
+            {% if tier.max_participants %}
+              à {{ tier.max_participants }} personnes
+            {% else %}
+              personnes et plus
+            {% endif %}
+          </td>
+          <td>
+            <strong>{{ tier.price }} {{ campaign.product.store.country.currency.code }}</strong>
+          </td>
+          <td>
+            {% if tier.discount_percentage %}
+              <span class="badge badge-savings">-{{ tier.discount_percentage }}%</span>
+            {% else %}
+              <span style="color: var(--text-muted);">-</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="3" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">
+            Aucun palier configuré pour cette campagne.
+          </td>
+        </tr>
       {% endfor %}
     </tbody>
   </table>
+
+  <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.4;">
+    <strong>Règle de transparence :</strong>
+    {% if campaign.pricing_policy == 'FINAL_TIER_PRICE' %}
+      Tous les participants paieront le tarif du palier final atteint lors de la clôture de la campagne.
+    {% else %}
+      Chaque participant bénéficie du tarif du palier actif au moment de son adhésion.
+    {% endif %}
+  </p>
 </div>

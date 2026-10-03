@@ -1,0 +1,30 @@
+{% load static %}
+<div class="share-box">
+  <div style="margin-bottom: 0.75rem;">
+    <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 0.25rem;">
+      Invitez vos proches pour débloquer le prochain palier
+    </h4>
+    <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
+      Plus nous sommes nombreux, plus le prix diminue pour tout le groupe.
+    </p>
+  </div>
+
+  <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+    <!-- WhatsApp Share Button avec texte personnalisé et données réelles (Spec 4.6) -->
+    <a href="https://wa.me/?text=Offre%20collective%20sur%20REDUX%20:%20{{ campaign.title|urlencode }}%20à%20{{ campaign.current_price }}%20{{ campaign.product.store.country.currency.code }}%20au%20lieu%20de%20{{ campaign.product.original_price }}%20{{ campaign.product.store.country.currency.code }}.%20Nous%20sommes%20déjà%20{{ campaign.current_participants_count }}%20participants.%20Rejoins%20le%20groupe%20ici%20:%20{{ request.build_absolute_uri|urlencode }}" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       class="btn btn-whatsapp btn-sm"
+       id="btn-share-whatsapp">
+      <span>Partager sur WhatsApp</span>
+    </a>
+
+    <!-- Copier le lien -->
+    <button type="button" 
+            class="btn btn-outline btn-sm" 
+            id="btn-copy-campaign-link"
+            onclick="navigator.clipboard.writeText(window.location.href); alert('Lien copié dans le presse-papier !');">
+      <span>Copier le lien</span>
+    </button>
+  </div>
+</div>

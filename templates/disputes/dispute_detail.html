@@ -1,0 +1,74 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Litige #{{ dispute.pk }} — Commande #{{ order.order_number }} — REDUX{% endblock %}
+
+{% block content %}
+<div style="max-width: 820px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+        <span class="badge badge-status {% if dispute.status == 'OPEN' %}pending{% elif dispute.status == 'RESOLVED' %}active{% else %}pending{% endif %}">
+          {{ dispute.get_status_display }}
+        </span>
+        <span style="font-size: 0.85rem; color: var(--text-secondary);">Ouvert le {{ dispute.created_at|date:"d M Y à H:i" }}</span>
+      </div>
+      <h1 style="font-size: 1.6rem; color: var(--text-primary); margin: 0;">Réclamation sur commande #{{ order.order_number }}</h1>
+    </div>
+
+    <a href="{% url 'orders:detail' order_number=order.order_number %}" class="btn btn-outline-dark btn-sm">
+      Voir la commande →
+    </a>
+  </div>
+
+  <div class="card" style="border-left: 4px solid var(--warning);">
+    <strong style="color: var(--text-primary); font-size: 1.05rem;">Motif : {{ dispute.reason }}</strong>
+    <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.5rem; line-height: 1.5;">
+      {{ dispute.description }}
+    </p>
+
+    {% if dispute.resolution %}
+      <div style="margin-top: 1rem; padding: 0.75rem; background: #ECFDF3; border: 1px solid #A6F4C5; border-radius: var(--radius-sm); font-size: 0.9rem;">
+        <strong style="color: #027A48;">Résolution officielle de la médiation :</strong>
+        <p style="margin-top: 0.25rem; color: #05603A;">{{ dispute.resolution }}</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Fil de discussion -->
+  <div class="card">
+    <h3 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 1rem;">Échanges & Messages</h3>
+
+    {% if thread_messages %}
+      <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+        {% for msg in thread_messages %}
+          <div style="padding: 1rem; border-radius: var(--radius-md); background: {% if msg.sender == request.user %}#EFF6FF{% else %}#F8FAFC{% endif %}; border: 1px solid var(--border-light);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem; font-size: 0.85rem;">
+              <strong>{{ msg.sender.full_name|default:msg.sender.email }}</strong>
+              <span style="color: var(--text-muted);">{{ msg.created_at|date:"d M Y H:i" }}</span>
+            </div>
+            <p style="font-size: 0.92rem; color: var(--text-primary); line-height: 1.4; margin: 0;">{{ msg.message }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">Aucun message supplémentaire dans ce dossier.</p>
+    {% endif %}
+
+    <!-- Formulaire d'envoi de message -->
+    {% if dispute.status != 'CLOSED' %}
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ msg_form.message }}
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">
+          Envoyer une réponse
+        </button>
+      </form>
+    {% else %}
+      <p style="color: var(--text-muted); font-size: 0.85rem;">Ce litige est clôturé.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

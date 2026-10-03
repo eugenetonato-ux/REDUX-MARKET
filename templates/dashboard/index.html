@@ -1,0 +1,272 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Mon Espace — REDUX{% endblock %}
+
+{% block content %}
+<div class="py-8 md:py-12 space-y-8">
+
+  <!-- Apple Account Hero Section -->
+  <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div class="flex items-center gap-5">
+      <div class="w-16 h-16 rounded-full bg-[#f5f5f7] text-[#1d1d1f] font-bold text-2xl flex items-center justify-center border border-black/5 shrink-0">
+        {{ user.full_name|default:user.email|slice:":1"|upper }}
+      </div>
+      <div>
+        <div class="flex items-center gap-3 flex-wrap">
+          <h1 class="text-[28px] md:text-[36px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+            Bonjour, {{ user.full_name|default:user.email }}
+          </h1>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-medium bg-[#34c759]/10 text-[#248a3d]">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Acheteur certifié
+          </span>
+        </div>
+        <p class="text-[14px] text-[#6e6e73] mt-1 flex items-center gap-2 flex-wrap">
+          <span>{{ user.email }}</span>
+          {% if user.phone %}<span>•</span><span>{{ user.phone }}</span>{% endif %}
+          <span>•</span>
+          <span>{{ user.country.name|default:"Afrique" }}</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-3 flex-wrap">
+      <a href="{% url 'dashboard:profile' %}" 
+         class="h-9 px-5 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[12px] font-medium transition-all duration-200 inline-flex items-center justify-center">
+        Modifier le profil
+      </a>
+      <a href="{% url 'campaigns:list' %}" 
+         class="h-9 px-5 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium transition-all duration-200 inline-flex items-center justify-center shadow-xs">
+        Explorer les offres
+      </a>
+    </div>
+  </div>
+
+  <!-- Segmented Subnav Pills (Apple Style) -->
+  <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+    <a href="{% url 'dashboard:index' %}" 
+       class="h-8 px-4 rounded-full bg-[#1d1d1f] text-white text-[12px] font-medium inline-flex items-center whitespace-nowrap shadow-xs">
+      Vue d'ensemble
+    </a>
+    <a href="{% url 'dashboard:campaigns' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Mes Participations ({{ total_participations }})
+    </a>
+    <a href="{% url 'dashboard:orders' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Mes Commandes ({{ total_orders }})
+    </a>
+    <a href="{% url 'dashboard:profile' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Adresse & Profil
+    </a>
+    <a href="{% url 'dashboard:notifications' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Notifications
+    </a>
+  </div>
+
+  <!-- KPI Grid (Apple iCloud / Health Card Aesthetic) -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col justify-between">
+      <div class="flex items-center justify-between">
+        <span class="text-[13px] font-medium uppercase tracking-wider text-[#6e6e73]">Participations</span>
+        <div class="w-8 h-8 rounded-full bg-[#f0f7ff] text-[#0071e3] flex items-center justify-center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+            <line x1="7" y1="7" x2="7.01" y2="7"></line>
+          </svg>
+        </div>
+      </div>
+      <div class="mt-6">
+        <div class="text-[40px] font-bold tracking-tight text-[#1d1d1f] leading-none">{{ total_participations }}</div>
+        <p class="text-[13px] text-[#6e6e73] mt-2">Campagnes de groupe rejointes</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col justify-between">
+      <div class="flex items-center justify-between">
+        <span class="text-[13px] font-medium uppercase tracking-wider text-[#6e6e73]">Commandes passées</span>
+        <div class="w-8 h-8 rounded-full bg-[#f2fcf5] text-[#34c759] flex items-center justify-center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="mt-6">
+        <div class="text-[40px] font-bold tracking-tight text-[#1d1d1f] leading-none">{{ total_orders }}</div>
+        <p class="text-[13px] text-[#6e6e73] mt-2">Achats validés et expédiés</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col justify-between">
+      <div class="flex items-center justify-between">
+        <span class="text-[13px] font-medium uppercase tracking-wider text-[#6e6e73]">Économies de groupe</span>
+        <div class="w-8 h-8 rounded-full bg-[#fff9f0] text-[#ff9500] flex items-center justify-center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+        </div>
+      </div>
+      <div class="mt-6">
+        <div class="text-[26px] font-bold tracking-tight text-[#ff9500] leading-tight">Paliers Réduits</div>
+        <p class="text-[13px] text-[#6e6e73] mt-2">Jusqu'à -40% sur le prix de détail</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grille 2 Colonnes : Participations Récentes & Commandes -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+    <!-- Participations Récentes -->
+    <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-[20px] font-bold tracking-tight text-[#1d1d1f]">Campagnes Récentes</h2>
+            <p class="text-[13px] text-[#6e6e73] mt-0.5">Vos achats groupés en cours</p>
+          </div>
+          <a href="{% url 'dashboard:campaigns' %}" class="text-[12px] font-medium text-[#0071e3] hover:underline flex items-center gap-1">
+            Voir tout &rarr;
+          </a>
+        </div>
+
+        {% if participations %}
+          <div class="divide-y divide-black/5">
+            {% for part in participations %}
+              <div class="py-4 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5 min-w-0">
+                  <div class="w-12 h-12 rounded-xl bg-[#f5f5f7] border border-black/5 flex items-center justify-center shrink-0 overflow-hidden">
+                    {% if part.campaign.product.images.first %}
+                      <img src="{{ part.campaign.product.images.first.image.url }}" alt="{{ part.campaign.title }}" class="w-full h-full object-cover">
+                    {% else %}
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#86868b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                      </svg>
+                    {% endif %}
+                  </div>
+                  <div class="min-w-0">
+                    <a href="{% url 'campaigns:detail' slug=part.campaign.slug %}" class="text-[14px] font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors block truncate max-w-[200px]">
+                      {{ part.campaign.title }}
+                    </a>
+                    <div class="text-[12px] text-[#6e6e73] mt-0.5">
+                      Qté: {{ part.quantity }} • {{ part.joined_at|date:"d M Y" }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 shrink-0">
+                  <div class="text-right">
+                    <div class="text-[14px] font-semibold text-[#1d1d1f]">
+                      {{ part.unit_price }} {{ part.campaign.product.store.country.currency.code }}
+                    </div>
+                    <span class="inline-block text-[11px] font-medium px-2 py-0.5 rounded-full {% if part.status == 'JOINED' %}bg-[#34c759]/10 text-[#248a3d]{% else %}bg-black/5 text-[#6e6e73]{% endif %}">
+                      {{ part.get_status_display }}
+                    </span>
+                  </div>
+                  <a href="{% url 'campaigns:detail' slug=part.campaign.slug %}" class="w-8 h-8 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] flex items-center justify-center transition-all">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="py-12 text-center">
+            <div class="w-12 h-12 rounded-full bg-[#f5f5f7] text-[#86868b] flex items-center justify-center mx-auto mb-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+              </svg>
+            </div>
+            <h3 class="text-[15px] font-semibold text-[#1d1d1f]">Aucune participation en cours</h3>
+            <p class="text-[13px] text-[#6e6e73] mt-1 mb-5">Rejoignez un groupe pour débloquer les prix réduits.</p>
+            <a href="{% url 'campaigns:list' %}" class="h-9 px-5 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium inline-flex items-center justify-center shadow-xs transition-all">
+              Découvrir les offres
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Dernières Commandes -->
+    <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-[20px] font-bold tracking-tight text-[#1d1d1f]">Dernières Commandes</h2>
+            <p class="text-[13px] text-[#6e6e73] mt-0.5">Vos achats finalisés et livraisons</p>
+          </div>
+          <a href="{% url 'dashboard:orders' %}" class="text-[12px] font-medium text-[#0071e3] hover:underline flex items-center gap-1">
+            Voir tout &rarr;
+          </a>
+        </div>
+
+        {% if orders %}
+          <div class="divide-y divide-black/5">
+            {% for order in orders %}
+              <div class="py-4 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5 min-w-0">
+                  <div class="w-12 h-12 rounded-xl bg-[#f2fcf5] text-[#248a3d] border border-black/5 flex items-center justify-center shrink-0">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                      <line x1="3" y1="6" x2="21" y2="6"></line>
+                    </svg>
+                  </div>
+                  <div class="min-w-0">
+                    <a href="{% url 'orders:detail' order_number=order.order_number %}" class="text-[14px] font-semibold text-[#1d1d1f] hover:text-[#0071e3] transition-colors block truncate">
+                      Commande #{{ order.order_number }}
+                    </a>
+                    <div class="text-[12px] text-[#6e6e73] mt-0.5">
+                      {{ order.created_at|date:"d M Y" }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-3 shrink-0">
+                  <div class="text-right">
+                    <div class="text-[14px] font-semibold text-[#1d1d1f]">
+                      {{ order.final_amount }} {{ order.currency.code }}
+                    </div>
+                    <span class="inline-block text-[11px] font-medium px-2 py-0.5 rounded-full {% if order.status == 'PAID' or order.status == 'DELIVERED' %}bg-[#34c759]/10 text-[#248a3d]{% else %}bg-black/5 text-[#6e6e73]{% endif %}">
+                      {{ order.get_status_display }}
+                    </span>
+                  </div>
+                  <a href="{% url 'orders:detail' order_number=order.order_number %}" class="w-8 h-8 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] flex items-center justify-center transition-all">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="py-12 text-center">
+            <div class="w-12 h-12 rounded-full bg-[#f5f5f7] text-[#86868b] flex items-center justify-center mx-auto mb-3">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+              </svg>
+            </div>
+            <h3 class="text-[15px] font-semibold text-[#1d1d1f]">Aucune commande pour l'instant</h3>
+            <p class="text-[13px] text-[#6e6e73] mt-1 mb-5">Vos commandes confirmées s'afficheront ici avec le suivi en direct.</p>
+            <a href="{% url 'campaigns:list' %}" class="h-9 px-5 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium inline-flex items-center justify-center shadow-xs transition-all">
+              Rejoindre un achat
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

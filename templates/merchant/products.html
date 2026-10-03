@@ -1,0 +1,66 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Mes Produits — Espace Commerçant REDUX{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+  {% include 'merchant/nav_tabs.html' %}
+
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <h1 style="font-size: 1.5rem; color: var(--text-primary);">Catalogue de vos Produits</h1>
+      <p style="color: var(--text-secondary); font-size: 0.9rem;">Gérez vos stocks et les prix d'origine avant de lancer des campagnes collectives.</p>
+    </div>
+    <a href="{% url 'merchants:product_create' %}" class="btn btn-primary btn-sm">+ Ajouter un produit</a>
+  </div>
+
+  <div class="card">
+    {% if products %}
+      <div style="overflow-x: auto;">
+        <table class="tier-table-wrap">
+          <thead>
+            <tr>
+              <th>Produit</th>
+              <th>Catégorie</th>
+              <th>Prix Public</th>
+              <th>Prix Minimum Plancher</th>
+              <th>Stock</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for prod in products %}
+              <tr>
+                <td>
+                  <strong style="color: var(--text-primary);">{{ prod.name }}</strong>
+                </td>
+                <td>{{ prod.category.name|default:"Non classé" }}</td>
+                <td><strong>{{ prod.original_price }} {{ prod.store.country.currency.code }}</strong></td>
+                <td style="color: var(--primary); font-weight: 700;">{{ prod.minimum_price }} {{ prod.store.country.currency.code }}</td>
+                <td>{{ prod.stock }} {{ prod.unit }}</td>
+                <td>
+                  <span class="badge badge-status {% if prod.is_active %}active{% else %}pending{% endif %}">
+                    {% if prod.is_active %}Actif{% else %}Inactif{% endif %}
+                  </span>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state-box">
+        <div class="empty-state-icon">
+          {% include 'partials/icons/box.html' %}
+        </div>
+        <h3 class="empty-state-title">Votre catalogue est vide</h3>
+        <p class="empty-state-desc">
+          Ajoutez votre premier produit pour pouvoir ensuite lancer une campagne d'achats groupés avec des prix dégressifs.
+        </p>
+        <a href="{% url 'merchants:product_create' %}" class="btn btn-primary">+ Ajouter un premier produit</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

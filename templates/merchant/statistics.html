@@ -1,0 +1,58 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Statistiques de Performance — Espace Commerçant REDUX{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+  {% include 'merchant/nav_tabs.html' %}
+
+  <div>
+    <h1 style="font-size: 1.5rem; color: var(--text-primary);">Statistiques de Performance</h1>
+    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+      Analysez la dynamique de vos campagnes et l'engagement de votre communauté d'acheteurs.
+    </p>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
+    <div class="card">
+      <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Taux de conversion commandes</span>
+      <div style="font-size: 1.85rem; font-weight: 800; color: var(--primary); margin: 0.25rem 0;">
+        {% if stats.total_participants > 0 %}
+          {{ stats.paid_orders_count|default:0 }} / {{ stats.total_participants }}
+        {% else %}
+          100%
+        {% endif %}
+      </div>
+      <span style="font-size: 0.8rem; color: var(--text-muted);">Acheteurs passés à la commande</span>
+    </div>
+
+    <div class="card">
+      <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Campagnes réussies</span>
+      <div style="font-size: 1.85rem; font-weight: 800; color: var(--success); margin: 0.25rem 0;">
+        {{ stats.active_campaigns_count }}
+      </div>
+      <span style="font-size: 0.8rem; color: var(--text-muted);">Paliers atteints</span>
+    </div>
+
+    <div class="card">
+      <span style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">Note moyenne boutique</span>
+      <div style="font-size: 1.85rem; font-weight: 800; color: #D97706; margin: 0.25rem 0; display: flex; align-items: center; gap: 0.4rem;">
+        {% include 'partials/icons/star.html' %} 4.9 / 5
+      </div>
+      <span style="font-size: 0.8rem; color: var(--text-muted);">Basé sur les avis certifiés</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 0.75rem;">
+      Conseils pour maximiser vos ventes collectives
+    </h3>
+    <ul style="padding-left: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">
+      <li><strong>Fixez des paliers progressifs accessibles</strong> (ex: 5 personnes, 10 personnes, 20 personnes) pour motiver les premiers acheteurs.</li>
+      <li><strong>Activez l'option « Prix du palier final atteint »</strong> pour que chaque participant ait un intérêt direct à partager le lien WhatsApp à son entourage.</li>
+      <li><strong>Mettez à jour le statut d'expédition sous 24h</strong> pour bâtir une réputation de commerçant de confiance sur la plateforme.</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

@@ -1,75 +1,107 @@
 {% extends 'base/base.html' %}
+{% load static %}
+
 {% block title %}Paiement Sécurisé — REDUX{% endblock %}
 
 {% block content %}
-<div style="max-width: 680px; margin: 0 auto;">
-  <div style="text-align: center; margin-bottom: 2rem;">
-    <span class="badge" style="background: var(--primary-light); color: var(--primary); margin-bottom: 0.5rem;">Sécurisé par REDUX</span>
-    <h1>Réglement de votre commande</h1>
-    <p class="text-muted">Choisissez votre moyen de paiement sécurisé pour valider votre commande groupée.</p>
+<div class="max-w-[640px] mx-auto py-10 md:py-14 px-4">
+
+  <!-- Apple Checkout Header -->
+  <div class="text-center mb-8">
+    <span class="inline-block text-[11px] font-semibold uppercase tracking-wider text-[#0071e3] bg-[#0071e3]/10 px-3 py-1 rounded-full mb-3">
+      Paiement Sécurisé
+    </span>
+    <h1 class="text-[36px] md:text-[44px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+      Règlement de commande
+    </h1>
+    <p class="text-[17px] text-[#6e6e73] mt-2">
+      Choisissez votre mode de paiement sécurisé pour valider votre commande groupée.
+    </p>
   </div>
 
-  <div class="card" style="box-shadow: var(--shadow-lg); border-color: var(--primary-subtle); margin-bottom: 1.5rem;">
+  <!-- Card -->
+  <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+    
     <!-- Montant Récapitulatif -->
-    <div style="background: var(--bg-surface); border-radius: var(--radius-md); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem;">
+    <div class="bg-[#f5f5f7] rounded-xl p-5 flex items-center justify-between mb-8">
       <div>
-        <span class="text-muted" style="font-size: 0.85rem; display: block;">Montant total à régler :</span>
-        <span style="font-size: 1.75rem; font-weight: 800; color: var(--primary);">{{ order.final_amount }} {{ order.currency.symbol }}</span>
+        <span class="text-[12px] font-medium uppercase tracking-wider text-[#6e6e73] block">Montant à régler</span>
+        <span class="text-[28px] font-bold tracking-tight text-[#1d1d1f] leading-none mt-1 block">
+          {{ order.final_amount }} {{ order.currency.symbol }}
+        </span>
       </div>
-      <div style="text-align: right;">
-        <span class="text-muted" style="font-size: 0.85rem; display: block;">Commande :</span>
-        <strong>#{{ order.order_number }}</strong>
+      <div class="text-right">
+        <span class="text-[12px] font-medium uppercase tracking-wider text-[#6e6e73] block">Commande</span>
+        <span class="text-[15px] font-semibold text-[#1d1d1f] mt-1 block">#{{ order.order_number }}</span>
       </div>
     </div>
 
-    <form method="post">
+    <form method="post" class="space-y-6">
       {% csrf_token %}
       <input type="hidden" name="order" value="{{ order.order_number }}">
       <input type="hidden" name="provider" value="mock">
 
-      <h3 style="color: var(--secondary); font-size: 1.1rem; margin-bottom: 1rem;">Moyens de paiement disponibles</h3>
+      <div>
+        <h2 class="text-[15px] font-bold text-[#1d1d1f] mb-3">
+          Moyens de paiement disponibles
+        </h2>
 
-      <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2rem;">
-        <!-- Option MTN Mobile Money -->
-        <label style="border: 2px solid var(--primary-subtle); border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem; cursor: pointer; background: var(--primary-light);">
-          <input type="radio" name="payment_method" value="mtn_momo" checked style="accent-color: var(--primary); transform: scale(1.2);">
-          <div style="flex: 1;">
-            <strong style="color: var(--secondary); display: block;">MTN Mobile Money</strong>
-            <span class="text-muted" style="font-size: 0.85rem;">Paiement instantané par code USSD ou push notification</span>
-          </div>
-          <span style="font-size: 1.25rem;">📱</span>
-        </label>
+        <div class="space-y-3">
+          <!-- Option MTN Mobile Money -->
+          <label class="flex items-center gap-3.5 p-4 rounded-xl border border-black/5 bg-[#f5f5f7] hover:bg-[#ebebee] cursor-pointer transition-all">
+            <input type="radio" name="payment_method" value="mtn_momo" checked class="accent-[#0071e3] w-4 h-4">
+            <div class="flex-1">
+              <span class="text-[14px] font-semibold text-[#1d1d1f] block">MTN Mobile Money</span>
+              <span class="text-[12px] text-[#6e6e73] block mt-0.5">Paiement instantané par code USSD ou push notification</span>
+            </div>
+          </label>
 
-        <!-- Option Moov Money -->
-        <label style="border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem; cursor: pointer;">
-          <input type="radio" name="payment_method" value="moov_money" style="accent-color: var(--primary); transform: scale(1.2);">
-          <div style="flex: 1;">
-            <strong style="color: var(--secondary); display: block;">Moov Money</strong>
-            <span class="text-muted" style="font-size: 0.85rem;">Validation directe sur votre compte Moov</span>
-          </div>
-          <span style="font-size: 1.25rem;">📲</span>
-        </label>
+          <!-- Option Moov Money -->
+          <label class="flex items-center gap-3.5 p-4 rounded-xl border border-black/5 bg-[#f5f5f7] hover:bg-[#ebebee] cursor-pointer transition-all">
+            <input type="radio" name="payment_method" value="moov_money" class="accent-[#0071e3] w-4 h-4">
+            <div class="flex-1">
+              <span class="text-[14px] font-semibold text-[#1d1d1f] block">Moov Money</span>
+              <span class="text-[12px] text-[#6e6e73] block mt-0.5">Validation directe sur votre compte Moov</span>
+            </div>
+          </label>
 
-        <!-- Option Carte Bancaire -->
-        <label style="border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 1rem; cursor: pointer;">
-          <input type="radio" name="payment_method" value="card" style="accent-color: var(--primary); transform: scale(1.2);">
-          <div style="flex: 1;">
-            <strong style="color: var(--secondary); display: block;">Carte Visa / Mastercard</strong>
-            <span class="text-muted" style="font-size: 0.85rem;">Paiement sécurisé 3D-Secure</span>
-          </div>
-          <span style="font-size: 1.25rem;">💳</span>
-        </label>
+          <!-- Option Carte Bancaire -->
+          <label class="flex items-center gap-3.5 p-4 rounded-xl border border-black/5 bg-[#f5f5f7] hover:bg-[#ebebee] cursor-pointer transition-all">
+            <input type="radio" name="payment_method" value="card" class="accent-[#0071e3] w-4 h-4">
+            <div class="flex-1">
+              <span class="text-[14px] font-semibold text-[#1d1d1f] block">Carte Visa / Mastercard</span>
+              <span class="text-[12px] text-[#6e6e73] block mt-0.5">Paiement sécurisé chiffré 3D-Secure</span>
+            </div>
+          </label>
+        </div>
       </div>
 
-      <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.15rem; padding: 1rem;" id="btn-submit-payment">
-        Payer maintenant ({{ order.final_amount }} {{ order.currency.symbol }})
-      </button>
+      <div class="pt-2">
+        <button type="submit" 
+                id="btn-submit-payment"
+                class="w-full h-11 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[13px] font-medium transition-all duration-200 flex items-center justify-center shadow-xs">
+          Régler {{ order.final_amount }} {{ order.currency.symbol }}
+        </button>
+      </div>
     </form>
+
   </div>
 
-  <div style="text-align: center; font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 1.5rem;">
-    <span>🔒 Chiffrement SSL 256-bit</span>
-    <span>✓ Confirmation serveur sécurisée</span>
+  <div class="mt-6 flex items-center justify-center gap-6 text-[12px] text-[#86868b]">
+    <span class="flex items-center gap-1.5">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>
+      Chiffrement SSL 256-bit
+    </span>
+    <span class="flex items-center gap-1.5">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+      </svg>
+      Séquestre garanti REDUX
+    </span>
   </div>
+
 </div>
 {% endblock %}

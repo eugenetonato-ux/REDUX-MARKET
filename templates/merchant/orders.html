@@ -1,0 +1,95 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Commandes Clients — Espace Commerçant REDUX{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+  {% include 'merchant/nav_tabs.html' %}
+
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <h1 style="font-size: 1.5rem; color: var(--text-primary);">Commandes Clients Reçues</h1>
+      <p style="color: var(--text-secondary); font-size: 0.9rem;">
+        Traitez les commandes issues de vos campagnes d'achats groupés et mettez à jour les statuts d'expédition.
+      </p>
+    </div>
+
+    <!-- Filtres par statut -->
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+      <a href="{% url 'merchants:orders' %}" class="btn btn-sm {% if not current_status %}btn-primary{% else %}btn-outline{% endif %}">
+        Toutes
+      </a>
+      {% for code, label in order_statuses %}
+        <a href="{% url 'merchants:orders' %}?status={{ code }}" class="btn btn-sm {% if current_status == code %}btn-primary{% else %}btn-outline{% endif %}">
+          {{ label }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card">
+    {% if orders %}
+      <div style="overflow-x: auto;">
+        <table class="tier-table-wrap">
+          <thead>
+            <tr>
+              <th>N° Commande</th>
+              <th>Date</th>
+              <th>Client</th>
+              <th>Campagne / Produit</th>
+              <th>Montant</th>
+              <th>Statut</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ord in orders %}
+              <tr>
+                <td>
+                  <a href="{% url 'merchants:order_detail' order_number=ord.order_number %}" style="font-weight: 700; color: var(--primary);">
+                    #{{ ord.order_number }}
+                  </a>
+                </td>
+                <td style="font-size: 0.85rem; color: var(--text-secondary);">
+                  {{ ord.created_at|date:"d M Y H:i" }}
+                </td>
+                <td>
+                  <strong>{{ ord.buyer.full_name|default:ord.buyer.email }}</strong>
+                  <div style="font-size: 0.78rem; color: var(--text-muted);">{{ ord.contact_phone }}</div>
+                </td>
+                <td>
+                  {{ ord.campaign.title|truncatechars:35 }}
+                </td>
+                <td>
+                  <strong style="color: var(--success);">{{ ord.final_amount }} {{ ord.currency.code }}</strong>
+                </td>
+                <td>
+                  <span class="badge badge-status {% if ord.status == 'PAID' or ord.status == 'DELIVERED' %}active{% else %}pending{% endif %}" style="font-size: 0.75rem;">
+                    {{ ord.get_status_display }}
+                  </span>
+                </td>
+                <td>
+                  <a href="{% url 'merchants:order_detail' order_number=ord.order_number %}" class="btn btn-outline btn-sm">
+                    Gérer
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state-box">
+        <div class="empty-state-icon">
+          {% include 'partials/icons/cart.html' %}
+        </div>
+        <h3 class="empty-state-title">Aucune commande trouvée</h3>
+        <p class="empty-state-desc">
+          Les commandes de vos acheteurs apparaîtront ici dès que les participations seront converties.
+        </p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

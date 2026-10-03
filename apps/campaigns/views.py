@@ -83,8 +83,9 @@ def campaign_join_view(request, slug):
                 request,
                 f"Félicitations ! Vous avez rejoint la campagne '{campaign.title}' pour {quantity} unité(s)."
             )
-            return redirect("campaigns:detail", slug=slug)
+            return redirect("orders:checkout", participant_id=participant.id)
         except ValidationError as e:
+
             messages.error(request, e.message if hasattr(e, "message") else str(e))
             return redirect("campaigns:detail", slug=slug)
 

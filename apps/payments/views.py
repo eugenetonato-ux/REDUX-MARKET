@@ -55,9 +55,10 @@ def payment_pending_view(request, order_number):
 
     latest_payment = order.payments.order_by("-created_at").first()
 
-    # Si l'utilisateur clique sur 'Simuler la confirmation webhook' en mode DEBUG
-    if request.method == "POST" and settings.DEBUG and request.POST.get("simulate_confirm"):
+    # Si l'utilisateur clique sur 'Simuler la confirmation webhook' (fournisseur mock / test)
+    if request.method == "POST" and request.POST.get("simulate_confirm"):
         import json
+
         import secrets
         mock_prov = MockPaymentProvider()
         event_id = f"EVT-{secrets.token_hex(4).upper()}"

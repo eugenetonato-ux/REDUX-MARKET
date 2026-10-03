@@ -115,9 +115,12 @@ def purchase_request_join(request, pk):
                 qty = form.cleaned_data["quantity_pledged"]
                 join_purchase_request(purchase_request=pr, user=request.user, quantity_pledged=qty)
                 messages.success(request, f"Félicitations ! Vous avez rejoint cette demande pour {qty} unité(s).")
+                return redirect("purchase_requests:detail", pk=pr.pk)
             except (ValidationError, PermissionDenied) as exc:
                 messages.error(request, str(exc))
-    return redirect("purchase_requests:detail", pk=pr.pk)
+                return redirect("purchase_requests:detail", pk=pr.pk)
+    return render(request, "purchase_requests/request_join.html", {"pr": pr})
+
 
 
 @login_required

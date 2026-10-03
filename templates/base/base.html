@@ -1,43 +1,116 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="{{ DEFAULT_LANGUAGE|default:'fr' }}">
+<html lang="{{ DEFAULT_LANGUAGE|default:'fr' }}" class="h-full bg-[#f5f5f7] text-[#1d1d1f] antialiased">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}REDUX — Commerce Collectif en Afrique{% endblock %}</title>
-  <meta name="description" content="{% block meta_description %}Achetez ensemble et profitez de prix dégressifs garantis par vos commerçants locaux sur REDUX.{% endblock %}">
+  <title>{% block title %}REDUX — Achat Groupé & Économie Collaborative{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Plateforme africaine d'achats groupés inspirée par la simplicité et l'élégance.{% endblock %}">
 
   <!-- PWA & Mobile Meta -->
   <link rel="manifest" href="{% static 'manifest.json' %}">
-  <meta name="theme-color" content="#FF6500">
+  <meta name="theme-color" content="#ffffff">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="REDUX">
 
   <!-- Open Graph / SEO -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="{% block og_title %}REDUX — Commerce Collectif en Afrique{% endblock %}">
-  <meta property="og:description" content="{% block og_description %}Achetez ensemble et profitez de prix dégressifs garantis par vos commerçants vérifiés sur REDUX.{% endblock %}">
+  <meta property="og:title" content="{% block og_title %}REDUX — Achat Groupé{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}Achetez ensemble et profitez de prix dégressifs garantis sur REDUX.{% endblock %}">
   <meta property="og:site_name" content="REDUX">
+
+  <!-- Tailwind CSS CDN avec configuration Apple Design System -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Text"', '"SF Pro Display"', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+          colors: {
+            apple: {
+              canvas: '#f5f5f7',
+              white: '#ffffff',
+              dark: '#1d1d1f',
+              gray: '#6e6e73',
+              subtle: '#86868b',
+              light: '#f5f5f7',
+              blue: '#0071e3',
+              bluehover: '#0077ed',
+              card: '#ffffff',
+            }
+          },
+          boxShadow: {
+            'apple': '0 4px 20px rgba(0, 0, 0, 0.04)',
+            'apple-hover': '0 8px 30px rgba(0, 0, 0, 0.08)',
+          }
+        }
+      }
+    }
+  </script>
 
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
   <link rel="stylesheet" href="{% static 'css/components.css' %}">
   {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body class="bg-[#f5f5f7] text-[#1d1d1f] min-h-screen flex flex-col font-sans selection:bg-[#0071e3] selection:text-white">
+  {% include 'partials/sidebar_drawer.html' %}
   {% include 'partials/header.html' %}
 
-  <main>
-    <div class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+  <!-- Contenu Principal Centré (Max 980px Apple Layout) -->
+  <main id="main-content" class="flex-1 pt-[44px]">
+    <div class="max-w-[980px] mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
       {% include 'partials/messages.html' %}
       {% block content %}{% endblock %}
     </div>
   </main>
 
   {% include 'partials/footer.html' %}
+  {% include 'partials/bottom_nav.html' %}
 
-  <!-- Enregistrement Service Worker PWA -->
+  <!-- Contrôles du Tiroir Latéral & PWA Service Worker -->
   <script>
+    (function() {
+      const toggleBtn = document.getElementById('btn-sidebar-toggle');
+      const drawer = document.getElementById('sidebar-drawer');
+      const backdrop = document.getElementById('sidebar-backdrop');
+      const closeBtn = document.getElementById('sidebar-close-btn');
+      const mainContent = document.getElementById('main-content');
+
+      function openDrawer() {
+        if (!drawer) return;
+        drawer.classList.add('open');
+        backdrop.classList.add('open');
+        drawer.setAttribute('aria-hidden', 'false');
+        backdrop.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        if (mainContent) mainContent.inert = true;
+      }
+
+      function closeDrawer() {
+        if (!drawer) return;
+        drawer.classList.remove('open');
+        backdrop.classList.remove('open');
+        drawer.setAttribute('aria-hidden', 'true');
+        backdrop.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (mainContent) mainContent.inert = false;
+        if (toggleBtn) toggleBtn.focus();
+      }
+
+      if (toggleBtn) toggleBtn.addEventListener('click', openDrawer);
+      if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+      if (backdrop) backdrop.addEventListener('click', closeDrawer);
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && drawer && drawer.classList.contains('open')) {
+          closeDrawer();
+        }
+      });
+    })();
+
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/static/service-worker.js')

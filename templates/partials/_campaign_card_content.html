@@ -1,0 +1,69 @@
+{% load static %}
+<div class="campaign-card">
+  <!-- Média Produit -->
+  <div class="campaign-card-media">
+    <a href="{% url 'campaigns:detail' slug=camp.slug %}">
+      {% if camp.product.images.first %}
+        <img src="{{ camp.product.images.first.image.url }}" alt="{{ camp.title }}" loading="lazy">
+      {% else %}
+        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #F1F5F9; color: var(--text-muted);">
+          {% include 'partials/icons/box.html' %}
+        </div>
+      {% endif %}
+    </a>
+
+    {% if summ.saved_pct and summ.saved_pct > 0 %}
+      <div class="campaign-card-savings-tag">
+        -{{ summ.saved_pct }}%
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Corps de Carte -->
+  <div class="campaign-card-body">
+    <div class="campaign-card-merchant">
+      <span>{{ camp.merchant.business_name }}</span>
+      {% if camp.merchant.is_verified %}
+        <span title="Commerçant certifié" style="color: var(--primary); display: inline-flex; align-items: center;">
+          {% include 'partials/icons/check.html' %}
+        </span>
+      {% endif %}
+      <span style="margin-left: auto; font-size: 0.72rem; font-weight: 700; color: var(--text-muted); background: var(--bg-surface); padding: 0.1rem 0.35rem; border-radius: 4px;">
+        {{ camp.product.store.country.code }}
+      </span>
+    </div>
+
+    <a href="{% url 'campaigns:detail' slug=camp.slug %}" class="campaign-card-title">
+      {{ camp.title }}
+    </a>
+
+    <!-- Progression compacte -->
+    <div style="margin-top: 0.25rem;">
+      <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.25rem;">
+        <span>{{ camp.current_participants_count }} / {{ camp.target_participants }} personnes</span>
+        {% if summ.remaining_for_next %}
+          <span style="color: var(--primary);">Encore {{ summ.remaining_for_next }} pers.</span>
+        {% endif %}
+      </div>
+      <div class="progress-track" style="margin: 0; height: 8px;">
+        <div class="progress-bar-fill" style="width: {{ summ.progress_pct }}%;"></div>
+      </div>
+    </div>
+
+    <!-- Prix et CTA -->
+    <div class="campaign-card-prices">
+      <div style="display: flex; align-items: baseline; gap: 0.4rem;">
+        <span class="current">{{ camp.current_price }} {{ camp.product.store.country.currency.code }}</span>
+        {% if camp.product.original_price > camp.current_price %}
+          <span class="original">{{ camp.product.original_price }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr; margin-top: 0.5rem;">
+      <a href="{% url 'campaigns:detail' slug=camp.slug %}" class="btn btn-primary btn-block btn-sm" id="btn-join-card-{{ camp.id }}">
+        REJOINDRE L'OFFRE
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,131 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Identifiant REDUX — Connexion{% endblock %}
+
+{% block content %}
+<div class="max-w-[480px] mx-auto py-10 md:py-14 px-4">
+
+  <!-- Apple Store Style Header -->
+  <div class="text-center mb-8">
+    <span class="inline-block text-[11px] font-semibold uppercase tracking-wider text-[#0071e3] bg-[#0071e3]/10 px-3 py-1 rounded-full mb-3">
+      ACCÈS RAPIDE 1-CLIC
+    </span>
+    <h1 class="text-[36px] md:text-[48px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+      Identifiant REDUX
+    </h1>
+    <p class="text-[17px] text-[#6e6e73] mt-2">
+      Gérez vos commandes, campagnes et achats groupés.
+    </p>
+  </div>
+
+  <!-- Main Card -->
+  <div class="bg-white rounded-[18px] shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-8 border border-black/5">
+    
+    <!-- SECTION 1 : ACCÈS EXPRESS 1-CLIC (Apple Pills) -->
+    <div class="space-y-2.5 mb-7">
+      <!-- Acheteur -->
+      <a href="{% url 'accounts:quick_login' role='buyer' %}{% if next %}?next={{ next }}{% endif %}" 
+         id="quick-login-buyer"
+         class="flex items-center gap-3 p-3 rounded-xl bg-[#f5f5f7] hover:bg-[#ebebee] border border-transparent hover:border-black/5 transition-all text-left group">
+        <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-xs text-[#0071e3] shrink-0">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[13px] font-semibold text-[#1d1d1f] flex items-center justify-between">
+            <span>Connexion Acheteur (Koffi)</span>
+            <span class="text-[11px] text-[#0071e3] font-medium opacity-0 group-hover:opacity-100 transition-opacity">Tester &rarr;</span>
+          </div>
+          <p class="text-[11px] text-[#6e6e73] truncate">Explorez les campagnes et achats groupés</p>
+        </div>
+      </a>
+
+      <!-- Commerçant -->
+      <a href="{% url 'accounts:quick_login' role='merchant' %}{% if next %}?next={{ next }}{% endif %}" 
+         id="quick-login-merchant"
+         class="flex items-center gap-3 p-3 rounded-xl bg-[#f5f5f7] hover:bg-[#ebebee] border border-transparent hover:border-black/5 transition-all text-left group">
+        <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-xs text-[#34c759] shrink-0">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[13px] font-semibold text-[#1d1d1f] flex items-center justify-between">
+            <span>Connexion Commerçant (Aminata)</span>
+            <span class="text-[11px] text-[#34c759] font-medium opacity-0 group-hover:opacity-100 transition-opacity">Tester &rarr;</span>
+          </div>
+          <p class="text-[11px] text-[#6e6e73] truncate">Gérez vos produits et campagnes à paliers</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- Séparateur Apple -->
+    <div class="relative flex items-center justify-center mb-6">
+      <div class="w-full border-t border-black/5"></div>
+      <span class="absolute bg-white px-3 text-[12px] text-[#86868b] uppercase tracking-wider font-medium">
+        Connexion classique
+      </span>
+    </div>
+
+    <!-- SECTION 2 : FORMULAIRE STANDARD -->
+    <form method="post" action="{% url 'accounts:login' %}{% if next %}?next={{ next }}{% endif %}" class="space-y-4">
+      {% csrf_token %}
+
+      <div>
+        <label for="{{ form.identifier.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
+          {{ form.identifier.label }}
+        </label>
+        <div class="relative">
+          {{ form.identifier }}
+        </div>
+        {% if form.identifier.errors %}
+          <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.identifier.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-1.5">
+          <label for="{{ form.password.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f]">
+            {{ form.password.label }}
+          </label>
+          <a href="{% url 'accounts:forgot_password' %}" class="text-[12px] text-[#0071e3] hover:underline transition-colors">
+            Mot de passe oublié ?
+          </a>
+        </div>
+        <div class="relative">
+          {{ form.password }}
+        </div>
+        {% if form.password.errors %}
+          <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.password.errors.0 }}</p>
+        {% endif %}
+      </div>
+
+      <div class="pt-2">
+        <button type="submit" 
+                id="btn-submit-login"
+                class="w-full h-9 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium transition-all duration-200 flex items-center justify-center shadow-sm">
+          Se connecter
+        </button>
+      </div>
+    </form>
+
+    <!-- Pied de carte -->
+    <div class="mt-8 pt-6 border-t border-black/5 text-center text-[13px] text-[#6e6e73] space-y-1.5">
+      <div>
+        Nouveau sur REDUX ? 
+        <a href="{% url 'accounts:register' %}" class="text-[#0071e3] hover:underline font-medium">Créer un compte Acheteur</a>
+      </div>
+      <div>
+        Vous êtes commerçant ? 
+        <a href="{% url 'accounts:register_merchant' %}" class="text-[#0071e3] hover:underline font-medium">Ouvrir une boutique certifiée</a>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}

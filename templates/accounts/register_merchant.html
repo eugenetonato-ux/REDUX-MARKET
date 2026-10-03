@@ -1,0 +1,124 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Devenir Commerçant Partenaire — REDUX{% endblock %}
+
+{% block content %}
+<div style="max-width: 620px; margin: 0 auto; padding: 1rem 0;">
+
+  <!-- Bandeau informatif Commerçant -->
+  <div style="background: #ECFDF3; border: 1px solid #A6F4C5; border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <span class="badge" style="background: var(--success); color: #fff; margin-bottom: 0.35rem;">Rôle : Commerçant Partenaire</span>
+      <h3 style="font-size: 1.15rem; color: #027A48; margin: 0.2rem 0;">Vendez en volume garanti grâce au collectif</h3>
+      <p style="font-size: 0.85rem; color: #05603A; margin: 0;">Paliers dégressifs, paiements sécurisés et clients regroupés.</p>
+    </div>
+    <a href="{% url 'accounts:register' %}" class="btn btn-sm btn-outline" style="border-color: #027A48; color: #027A48; white-space: nowrap; font-size: 0.8rem;">
+      Vous êtes acheteur ?
+    </a>
+  </div>
+
+  <div class="card">
+    <div style="text-align: center; margin-bottom: 1.5rem;">
+      <h2 style="font-size: 1.4rem; color: var(--text-primary);">Ouvrir votre compte Commerçant</h2>
+      <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.25rem;">
+        Créez votre boutique et commencez à publier des campagnes avec paliers de prix.
+      </p>
+    </div>
+
+    <form method="post" action="{% url 'accounts:register_merchant' %}">
+      {% csrf_token %}
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label for="{{ form.full_name.id_for_label }}" class="form-label">{{ form.full_name.label }} *</label>
+          {{ form.full_name }}
+          {% if form.full_name.errors %}
+            <div class="form-error">{{ form.full_name.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.business_name.id_for_label }}" class="form-label">{{ form.business_name.label }} *</label>
+          {{ form.business_name }}
+          {% if form.business_name.errors %}
+            <div class="form-error">{{ form.business_name.errors.0 }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.business_type.id_for_label }}" class="form-label">{{ form.business_type.label }}</label>
+        {{ form.business_type }}
+        {% if form.business_type.errors %}
+          <div class="form-error">{{ form.business_type.errors.0 }}</div>
+        {% endif %}
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }} *</label>
+          {{ form.email }}
+          {% if form.email.errors %}
+            <div class="form-error">{{ form.email.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.phone.id_for_label }}" class="form-label">{{ form.phone.label }} *</label>
+          {{ form.phone }}
+          {% if form.phone.errors %}
+            <div class="form-error">{{ form.phone.errors.0 }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label for="{{ form.country.id_for_label }}" class="form-label">{{ form.country.label }} *</label>
+          {{ form.country }}
+          {% if form.country.errors %}
+            <div class="form-error">{{ form.country.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.city.id_for_label }}" class="form-label">{{ form.city.label }}</label>
+          {{ form.city }}
+          {% if form.city.errors %}
+            <div class="form-error">{{ form.city.errors.0 }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+        <div class="form-group">
+          <label for="{{ form.password.id_for_label }}" class="form-label">{{ form.password.label }} *</label>
+          {{ form.password }}
+          {% if form.password.errors %}
+            <div class="form-error">{{ form.password.errors.0 }}</div>
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          <label for="{{ form.confirm_password.id_for_label }}" class="form-label">{{ form.confirm_password.label }} *</label>
+          {{ form.confirm_password }}
+          {% if form.confirm_password.errors %}
+            <div class="form-error">{{ form.confirm_password.errors.0 }}</div>
+          {% endif %}
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-submit-merchant" style="margin-top: 1rem;">
+        Créer mon compte & ma boutique
+      </button>
+    </form>
+
+    <div style="margin-top: 1.5rem; text-align: center; font-size: 0.88rem; color: var(--text-secondary);">
+      Déjà inscrit ? <a href="{% url 'accounts:login' %}" style="font-weight: 700; color: var(--primary);">Se connecter</a>
+      ou tester <a href="{% url 'accounts:quick_login' role='merchant' %}" style="font-weight: 700; color: var(--success-dark);">la boutique démo en 1-clic</a>.
+    </div>
+  </div>
+
+</div>
+{% endblock %}

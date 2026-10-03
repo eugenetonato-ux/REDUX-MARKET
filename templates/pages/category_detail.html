@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}{{ category.name }} — Campagnes & Produits REDUX{% endblock %}
+{% block meta_description %}Retrouvez toutes les offres d'achats groupés dans la catégorie {{ category.name }} sur REDUX.{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; gap: 2rem;">
+
+  <!-- Fil d'ariane -->
+  <div style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem;">
+    <a href="/" style="color: var(--text-secondary);">Accueil</a>
+    <span>›</span>
+    <a href="{% url 'pages:categories' %}" style="color: var(--text-secondary);">Catégories</a>
+    <span>›</span>
+    <span style="color: var(--text-primary); font-weight: 600;">{{ category.name }}</span>
+  </div>
+
+  <div>
+    <span class="badge" style="background: var(--primary-light); color: var(--primary); margin-bottom: 0.5rem;">
+      RAYON : {{ category.name|upper }}
+    </span>
+    <h1 style="font-size: 1.85rem; color: var(--text-primary); margin: 0.25rem 0;">Campagnes en cours : {{ category.name }}</h1>
+    <p style="color: var(--text-secondary); font-size: 0.95rem;">
+      Rejoignez les acheteurs mobilisés sur cette catégorie pour maximiser vos réductions.
+    </p>
+  </div>
+
+  {% if campaign_cards %}
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+      {% for card in campaign_cards %}
+        {% include 'partials/campaign_card.html' with card=card %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="card" style="text-align: center; padding: 3.5rem 1.5rem;">
+      <div style="margin-bottom: 0.75rem; color: var(--text-muted);"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></div>
+      <h3 style="font-size: 1.2rem; color: var(--text-primary);">Aucune campagne active pour le moment dans ce rayon.</h3>
+      <p style="font-size: 0.9rem; color: var(--text-secondary); max-width: 450px; margin: 0.5rem auto 1.5rem;">
+        Consultez les autres rayons ou proposez une demande groupée à nos commerçants partenaires.
+      </p>
+      <a href="{% url 'campaigns:list' %}" class="btn btn-primary">Voir toutes les campagnes</a>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

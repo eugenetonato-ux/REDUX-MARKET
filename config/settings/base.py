@@ -72,9 +72,37 @@ LOGIN_URL = "/login"
 LOGIN_REDIRECT_URL = "/dashboard"
 LOGOUT_REDIRECT_URL = "/"
 
+DATABASE_URL = config("DATABASE_URL", default=None)
 DB_ENGINE = config("DB_ENGINE", default="sqlite")
 
-if DB_ENGINE == "mysql":
+if DATABASE_URL:
+    import dj_database_url
+
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True if ("supabase" in DATABASE_URL or "sslmode=require" in DATABASE_URL) else False,
+        )
+    }
+elif DB_ENGINE in ("postgres", "postgresql"):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": config("POSTGRES_DB", default=config("PGDATABASE", default="postgres")),
+            "USER": config("POSTGRES_USER", default=config("PGUSER", default="postgres")),
+            "PASSWORD": config("POSTGRES_PASSWORD", default=config("PGPASSWORD", default="")),
+            "HOST": config("POSTGRES_HOST", default=config("PGHOST", default="localhost")),
+            "PORT": config("POSTGRES_PORT", default=config("PGPORT", default="5432")),
+            "CONN_MAX_AGE": 600,
+            "CONN_HEALTH_CHECKS": True,
+            "OPTIONS": {
+                "sslmode": config("POSTGRES_SSLMODE", default="require"),
+            },
+        }
+    }
+elif DB_ENGINE == "mysql":
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.mysql",

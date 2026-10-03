@@ -5,48 +5,71 @@
 
 {% block extrahead %}
 {{ block.super }}
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap">
 <style>
   :root {
-    --primary: #FF6500;
-    --primary-hover: #E55B00;
-    --secondary: #0B2447;
-    --header-bg: #0B2447;
+    --primary: #0071e3;
+    --primary-hover: #0077ed;
+    --secondary: #1d1d1f;
+    --header-bg: #1d1d1f;
     --header-color: #FFFFFF;
-    --breadcrumbs-bg: #F1F5F9;
+    --breadcrumbs-bg: #f5f5f7;
   }
   body {
-    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif !important;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif !important;
+    background-color: #f5f5f7 !important;
+    color: #1d1d1f !important;
   }
   #header {
-    background: var(--header-bg) !important;
-    color: var(--header-color) !important;
-    border-bottom: 3px solid var(--primary) !important;
+    background: #1d1d1f !important;
+    color: #FFFFFF !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 12px 24px !important;
   }
   #branding h1 {
-    font-size: 1.4rem !important;
-    font-weight: 800 !important;
-    letter-spacing: 0.03em !important;
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
   }
   #branding h1 a:link, #branding h1 a:visited {
     color: #FFFFFF !important;
-  }
-  #branding h1 span.highlight {
-    color: var(--primary) !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
   .module h2, .module caption, .inline-group h2 {
-    background: #F1F5F9 !important;
-    color: var(--secondary) !important;
+    background: #f5f5f7 !important;
+    color: #1d1d1f !important;
     font-weight: 700 !important;
+    border-radius: 8px 8px 0 0 !important;
   }
   .button, input[type=submit], input[type=button], .submit-row input, a.button {
-    background: var(--primary) !important;
-    border-radius: 6px !important;
-    font-weight: 700 !important;
+    background: #0071e3 !important;
+    border-radius: 9999px !important;
+    font-weight: 600 !important;
+    padding: 8px 18px !important;
+    font-size: 12px !important;
+    border: none !important;
     transition: all 0.2s ease !important;
   }
   .button:hover, input[type=submit]:hover {
-    background: var(--primary-hover) !important;
+    background: #0077ed !important;
+  }
+  .admin-return-link {
+    color: #a1a1a6 !important;
+    font-size: 12px !important;
+    text-decoration: none !important;
+    padding: 5px 12px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 9999px !important;
+    font-weight: 500 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    transition: all 0.2s ease !important;
+  }
+  .admin-return-link:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #FFFFFF !important;
   }
 </style>
 {% endblock %}
@@ -54,10 +77,16 @@
 {% block branding %}
 <div id="site-name">
   <a href="{% url 'admin:index' %}">
-    BI<span style="color: #FF6500;">ZO</span>
-    <span style="font-size: 0.8rem; background: #FF6500; color: #fff; padding: 2px 8px; border-radius: 12px; margin-left: 8px; font-weight: 700; letter-spacing: 0.05em;">ADMINISTRATION</span>
+    <strong>REDUX</strong>
+    <span style="font-size: 0.7rem; background: rgba(255, 255, 255, 0.15); color: #fff; padding: 2px 8px; border-radius: 9999px; font-weight: 600; letter-spacing: 0.05em;">ADMINISTRATION</span>
   </a>
 </div>
 {% endblock %}
 
-{% block nav-global %}{% endblock %}
+{% block nav-global %}
+<div style="float: right; margin-right: 1.5rem; display: flex; align-items: center;">
+  <a href="/" class="admin-return-link">
+    &larr; Retour au site public
+  </a>
+</div>
+{% endblock %}

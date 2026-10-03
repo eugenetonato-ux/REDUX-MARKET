@@ -4,7 +4,9 @@
 {% block content %}
 <div style="max-width: 600px; margin: 2rem auto; text-align: center;">
   <div class="card" style="padding: 2.5rem 2rem;">
-    <div style="font-size: 3rem; margin-bottom: 1rem; animation: pulse 2s infinite;">⏳</div>
+    <div style="width: 68px; height: 68px; border-radius: 50%; background: #EFF6FF; color: var(--primary); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem;">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation: spin 3s linear infinite;"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+    </div>
     <h1 style="font-size: 1.85rem; margin-bottom: 0.5rem;">En attente de confirmation...</h1>
     <p class="text-muted" style="margin-bottom: 1.5rem; line-height: 1.6;">
       Veuillez confirmer la transaction sur votre téléphone mobile.<br>
@@ -26,7 +28,7 @@
       <!-- Simulation en mode développement -->
       <div style="background: #FFFBEB; border: 1px dashed #F59E0B; border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.5rem;">
         <span style="font-size: 0.85rem; color: #B45309; font-weight: 700; display: block; margin-bottom: 0.5rem;">
-          ⚙️ Environnement de Développement / Test
+           Environnement de Développement / Test
         </span>
         <form method="post">
           {% csrf_token %}

@@ -1,47 +1,118 @@
 {% extends 'base/base.html' %}
+{% load static %}
+
 {% block title %}Mes Commandes — REDUX{% endblock %}
 
 {% block content %}
-<div style="max-width: 960px; margin: 0 auto;">
-  <div class="flex items-center justify-between" style="margin-bottom: 2rem;">
+<div class="py-8 md:py-12 space-y-8">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
     <div>
-      <span class="badge" style="background: var(--primary-light); color: var(--primary); margin-bottom: 0.5rem;">Espace Acheteur</span>
-      <h1>Mes Commandes</h1>
+      <h1 class="text-[32px] md:text-[44px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+        Mes Commandes
+      </h1>
+      <p class="text-[17px] text-[#6e6e73] mt-1 font-normal">
+        Consultez l'ensemble de vos commandes passées et suivez l'acheminement de vos colis.
+      </p>
     </div>
-    <a href="/campaigns/" class="btn btn-primary btn-sm">Découvrir les offres groupées</a>
+    <a href="{% url 'campaigns:list' %}" 
+       class="h-9 px-5 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium transition-all inline-flex items-center justify-center self-start md:self-auto shadow-xs">
+      Explorer les offres
+    </a>
   </div>
 
-  {% if orders %}
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      {% for o in orders %}
-        <div class="card" style="display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1.5rem;">
-          <div>
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.25rem;">
-              <span style="font-weight: 800; font-size: 1.1rem; color: var(--secondary);">#{{ o.order_number }}</span>
-              {% include 'partials/status_badge.html' with status=o.status %}
-            </div>
-            <div class="text-muted" style="font-size: 0.85rem;">
-              Le {{ o.created_at|date:"d/m/Y à H:i" }} &bull;
-              {% for it in o.items.all %}{{ it.quantity }}x {{ it.product.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
-            </div>
-          </div>
+  <!-- Segmented Subnav Pills -->
+  <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+    <a href="{% url 'dashboard:index' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Vue d'ensemble
+    </a>
+    <a href="{% url 'dashboard:campaigns' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Mes Participations
+    </a>
+    <a href="{% url 'dashboard:orders' %}" 
+       class="h-8 px-4 rounded-full bg-[#1d1d1f] text-white text-[12px] font-medium inline-flex items-center whitespace-nowrap shadow-xs">
+      Mes Commandes
+    </a>
+    <a href="{% url 'dashboard:profile' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Adresse & Profil
+    </a>
+    <a href="{% url 'dashboard:notifications' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Notifications
+    </a>
+  </div>
 
-          <div style="text-align: right; display: flex; align-items: center; gap: 1.5rem;">
-            <div>
-              <span style="font-size: 1.25rem; font-weight: 800; color: var(--primary);">{{ o.final_amount }} {{ o.currency.symbol }}</span>
+  <!-- Main Content Card -->
+  <div class="bg-white rounded-[18px] p-8 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+    {% if orders %}
+      <div class="divide-y divide-black/5">
+        {% for order in orders %}
+          <div class="py-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center gap-4 min-w-0">
+              <div class="w-12 h-12 rounded-xl bg-[#f2fcf5] text-[#248a3d] border border-black/5 flex items-center justify-center shrink-0">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                  <line x1="3" y1="6" x2="21" y2="6"></line>
+                </svg>
+              </div>
+              <div class="min-w-0">
+                <div class="text-[15px] font-bold text-[#1d1d1f]">
+                  Commande #{{ order.order_number }}
+                </div>
+                <div class="text-[13px] text-[#6e6e73] mt-0.5 truncate">
+                  Date : {{ order.created_at|date:"d F Y à H:i" }} • {{ order.shipping_address|default:"Adresse standard"|truncatechars:45 }}
+                </div>
+              </div>
             </div>
-            <a href="{% url 'orders:detail' order_number=o.order_number %}" class="btn btn-outline btn-sm">Détails →</a>
+
+            <div class="flex items-center justify-between md:justify-end gap-5">
+              <div class="text-left md:text-right">
+                <div class="text-[16px] font-bold text-[#1d1d1f]">
+                  {{ order.final_amount }} {{ order.currency.code }}
+                </div>
+                <span class="inline-block text-[11px] font-medium px-2.5 py-0.5 rounded-full {% if order.status == 'PAID' or order.status == 'DELIVERED' %}bg-[#34c759]/10 text-[#248a3d]{% else %}bg-black/5 text-[#6e6e73]{% endif %}">
+                  {{ order.get_status_display }}
+                </span>
+              </div>
+              <div class="flex items-center gap-2">
+                <a href="{% url 'orders:detail' order_number=order.order_number %}" 
+                   class="h-8 px-4 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[12px] font-medium transition-all inline-flex items-center justify-center">
+                  Détails & Suivi
+                </a>
+                {% if order.status in 'PAID,DELIVERED' and not order.review %}
+                  <a href="{% url 'reviews:create' order_number=order.order_number %}" 
+                     class="h-8 px-4 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium transition-all inline-flex items-center justify-center">
+                    Avis
+                  </a>
+                {% endif %}
+              </div>
+            </div>
           </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="py-14 text-center">
+        <div class="w-14 h-14 rounded-full bg-[#f5f5f7] text-[#86868b] flex items-center justify-center mx-auto mb-4">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+          </svg>
         </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <div class="card" style="text-align: center; padding: 3rem;">
-      <div style="font-size: 2.5rem; margin-bottom: 1rem;">📦</div>
-      <h3>Aucune commande passée pour l'instant</h3>
-      <p class="text-muted" style="margin: 0.5rem 0 1.5rem;">Rejoignez une campagne collective pour profiter de prix dégressifs exclusifs.</p>
-      <a href="/campaigns/" class="btn btn-primary">Voir les campagnes en cours</a>
-    </div>
-  {% endif %}
+        <h3 class="text-[17px] font-bold text-[#1d1d1f]">Aucune commande pour l'instant</h3>
+        <p class="text-[14px] text-[#6e6e73] mt-1 mb-6 max-w-[420px] mx-auto">
+          Dès qu'une campagne collective à laquelle vous participez se termine, votre commande est automatiquement créée et suivie ici.
+        </p>
+        <a href="{% url 'campaigns:list' %}" 
+           class="h-9 px-6 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium inline-flex items-center justify-center shadow-xs transition-all">
+          Explorer les offres
+        </a>
+      </div>
+    {% endif %}
+  </div>
+
 </div>
 {% endblock %}

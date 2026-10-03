@@ -5,8 +5,9 @@ from .models import OrderStatus, OrderStatusHistory
 
 VALID_ORDER_TRANSITIONS = {
     OrderStatus.PENDING: [OrderStatus.PAID, OrderStatus.CANCELLED],
-    OrderStatus.PAID: [OrderStatus.PROCESSING, OrderStatus.REFUNDED, OrderStatus.CANCELLED],
+    OrderStatus.PAID: [OrderStatus.PROCESSING, OrderStatus.SHIPPED, OrderStatus.REFUNDED, OrderStatus.CANCELLED],
     OrderStatus.PROCESSING: [OrderStatus.SHIPPED, OrderStatus.CANCELLED, OrderStatus.REFUNDED],
+
     OrderStatus.SHIPPED: [OrderStatus.DELIVERED, OrderStatus.REFUNDED],
     OrderStatus.DELIVERED: [OrderStatus.REFUNDED],
     OrderStatus.CANCELLED: [],

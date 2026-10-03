@@ -1,0 +1,126 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Commande #{{ order.order_number }} — Espace Commerçant REDUX{% endblock %}
+
+{% block content %}
+<div style="max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+  {% include 'merchant/nav_tabs.html' %}
+
+  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+    <div>
+      <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+        <span class="badge badge-status {% if order.status == 'PAID' or order.status == 'DELIVERED' %}active{% else %}pending{% endif %}">
+          {{ order.get_status_display }}
+        </span>
+        <span style="font-size: 0.85rem; color: var(--text-secondary);">
+          Passée le {{ order.created_at|date:"d F Y à H:i" }}
+        </span>
+      </div>
+      <h1 style="font-size: 1.6rem; color: var(--text-primary); margin: 0;">Commande Client #{{ order.order_number }}</h1>
+    </div>
+
+    <a href="{% url 'merchants:orders' %}" class="btn btn-outline-dark btn-sm">
+      ← Retour aux commandes
+    </a>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; align-items: start;">
+    <!-- COLONNE GAUCHE : Informations Commande & Client -->
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <!-- Coordonnées Acheteur & Livraison -->
+      <div class="card">
+        <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.75rem;">
+           Destinataire & Coordonnées
+        </h3>
+        <div style="font-size: 0.95rem; line-height: 1.6;">
+          <div>Client : <strong>{{ order.buyer.full_name|default:order.buyer.email }}</strong></div>
+          <div>Téléphone de livraison : <strong>{{ order.contact_phone }}</strong></div>
+          <div style="margin-top: 0.5rem; padding: 0.75rem; background: var(--bg-surface); border-radius: var(--radius-sm); border: 1px solid var(--border);">
+            <span style="font-size: 0.8rem; color: var(--text-muted); display: block;">Adresse complète :</span>
+            {{ order.shipping_address }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Articles Commandés -->
+      <div class="card">
+        <h3 style="font-size: 1.1rem; color: var(--text-primary); margin-bottom: 0.75rem;">
+           Articles de la Commande
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+          {% for item in items %}
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--border-light);">
+              <div>
+                <strong>{{ item.product.name }}</strong>
+                <div style="font-size: 0.82rem; color: var(--text-secondary);">
+                  Quantité : x{{ item.quantity }} @ {{ item.unit_price }} {{ order.currency.code }}
+                </div>
+              </div>
+              <strong style="color: var(--success); font-size: 1.05rem;">
+                {{ item.total_price }} {{ order.currency.code }}
+              </strong>
+            </div>
+          {% endfor %}
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; font-size: 1.15rem; font-weight: 800;">
+          <span>Total à expédier :</span>
+          <span style="color: var(--success);">{{ order.final_amount }} {{ order.currency.code }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLONNE DROITE : Action de mise à jour d'expédition -->
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <div class="card" style="border: 2px solid var(--primary-subtle);">
+        <h3 style="font-size: 1.15rem; color: var(--text-primary); margin-bottom: 0.75rem;">
+           Traitement & Expédition
+        </h3>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">
+          Mettez à jour le statut au fur et à mesure de la préparation et de l'envoi du colis. L'acheteur verra l'avancement en temps réel.
+        </p>
+
+        <form method="post">
+          {% csrf_token %}
+
+          <div class="form-group">
+            <label for="{{ form.status.id_for_label }}" class="form-label">{{ form.status.label }}</label>
+            {{ form.status }}
+          </div>
+
+          <div class="form-group">
+            <label for="{{ form.notes.id_for_label }}" class="form-label">{{ form.notes.label }}</label>
+            {{ form.notes }}
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 0.5rem;">
+            Enregistrer le statut
+          </button>
+        </form>
+      </div>
+
+      <!-- Historique des statuts -->
+      <div class="card">
+        <h3 style="font-size: 1.05rem; color: var(--text-primary); margin-bottom: 0.75rem;">
+          Historique de la Commande
+        </h3>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem;">
+          {% for h in history %}
+            <div style="padding: 0.5rem; background: var(--bg-surface); border-radius: var(--radius-sm);">
+              <span style="font-weight: 700; color: var(--text-primary);">{{ h.get_new_status_display }}</span>
+              <span style="color: var(--text-muted); font-size: 0.75rem; margin-left: 0.5rem;">{{ h.created_at|date:"d/m/Y H:i" }}</span>
+              {% if h.notes %}
+                <div style="color: var(--text-secondary); font-size: 0.8rem; margin-top: 0.2rem;">{{ h.notes }}</div>
+              {% endif %}
+            </div>
+          {% empty %}
+            <div style="color: var(--text-muted);">Aucun historique.</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

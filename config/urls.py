@@ -41,6 +41,7 @@ urlpatterns = [
     path("merchant/", include("apps.merchants.urls")),
 
     # Autres
+    path("countries/", include("apps.countries.urls")),
     path("reviews/", include("apps.reviews.urls")),
     path("disputes/", include("apps.disputes.urls")),
     path("notifications/", include("apps.notifications.urls")),

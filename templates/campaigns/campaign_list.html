@@ -1,36 +1,66 @@
 {% extends 'base/base.html' %}
-{% block title %}Campagnes d'Achats Groupés — REDUX{% endblock %}
-
-{% block extra_css %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/campaign.css' %}">
-{% endblock %}
+
+{% block title %}Toutes les Campagnes en Cours — REDUX{% endblock %}
+{% block meta_description %}Explorez toutes les offres groupées actives et achetez à prix dégressifs avec la communauté.{% endblock %}
 
 {% block content %}
-<div style="margin-bottom: 2.5rem; text-align: center;">
-  <span class="badge" style="background: var(--primary-light); color: var(--primary); font-size: 0.8rem; margin-bottom: 0.5rem;">
-    Achats Groupés & Prix Dégressifs
-  </span>
-  <h1 style="font-size: 2.25rem; margin-bottom: 0.75rem;">Campagnes Collectives en Cours</h1>
-  <p class="text-muted" style="font-size: 1.05rem; max-width: 620px; margin: 0 auto;">
-    Plus vous êtes nombreux à rejoindre l'achat, plus le prix unitaire diminue pour tout le groupe.
-  </p>
-</div>
+<div class="py-8 md:py-12 space-y-8">
 
-{% if campaign_cards %}
-  <div class="campaign-grid">
-    {% for item in campaign_cards %}
-      {% include 'partials/campaign_card.html' with campaign=item.campaign summary=item.summary %}
-    {% endfor %}
+  <!-- En-tête de section -->
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+    <div>
+      <span class="inline-block text-[11px] font-semibold uppercase tracking-wider text-[#0071e3] bg-[#0071e3]/10 px-3 py-1 rounded-full mb-3">
+        Économie du Collectif
+      </span>
+      <h1 class="text-[32px] md:text-[44px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+        Offres groupées en cours
+      </h1>
+      <p class="text-[17px] text-[#6e6e73] mt-1 font-normal max-w-[620px]">
+        Rejoignez un groupe actif. Dès qu'un palier de participants est franchi, le prix baisse pour tous.
+      </p>
+    </div>
+
+    <!-- Filtres par catégorie rapides (Apple Pills) -->
+    <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar shrink-0">
+      <a href="{% url 'campaigns:list' %}" 
+         class="h-8 px-4 rounded-full {% if not current_category_slug %}bg-[#1d1d1f] text-white shadow-xs{% else %}bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] border border-black/5{% endif %} text-[12px] font-medium transition-all inline-flex items-center whitespace-nowrap">
+        Toutes
+      </a>
+      {% for cat in categories %}
+        <a href="{% url 'campaigns:list' %}?category={{ cat.slug }}" 
+           class="h-8 px-4 rounded-full {% if current_category_slug == cat.slug %}bg-[#1d1d1f] text-white shadow-xs{% else %}bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] border border-black/5{% endif %} text-[12px] font-medium transition-all inline-flex items-center whitespace-nowrap">
+          {{ cat.name }}
+        </a>
+      {% endfor %}
+    </div>
   </div>
-{% else %}
-  <div class="card" style="text-align: center; padding: 4rem 1.5rem;">
-    <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
-    <h2>Aucune campagne active pour le moment</h2>
-    <p class="text-muted" style="max-width: 480px; margin: 0.5rem auto 1.5rem;">
-      Les commerçants de votre région préparent de nouvelles offres groupées. Revenez très bientôt ou explorez le catalogue !
-    </p>
-    <a href="/products/" class="btn btn-primary">Explorer les produits</a>
-  </div>
-{% endif %}
+
+  <!-- Grille des cartes de campagne -->
+  {% if campaign_cards %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for card in campaign_cards %}
+        {% include 'partials/campaign_card.html' with card=card %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="bg-white rounded-[18px] p-12 text-center shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5">
+      <div class="w-14 h-14 rounded-full bg-[#f5f5f7] text-[#86868b] flex items-center justify-center mx-auto mb-4">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+      <h3 class="text-[17px] font-bold text-[#1d1d1f]">Aucune offre ne correspond à vos critères</h3>
+      <p class="text-[14px] text-[#6e6e73] max-w-[440px] mx-auto mt-1 mb-6">
+        Revenez régulièrement ou explorez d'autres catégories pour découvrir de nouvelles campagnes lancées par nos commerçants partenaires.
+      </p>
+      <a href="{% url 'campaigns:list' %}" 
+         class="h-9 px-6 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium inline-flex items-center justify-center shadow-xs transition-all">
+        Afficher toutes les campagnes
+      </a>
+    </div>
+  {% endif %}
+
+</div>
 {% endblock %}

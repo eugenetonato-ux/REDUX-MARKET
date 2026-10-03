@@ -66,7 +66,7 @@
         </div>
         {% if can_submit_proposal %}
           <a href="{% url 'purchase_requests:proposal_create' pk=request_obj.pk %}" class="btn btn-secondary btn-sm" id="btn-submit-proposal">
-            💼 Déposer une offre
+             Déposer une offre
           </a>
         {% endif %}
       </div>
@@ -81,7 +81,7 @@
                     <strong style="font-size: 1.05rem; color: var(--secondary);">{{ prop.store.name }}</strong>
                     {% if prop.merchant.is_verified %}
                       <span class="badge" style="background: #EFF6FF; color: #1D4ED8; font-size: 0.7rem; font-weight: 600;">
-                        ✓ Commerçant Vérifié
+                         Commerçant Vérifié
                       </span>
                     {% endif %}
                   </div>
@@ -107,7 +107,7 @@
                 <div>
                   {% if prop.status == 'ACCEPTED' %}
                     <span class="badge" style="background: #059669; color: #fff; font-weight: 700; padding: 0.35rem 0.75rem;">
-                      ✓ Proposition Retenue
+                       Proposition Retenue
                     </span>
                   {% elif prop.status == 'REJECTED' %}
                     <span class="badge" style="background: var(--bg-surface); color: var(--text-muted);">Non retenue</span>
@@ -129,15 +129,15 @@
           {% endfor %}
         </div>
       {% else %}
-        <div style="text-align: center; padding: 2rem 1rem; color: var(--text-muted);">
-          <div style="font-size: 2rem; margin-bottom: 0.5rem;">⏳</div>
-          <p>Aucun commerçant n'a encore déposé d'offre formelle.</p>
+        <div class="empty-state-box" style="padding: 2rem 1rem;">
+          <div class="empty-state-icon" style="width: 52px; height: 52px; margin-bottom: 0.75rem;">
+            {% include 'partials/icons/store.html' %}
+          </div>
+          <p class="empty-state-desc" style="margin-bottom: 0.75rem;">Aucun commerçant n'a encore déposé d'offre formelle.</p>
           {% if can_submit_proposal %}
-            <p style="margin-top: 0.5rem;">
-              <a href="{% url 'purchase_requests:proposal_create' pk=request_obj.pk %}" class="btn btn-secondary btn-sm">
-                Soyez le premier à répondre à ce besoin
-              </a>
-            </p>
+            <a href="{% url 'purchase_requests:proposal_create' pk=request_obj.pk %}" class="btn btn-secondary btn-sm">
+              Soyez le premier à répondre à ce besoin
+            </a>
           {% endif %}
         </div>
       {% endif %}
@@ -169,7 +169,7 @@
 
       {% if user_has_joined %}
         <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: var(--radius-sm); padding: 1rem; text-align: center; margin-top: 1rem;">
-          <div style="color: #059669; font-weight: 700; margin-bottom: 0.25rem;">✓ Vous participez à cet achat !</div>
+          <div style="color: #059669; font-weight: 700; margin-bottom: 0.25rem;"> Vous participez à cet achat !</div>
           <p style="font-size: 0.85rem; color: #065F46; margin: 0;">
             Vous êtes engagé pour <strong>{{ user_pledged_qty }} unité(s)</strong>. Vous serez notifié dès qu'une offre commerçante est validée.
           </p>
@@ -204,7 +204,7 @@
     {% if can_submit_proposal %}
       <div class="card" style="background: linear-gradient(135deg, #0B2447, #1E3A8A); color: #fff;">
         <h3 style="color: #fff; font-size: 1.1rem; margin-bottom: 0.5rem;">
-          💼 Vous avez du stock ?
+           Vous avez du stock ?
         </h3>
         <p style="font-size: 0.85rem; color: #CBD5E1; margin-bottom: 1rem;">
           En tant que commerçant vérifié REDUX, vous pouvez vendre en gros à ce groupe dès maintenant.

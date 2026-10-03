@@ -1,45 +1,88 @@
 {% extends 'base/base.html' %}
+{% load static %}
+
 {% block title %}Mes Notifications — REDUX{% endblock %}
 
 {% block content %}
-<div style="max-width: 800px; margin: 0 auto;">
-  <div class="flex items-center justify-between" style="margin-bottom: 2rem;">
+<div class="max-w-[820px] mx-auto py-8 md:py-12 space-y-8">
+
+  <!-- Header -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
     <div>
-      <span class="badge" style="background: var(--primary-light); color: var(--primary); margin-bottom: 0.5rem;">Alertes & Mises à jour</span>
-      <h1>Mes Notifications</h1>
+      <h1 class="text-[32px] md:text-[44px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+        Mes Notifications
+      </h1>
+      <p class="text-[17px] text-[#6e6e73] mt-1 font-normal">
+        Alertes en temps réel sur les paliers atteints et l'état de vos commandes.
+      </p>
     </div>
 
     {% if unread_count > 0 %}
       <form method="post">
         {% csrf_token %}
         <input type="hidden" name="mark_all_read" value="1">
-        <button type="submit" class="btn btn-outline btn-sm">Tout marquer comme lu</button>
+        <button type="submit" 
+                class="h-8 px-4 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[12px] font-medium transition-all inline-flex items-center gap-1.5 self-start md:self-auto">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Tout marquer comme lu
+        </button>
       </form>
     {% endif %}
   </div>
 
+  <!-- Segmented Subnav Pills -->
+  <div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+    <a href="{% url 'dashboard:index' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Vue d'ensemble
+    </a>
+    <a href="{% url 'dashboard:campaigns' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Mes Participations
+    </a>
+    <a href="{% url 'dashboard:orders' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Mes Commandes
+    </a>
+    <a href="{% url 'dashboard:profile' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
+      Adresse & Profil
+    </a>
+    <a href="{% url 'dashboard:notifications' %}" 
+       class="h-8 px-4 rounded-full bg-[#1d1d1f] text-white text-[12px] font-medium inline-flex items-center whitespace-nowrap shadow-xs">
+      Notifications
+    </a>
+  </div>
+
+  <!-- Content -->
   {% if notifications %}
-    <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+    <div class="space-y-3">
       {% for notif in notifications %}
-        <div class="card" style="padding: 1.25rem 1.5rem; {% if not notif.is_read %}border-left: 4px solid var(--primary); background: #FFFDFB;{% endif %}">
-          <div class="flex items-center justify-between" style="margin-bottom: 0.4rem;">
-            <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <div class="bg-white rounded-[18px] p-6 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border {% if not notif.is_read %}border-[#0071e3]/30 bg-[#fbfdff]{% else %}border-black/5{% endif %} transition-all">
+          <div class="flex items-center justify-between gap-3 mb-2">
+            <div class="flex items-center gap-2.5">
               {% if not notif.is_read %}
-                <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary); display: inline-block;"></span>
+                <span class="w-2 h-2 rounded-full bg-[#0071e3] shrink-0"></span>
               {% endif %}
-              <strong style="color: var(--secondary); font-size: 1.05rem;">{{ notif.title }}</strong>
+              <h2 class="text-[15px] font-bold text-[#1d1d1f]">{{ notif.title }}</h2>
             </div>
-            <span class="text-muted" style="font-size: 0.8rem;">{{ notif.created_at|date:"d/m/Y à H:i" }}</span>
+            <span class="text-[12px] text-[#86868b] shrink-0">{{ notif.created_at|date:"d/m/Y à H:i" }}</span>
           </div>
 
-          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 0.75rem;">
+          <p class="text-[14px] text-[#6e6e73] leading-relaxed mb-4">
             {{ notif.message }}
           </p>
 
           {% if notif.link %}
             <div>
-              <a href="{% url 'notifications:mark_read' notification_id=notif.id %}" class="btn btn-primary btn-sm" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;">
-                Consulter →
+              <a href="{% url 'notifications:mark_read' notification_id=notif.id %}" 
+                 class="h-8 px-4 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium transition-all inline-flex items-center gap-1.5 shadow-xs">
+                <span>Consulter</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
               </a>
             </div>
           {% endif %}
@@ -47,11 +90,19 @@
       {% endfor %}
     </div>
   {% else %}
-    <div class="card" style="text-align: center; padding: 3rem;">
-      <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔔</div>
-      <h3>Aucune notification pour le moment</h3>
-      <p class="text-muted">Vous serez notifié dès qu'un nouveau palier est atteint ou que votre commande change de statut.</p>
+    <div class="bg-white rounded-[18px] p-12 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-black/5 text-center">
+      <div class="w-14 h-14 rounded-full bg-[#f5f5f7] text-[#86868b] flex items-center justify-center mx-auto mb-4">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+        </svg>
+      </div>
+      <h2 class="text-[17px] font-bold text-[#1d1d1f]">Aucune notification pour le moment</h2>
+      <p class="text-[14px] text-[#6e6e73] mt-1 max-w-[420px] mx-auto">
+        Vous recevrez des alertes dès qu'un palier inférieur est validé sur vos campagnes ou qu'un statut de commande évolue.
+      </p>
     </div>
   {% endif %}
+
 </div>
 {% endblock %}

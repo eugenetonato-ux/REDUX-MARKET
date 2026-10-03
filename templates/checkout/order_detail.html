@@ -18,7 +18,7 @@
 
       {% if order.status == "PENDING" %}
         <a href="/payment/?order={{ order.order_number }}" class="btn btn-primary" id="btn-proceed-payment">
-          💳 Procéder au paiement sécurisé ({{ order.final_amount }} {{ order.currency.symbol }})
+          Procéder au paiement sécurisé ({{ order.final_amount }} {{ order.currency.symbol }})
         </a>
       {% endif %}
     </div>
@@ -118,9 +118,47 @@
         <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-light); font-size: 0.85rem;">
           <p class="text-muted">Boutique partenaire :</p>
           <strong>{{ order.campaign.product.store.name }}</strong>
-          <p class="text-muted">📍 {{ order.campaign.product.store.city|default:order.campaign.product.store.country.name }}</p>
+          <p class="text-muted">{{ order.campaign.product.store.city|default:order.campaign.product.store.country.name }}</p>
         </div>
       {% endif %}
+
+      <!-- Actions client : Avis & Litiges -->
+      <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 0.75rem;">
+        {% if order.review %}
+          <div style="background: var(--bg-surface); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); font-size: 0.85rem;">
+            <div style="font-weight: 700; color: var(--secondary); margin-bottom: 0.25rem;">Votre avis vérifié</div>
+            <div>Note : {{ order.review.rating }}/5</div>
+            {% if order.review.comment %}
+              <div class="text-muted" style="font-size: 0.8rem; margin-top: 0.25rem;">« {{ order.review.comment|truncatechars:70 }} »</div>
+            {% endif %}
+          </div>
+        {% elif order.status in "PAID,PROCESSING,SHIPPED,DELIVERED" %}
+          <a href="{% url 'reviews:create' order_number=order.order_number %}" class="btn btn-outline" style="width: 100%; text-align: center; font-size: 0.85rem; justify-content: center;">
+            Laisser un avis vérifié
+          </a>
+        {% endif %}
+
+        {% if order.disputes.all %}
+          {% for dispute in order.disputes.all %}
+            <div style="background: rgba(239, 68, 68, 0.05); padding: 0.85rem; border-radius: var(--radius-sm); border: 1px solid rgba(239, 68, 68, 0.2); font-size: 0.85rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <strong style="color: #EF4444;">Litige #{{ dispute.id }}</strong>
+                <span class="badge badge-status">{{ dispute.get_status_display }}</span>
+              </div>
+              <p style="font-size: 0.8rem; margin-top: 0.35rem; color: var(--text-secondary);">{{ dispute.reason }}</p>
+              <a href="{% url 'disputes:detail' pk=dispute.pk %}" style="display: inline-block; margin-top: 0.5rem; font-size: 0.8rem; color: var(--primary); font-weight: 600;">
+                Accéder à la médiation →
+              </a>
+            </div>
+          {% endfor %}
+        {% else %}
+          {% if order.status in "PAID,PROCESSING,SHIPPED,DELIVERED" %}
+            <a href="{% url 'disputes:create' order_number=order.order_number %}" style="font-size: 0.8rem; color: var(--text-muted); text-align: center; text-decoration: underline;">
+              Un problème avec cette commande ? Ouvrir un litige
+            </a>
+          {% endif %}
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>
