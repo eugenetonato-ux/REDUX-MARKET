@@ -72,7 +72,7 @@ LOGIN_URL = "/login"
 LOGIN_REDIRECT_URL = "/dashboard"
 LOGOUT_REDIRECT_URL = "/"
 
-DATABASE_URL = config("DATABASE_URL", default=None)
+DATABASE_URL = config("DATABASE_URL", default="").strip()
 DB_ENGINE = config("DB_ENGINE", default="sqlite")
 
 if DATABASE_URL:
