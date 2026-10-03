@@ -43,4 +43,11 @@ def transition_order_status(order, new_status, actor=None, notes=""):
         content_object=order,
         changes={"old_status": current, "new_status": new_status, "notes": notes},
     )
+
+    try:
+        from apps.notifications.events import notify_order_status_changed
+        notify_order_status_changed(order, old_status=current)
+    except Exception:
+        pass
+
     return order

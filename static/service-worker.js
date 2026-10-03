@@ -75,3 +75,43 @@ self.addEventListener("fetch", (event) => {
     );
   }
 });
+
+// PWA Push Notifications & Notification Click
+self.addEventListener("push", (event) => {
+  if (event.data) {
+    try {
+      const data = event.data.json();
+      const options = {
+        body: data.message || data.body || "Mise à jour de votre compte REDUX",
+        icon: "/static/icons/icon-192x192.png",
+        badge: "/static/icons/icon-72x72.png",
+        vibrate: [100, 50, 100],
+        data: {
+          link: data.link || "/dashboard/notifications/"
+        }
+      };
+      event.waitUntil(
+        self.registration.showNotification(data.title || "REDUX Notification", options)
+      );
+    } catch (e) {
+      console.error("Erreur push notification PWA:", e);
+    }
+  }
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const link = (event.notification.data && event.notification.data.link) ? event.notification.data.link : "/dashboard/notifications/";
+  event.waitUntil(
+    clients.matchAll({ type: "window", includeUncontrolled: true }).then((windowClients) => {
+      for (let client of windowClients) {
+        if (client.url.includes(link) && "focus" in client) {
+          return client.focus();
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(link);
+      }
+    })
+  );
+});

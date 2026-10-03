@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from apps.accounts.decorators import buyer_required
 from apps.accounts.forms import ProfileForm
 from apps.campaigns.models import CampaignParticipant
+from apps.notifications.models import Notification
 from apps.orders.models import Order
 
 
@@ -28,6 +29,7 @@ def dashboard_index(request):
 
     total_participations = CampaignParticipant.objects.filter(user=user).count()
     total_orders = Order.objects.filter(buyer=user).count()
+    unread_count = user.notifications.filter(is_read=False).count()
 
     context = {
         "user": user,
@@ -36,6 +38,7 @@ def dashboard_index(request):
         "orders": orders,
         "total_participations": total_participations,
         "total_orders": total_orders,
+        "unread_count": unread_count,
     }
     return render(request, "dashboard/index.html", context)
 
@@ -102,6 +105,18 @@ def dashboard_profile(request):
 @login_required
 @buyer_required
 def dashboard_notifications(request):
-    """Notifications de l'acheteur."""
-    notifications = []
-    return render(request, "dashboard/notifications.html", {"notifications": notifications})
+    """Notifications de l'acheteur — lecture des vraies données et marquage lu."""
+    user = request.user
+    notifications = user.notifications.all().order_by("-created_at")
+
+    if request.method == "POST" and request.POST.get("mark_all_read"):
+        notifications.filter(is_read=False).update(is_read=True)
+        messages.success(request, "Toutes les notifications ont été marquées comme lues.")
+        return redirect("dashboard:notifications")
+
+    unread_count = notifications.filter(is_read=False).count()
+
+    return render(request, "dashboard/notifications.html", {
+        "notifications": notifications,
+        "unread_count": unread_count,
+    })

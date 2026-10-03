@@ -4,99 +4,156 @@
 {% block title %}Créer un compte Acheteur — REDUX{% endblock %}
 
 {% block content %}
-<div style="max-width: 580px; margin: 0 auto; padding: 1rem 0;">
+<div class="max-w-[560px] mx-auto py-10 md:py-14 px-4">
 
-  <!-- Bandeau informatif rôle -->
-  <div style="background: var(--primary-light); border: 1px solid var(--primary-subtle); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between;">
-    <div>
-      <span class="badge" style="background: var(--primary); color: #fff; margin-bottom: 0.35rem;">Rôle : Acheteur</span>
-      <h3 style="font-size: 1.15rem; color: #1E3A8A; margin: 0.2rem 0;">Rejoignez la communauté d'achats groupés</h3>
-      <p style="font-size: 0.85rem; color: #3B82F6; margin: 0;">Profitez de prix réduits à chaque palier franchi.</p>
+  <!-- Apple Store Header -->
+  <div class="text-center mb-8">
+    <span class="inline-block text-[11px] font-semibold uppercase tracking-wider text-[#0071e3] bg-[#0071e3]/10 px-3 py-1 rounded-full mb-3">
+      Compte Acheteur
+    </span>
+    <h1 class="text-[36px] md:text-[44px] font-bold tracking-tight text-[#1d1d1f] leading-tight">
+      Rejoignez REDUX
+    </h1>
+    <p class="text-[17px] text-[#6e6e73] mt-2">
+      Participez à des campagnes collectives et bénéficiez de réductions dégressives garanties.
+    </p>
+  </div>
+
+  <!-- Role Switch Banner -->
+  <div class="bg-[#f5f5f7] rounded-[18px] p-4 mb-6 border border-black/5 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center text-[#0071e3] shadow-xs shrink-0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="8.5" cy="7" r="4"></circle>
+          <line x1="20" y1="8" x2="20" y2="14"></line>
+          <line x1="23" y1="11" x2="17" y2="11"></line>
+        </svg>
+      </div>
+      <div>
+        <div class="text-[13px] font-semibold text-[#1d1d1f]">Vous souhaitez vendre ?</div>
+        <div class="text-[12px] text-[#6e6e73]">Ouvrez une boutique et proposez vos offres à volume garanti.</div>
+      </div>
     </div>
-    <a href="{% url 'accounts:register_merchant' %}" class="btn btn-sm btn-outline" style="border-color: #3B82F6; color: #1D4ED8; white-space: nowrap; font-size: 0.8rem;">
-      Vous êtes vendeur ?
+    <a href="{% url 'accounts:register_merchant' %}" 
+       class="h-8 px-4 rounded-full bg-white hover:bg-[#ebebee] text-[#1d1d1f] text-[12px] font-medium transition-all shrink-0 border border-black/5 inline-flex items-center">
+      Espace Vendeur
     </a>
   </div>
 
-  <div class="card">
-    <div style="text-align: center; margin-bottom: 1.5rem;">
-      <h2 style="font-size: 1.4rem; color: var(--text-primary);">Inscription Acheteur</h2>
-      <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.25rem;">Remplissez les informations ci-dessous pour créer votre compte.</p>
-    </div>
-
-    <form method="post" action="{% url 'accounts:register' %}">
+  <!-- Main Card -->
+  <div class="bg-white rounded-[18px] shadow-[0_4px_20px_rgba(0,0,0,0.04)] p-8 border border-black/5">
+    <form method="post" action="{% url 'accounts:register' %}" class="space-y-4">
       {% csrf_token %}
 
-      <div class="form-group">
-        <label for="{{ form.full_name.id_for_label }}" class="form-label">{{ form.full_name.label }} *</label>
-        {{ form.full_name }}
+      <div>
+        <label for="{{ form.full_name.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
+          {{ form.full_name.label }} *
+        </label>
+        <div class="relative">
+          {{ form.full_name }}
+        </div>
         {% if form.full_name.errors %}
-          <div class="form-error">{{ form.full_name.errors.0 }}</div>
+          <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.full_name.errors.0 }}</p>
         {% endif %}
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-        <div class="form-group">
-          <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }} *</label>
-          {{ form.email }}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="{{ form.email.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
+            {{ form.email.label }} *
+          </label>
+          <div class="relative">
+            {{ form.email }}
+          </div>
           {% if form.email.errors %}
-            <div class="form-error">{{ form.email.errors.0 }}</div>
+            <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.email.errors.0 }}</p>
           {% endif %}
         </div>
 
-        <div class="form-group">
-          <label for="{{ form.phone.id_for_label }}" class="form-label">{{ form.phone.label }} *</label>
-          {{ form.phone }}
+        <div>
+          <label for="{{ form.phone.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
+            {{ form.phone.label }} *
+          </label>
+          <div class="relative">
+            {{ form.phone }}
+          </div>
           {% if form.phone.errors %}
-            <div class="form-error">{{ form.phone.errors.0 }}</div>
+            <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.phone.errors.0 }}</p>
           {% endif %}
         </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-        <div class="form-group">
-          <label for="{{ form.country.id_for_label }}" class="form-label">{{ form.country.label }} *</label>
-          {{ form.country }}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="{{ form.country.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
+            {{ form.country.label }} *
+          </label>
+          <div class="relative">
+            {{ form.country }}
+          </div>
           {% if form.country.errors %}
-            <div class="form-error">{{ form.country.errors.0 }}</div>
+            <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.country.errors.0 }}</p>
           {% endif %}
         </div>
 
-        <div class="form-group">
-          <label for="{{ form.city.id_for_label }}" class="form-label">{{ form.city.label }}</label>
-          {{ form.city }}
+        <div>
+          <label for="{{ form.city.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
+            {{ form.city.label }}
+          </label>
+          <div class="relative">
+            {{ form.city }}
+          </div>
           {% if form.city.errors %}
-            <div class="form-error">{{ form.city.errors.0 }}</div>
+            <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.city.errors.0 }}</p>
           {% endif %}
         </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-        <div class="form-group">
-          <label for="{{ form.password.id_for_label }}" class="form-label">{{ form.password.label }} *</label>
-          {{ form.password }}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="{{ form.password.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
+            {{ form.password.label }} *
+          </label>
+          <div class="relative">
+            {{ form.password }}
+          </div>
           {% if form.password.errors %}
-            <div class="form-error">{{ form.password.errors.0 }}</div>
+            <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.password.errors.0 }}</p>
           {% endif %}
         </div>
 
-        <div class="form-group">
-          <label for="{{ form.confirm_password.id_for_label }}" class="form-label">{{ form.confirm_password.label }} *</label>
-          {{ form.confirm_password }}
+        <div>
+          <label for="{{ form.confirm_password.id_for_label }}" class="block text-[13px] font-semibold text-[#1d1d1f] mb-1.5">
+            {{ form.confirm_password.label }} *
+          </label>
+          <div class="relative">
+            {{ form.confirm_password }}
+          </div>
           {% if form.confirm_password.errors %}
-            <div class="form-error">{{ form.confirm_password.errors.0 }}</div>
+            <p class="text-[12px] text-[#ff3b30] mt-1.5">{{ form.confirm_password.errors.0 }}</p>
           {% endif %}
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-submit-register" style="margin-top: 1rem;">
-        Créer mon compte Acheteur
-      </button>
+      <div class="pt-2">
+        <button type="submit" 
+                id="btn-submit-register" 
+                class="w-full h-11 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[14px] font-medium transition-all shadow-xs flex items-center justify-center">
+          Créer mon compte Acheteur
+        </button>
+      </div>
     </form>
 
-    <div style="margin-top: 1.5rem; text-align: center; font-size: 0.88rem; color: var(--text-secondary);">
-      Déjà inscrit ? <a href="{% url 'accounts:login' %}" style="font-weight: 700; color: var(--primary);">Se connecter</a>
-      ou utiliser <a href="{% url 'accounts:quick_login' role='buyer' %}" style="font-weight: 700; color: var(--success);">la connexion express en 1-clic</a>.
+    <div class="mt-6 pt-6 border-t border-black/5 text-center text-[13px] text-[#6e6e73]">
+      Déjà un compte ? 
+      <a href="{% url 'accounts:login' %}" class="font-medium text-[#0071e3] hover:underline ml-1">
+        Se connecter
+      </a>
+      ou 
+      <a href="{% url 'accounts:quick_login' role='buyer' %}" class="font-medium text-[#34c759] hover:underline ml-1">
+        Connexion express 1-clic
+      </a>
     </div>
   </div>
 

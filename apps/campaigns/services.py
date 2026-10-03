@@ -4,7 +4,7 @@ from django.db import transaction
 from django.utils import timezone
 from django.utils.text import slugify
 from apps.core.models import AuditLog
-from apps.pricing.calculators import calculate_current_price
+from apps.pricing.calculators import calculate_current_price, calculate_current_tier
 from apps.pricing.services import create_price_tiers_for_campaign
 from .models import Campaign, CampaignParticipant, CampaignParticipantStatus, CampaignStatus, PricingPolicy
 from .state_machine import transition_campaign_status
@@ -115,6 +115,8 @@ def join_campaign(campaign, user, quantity=1):
 
     # Calculer le prix unitaire appliqué selon les paliers de la campagne
     tiers = list(campaign.tiers.all().order_by("min_participants"))
+    old_tier = calculate_current_tier(tiers, campaign.current_participants_count)
+    new_tier = calculate_current_tier(tiers, new_count)
     unit_price = calculate_current_price(
         tiers=tiers,
         participant_count=new_count,
@@ -152,4 +154,14 @@ def join_campaign(campaign, user, quantity=1):
             "new_campaign_participants_count": new_count,
         },
     )
+
+    # Notifications In-App & PWA
+    try:
+        from apps.notifications.events import notify_campaign_joined, notify_tier_reached
+        notify_campaign_joined(participant)
+        if new_tier and (old_tier is None or new_tier.id != old_tier.id) and (old_tier is None or new_tier.price < old_tier.price):
+            notify_tier_reached(campaign, new_tier)
+    except Exception:
+        pass
+
     return participant

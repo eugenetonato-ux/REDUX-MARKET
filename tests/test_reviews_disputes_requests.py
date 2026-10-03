@@ -276,3 +276,25 @@ class TestNotificationsSystem:
         assert read_resp.status_code == 302
         notif.refresh_from_db()
         assert notif.is_read is True
+
+    def test_unread_count_api(self, client, buyer_user):
+        client.force_login(buyer_user)
+        resp = client.get(reverse("notifications:unread_count"))
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["count"] == 0
+        assert data["latest"] is None
+
+        # Crée une notification non lue
+        Notification.objects.create(
+            recipient=buyer_user,
+            title="Nouveau palier",
+            message="Prix réduit à 12000 CFA",
+            is_read=False,
+        )
+
+        resp2 = client.get(reverse("notifications:unread_count"))
+        assert resp2.status_code == 200
+        data2 = resp2.json()
+        assert data2["count"] == 1
+        assert data2["latest"]["title"] == "Nouveau palier"
