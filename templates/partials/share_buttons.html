@@ -1,30 +1,135 @@
-{% load static %}
-<div class="share-box">
-  <div style="margin-bottom: 0.75rem;">
-    <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 0.25rem;">
-      Invitez vos proches pour débloquer le prochain palier
-    </h4>
-    <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
-      Plus nous sommes nombreux, plus le prix diminue pour tout le groupe.
-    </p>
+{% load static i18n %}
+
+{# ─────────────────────────────────────────────────────────────────────────
+   Bloc de partage WhatsApp — inclure avec :
+     {% include 'partials/share_buttons.html' with campaign=campaign %}
+   ou depuis payment_success :
+     {% include 'partials/share_buttons.html' with campaign=order.campaign %}
+   ───────────────────────────────────────────────────────────────────────── #}
+
+{% if campaign %}
+<div style="
+  background: linear-gradient(135deg, #e7f7ee 0%, #f0fff5 100%);
+  border: 1.5px solid rgba(52,199,89,0.25);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+">
+  {# Header #}
+  <div style="display:flex; align-items:center; gap:0.65rem;">
+    <div style="width:36px; height:36px; border-radius:50%; background:#25D366; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.025.507 3.933 1.395 5.6L0 24l6.59-1.37A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.369l-.36-.213-3.713.772.787-3.614-.236-.371A9.818 9.818 0 1 1 12 21.818z"/>
+      </svg>
+    </div>
+    <div>
+      <div style="font-size:0.95rem; font-weight:700; color:#1d1d1f;">
+        {% trans "Invitez vos proches — le prix baisse pour tout le monde !" %}
+      </div>
+      <div style="font-size:0.82rem; color:#6e6e73; margin-top:0.1rem;">
+        {% trans "Plus le groupe grandit, plus le tarif descend." %}
+      </div>
+    </div>
   </div>
 
-  <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-    <!-- WhatsApp Share Button avec texte personnalisé et données réelles (Spec 4.6) -->
-    <a href="https://wa.me/?text=Offre%20collective%20sur%20REDUX%20:%20{{ campaign.title|urlencode }}%20à%20{{ campaign.current_price }}%20{{ campaign.product.store.country.currency.code }}%20au%20lieu%20de%20{{ campaign.product.original_price }}%20{{ campaign.product.store.country.currency.code }}.%20Nous%20sommes%20déjà%20{{ campaign.current_participants_count }}%20participants.%20Rejoins%20le%20groupe%20ici%20:%20{{ request.build_absolute_uri|urlencode }}" 
-       target="_blank" 
+  {# Progress hint #}
+  {% if campaign.current_participants_count is not None %}
+  <div style="background:rgba(52,199,89,0.1); border-radius:8px; padding:0.65rem 0.85rem; font-size:0.85rem; color:#248a3d; font-weight:600;">
+    🧑‍🤝‍🧑 {{ campaign.current_participants_count }} {% trans "participants dans ce groupe" %}
+    {% if campaign.next_tier_threshold %}
+      &nbsp;·&nbsp; {% trans "encore" %} {{ campaign.next_tier_threshold|add:"-"campaign.current_participants_count }} {% trans "pour débloquer le prochain palier" %}
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {# Buttons row #}
+  <div style="display:flex; gap:0.65rem; flex-wrap:wrap; align-items:center;">
+
+    {# WhatsApp primary share #}
+    <a id="btn-share-whatsapp"
+       href="https://wa.me/?text={% autoescape on %}{{ CURRENT_LANGUAGE|default:'fr' }}{% endautoescape %}"
+       data-campaign-title="{{ campaign.product.name|default:campaign.title }}"
+       data-campaign-price="{{ campaign.current_price }}"
+       data-campaign-currency="{{ campaign.product.store.country.currency.code|default:'XOF' }}"
+       data-campaign-participants="{{ campaign.current_participants_count|default:0 }}"
+       data-campaign-url="{{ request.build_absolute_uri }}"
+       data-lang="{{ CURRENT_LANGUAGE|default:'fr' }}"
+       target="_blank"
        rel="noopener noreferrer"
-       class="btn btn-whatsapp btn-sm"
-       id="btn-share-whatsapp">
-      <span>Partager sur WhatsApp</span>
+       style="
+         display:inline-flex; align-items:center; gap:0.5rem;
+         background:#25D366; color:#fff;
+         font-size:0.88rem; font-weight:600;
+         padding:0 1.1rem; height:38px; border-radius:9999px;
+         text-decoration:none; transition:background 0.2s;
+         box-shadow:0 2px 8px rgba(37,211,102,0.3);
+       "
+       onmouseover="this.style.background='#1ebe5a'"
+       onmouseout="this.style.background='#25D366'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+        <path d="M12 0C5.373 0 0 5.373 0 12c0 2.025.507 3.933 1.395 5.6L0 24l6.59-1.37A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.369l-.36-.213-3.713.772.787-3.614-.236-.371A9.818 9.818 0 1 1 12 21.818z"/>
+      </svg>
+      {% trans "Partager sur WhatsApp" %}
     </a>
 
-    <!-- Copier le lien -->
-    <button type="button" 
-            class="btn btn-outline btn-sm" 
+    {# Copy link #}
+    <button type="button"
             id="btn-copy-campaign-link"
-            onclick="navigator.clipboard.writeText(window.location.href); alert('Lien copié dans le presse-papier !');">
-      <span>Copier le lien</span>
+            onclick="
+              navigator.clipboard.writeText(window.location.href).then(function(){
+                var btn = document.getElementById('btn-copy-campaign-link');
+                var orig = btn.textContent;
+                btn.textContent = '✓ {% trans "Copié !" %}';
+                btn.style.background='#f0f7ff';
+                btn.style.color='#0071e3';
+                setTimeout(function(){ btn.textContent = orig; btn.style.background=''; btn.style.color=''; }, 2000);
+              });
+            "
+            style="
+              display:inline-flex; align-items:center; gap:0.4rem;
+              background:#fff; border:1.5px solid rgba(0,0,0,0.1); color:#1d1d1f;
+              font-size:0.85rem; font-weight:500;
+              padding:0 1rem; height:38px; border-radius:9999px;
+              cursor:pointer; transition:background 0.2s;
+            ">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+      {% trans "Copier le lien" %}
     </button>
   </div>
 </div>
+
+{# Script de construction du message WhatsApp dynamique #}
+<script>
+(function() {
+  var btn = document.getElementById('btn-share-whatsapp');
+  if (!btn) return;
+
+  var title = btn.dataset.campaignTitle || 'REDUX';
+  var price = btn.dataset.campaignPrice || '';
+  var currency = btn.dataset.campaignCurrency || 'XOF';
+  var participants = btn.dataset.campaignParticipants || '0';
+  var url = btn.dataset.campaignUrl || window.location.href;
+  var lang = btn.dataset.lang || 'fr';
+
+  var msg;
+  if (lang === 'en') {
+    msg = '🛍️ Group buy on REDUX: *' + title + '* at ' + price + ' ' + currency + '.\n' +
+          'We are already *' + participants + ' participants* and the price drops as we grow!\n' +
+          '👇 Join the group here:\n' + url;
+  } else {
+    msg = '🛍️ Offre collective sur REDUX : *' + title + '* à ' + price + ' ' + currency + '.\n' +
+          'Nous sommes déjà *' + participants + ' participants* et le prix baisse encore !\n' +
+          '👇 Rejoins le groupe ici :\n' + url;
+  }
+
+  btn.setAttribute('href', 'https://wa.me/?text=' + encodeURIComponent(msg));
+})();
+</script>
+{% endif %}

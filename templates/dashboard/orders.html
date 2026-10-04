@@ -22,7 +22,7 @@
     </a>
   </div>
 
-  <!-- Segmented Subnav Pills (Tous les boutons restent visibles sur la page) -->
+  <!-- Segmented Subnav Pills -->
   <div class="flex items-center gap-2 flex-wrap">
     <a href="{% url 'dashboard:index' %}" 
        class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
@@ -38,7 +38,7 @@
     </a>
     <a href="{% url 'dashboard:profile' %}" 
        class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
-      Adresse & Profil
+      Adresse &amp; Profil
     </a>
     <a href="{% url 'dashboard:notifications' %}" 
        class="h-8 px-4 rounded-full bg-white hover:bg-[#f5f5f7] text-[#6e6e73] hover:text-[#1d1d1f] text-[12px] font-medium border border-black/5 transition-all inline-flex items-center whitespace-nowrap">
@@ -78,15 +78,35 @@
                   {{ order.get_status_display }}
                 </span>
               </div>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <a href="{% url 'orders:detail' order_number=order.order_number %}" 
                    class="h-8 px-4 rounded-full bg-[#f5f5f7] hover:bg-[#ebebee] text-[#1d1d1f] text-[12px] font-medium transition-all inline-flex items-center justify-center">
-                  Détails & Suivi
+                  Détails &amp; Suivi
                 </a>
                 {% if order.status in 'PAID,DELIVERED' and not order.review %}
                   <a href="{% url 'reviews:create' order_number=order.order_number %}" 
                      class="h-8 px-4 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white text-[12px] font-medium transition-all inline-flex items-center justify-center">
                     Avis
+                  </a>
+                {% endif %}
+                {# Bouton WhatsApp — uniquement pour les commandes liées à une campagne active #}
+                {% if order.campaign and order.campaign.status == 'ACTIVE' %}
+                  <a class="wa-share-btn h-8 px-3 rounded-full text-white text-[12px] font-medium transition-all inline-flex items-center justify-center gap-1.5"
+                     style="background:#25D366; text-decoration:none;"
+                     data-title="{{ order.campaign.product.name|default:order.campaign.title }}"
+                     data-price="{{ order.campaign.current_price }}"
+                     data-currency="{{ order.campaign.product.store.country.currency.code|default:'XOF' }}"
+                     data-participants="{{ order.campaign.current_participants_count|default:0 }}"
+                     data-slug="{{ order.campaign.slug }}"
+                     data-lang="{{ CURRENT_LANGUAGE|default:'fr' }}"
+                     href="#"
+                     target="_blank" rel="noopener noreferrer"
+                     title="Inviter sur WhatsApp">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                      <path d="M12 0C5.373 0 0 5.373 0 12c0 2.025.507 3.933 1.395 5.6L0 24l6.59-1.37A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.369l-.36-.213-3.713.772.787-3.614-.236-.371A9.818 9.818 0 1 1 12 21.818z"/>
+                    </svg>
+                    Inviter
                   </a>
                 {% endif %}
               </div>
@@ -115,4 +135,30 @@
   </div>
 
 </div>
+
+{# Script WhatsApp — construit le lien wa.me dynamiquement pour chaque bouton #}
+<script>
+document.querySelectorAll('.wa-share-btn').forEach(function(btn) {
+  var title = btn.dataset.title || 'REDUX';
+  var price = btn.dataset.price || '';
+  var currency = btn.dataset.currency || 'XOF';
+  var participants = btn.dataset.participants || '0';
+  var slug = btn.dataset.slug || '';
+  var lang = btn.dataset.lang || 'fr';
+  var url = window.location.protocol + '//' + window.location.host + '/campaigns/' + slug + '/';
+
+  var msg;
+  if (lang === 'en') {
+    msg = '🛍️ Group buy on REDUX: *' + title + '* at ' + price + ' ' + currency + '.\n' +
+          'Already *' + participants + ' participants* — price drops as we grow!\n' +
+          '👇 Join here:\n' + url;
+  } else {
+    msg = '🛍️ Offre collective REDUX : *' + title + '* à ' + price + ' ' + currency + '.\n' +
+          'Déjà *' + participants + ' participants* — le prix baisse encore !\n' +
+          '👇 Rejoins le groupe ici :\n' + url;
+  }
+  btn.setAttribute('href', 'https://wa.me/?text=' + encodeURIComponent(msg));
+});
+</script>
+
 {% endblock %}

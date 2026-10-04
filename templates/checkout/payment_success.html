@@ -1,35 +1,74 @@
 {% extends 'base/base.html' %}
-{% block title %}Paiement Réussi — REDUX{% endblock %}
+{% load static i18n %}
+
+{% block title %}{% trans "Paiement Confirmé — REDUX" %}{% endblock %}
 
 {% block content %}
-<div style="max-width: 600px; margin: 2rem auto; text-align: center;">
-  <div class="card" style="padding: 3rem 2rem; border-color: #A7F3D0; box-shadow: var(--shadow-lg);">
-    <div style="width: 72px; height: 72px; border-radius: 50%; background: #ECFDF5; color: var(--success); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; border: 2px solid #A7F3D0;">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+<div style="max-width: 620px; margin: 2rem auto; display: flex; flex-direction: column; gap: 1.5rem;">
+
+  {# ── Carte de succès ── #}
+  <div class="card" style="padding: 2.5rem 2rem; text-align:center; border-color: rgba(52,199,89,0.3); box-shadow: 0 8px 30px rgba(52,199,89,0.08);">
+
+    {# Icône check animée #}
+    <div style="width:72px; height:72px; border-radius:50%; background:#ECFDF5; color:var(--success); display:flex; align-items:center; justify-content:center; margin: 0 auto 1.5rem; border:2px solid rgba(52,199,89,0.3); animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
     </div>
 
-    <h1 style="font-size: 2rem; color: var(--secondary); margin-bottom: 0.5rem;">Paiement Confirmé !</h1>
-    <p class="text-muted" style="font-size: 1.05rem; margin-bottom: 2rem; line-height: 1.6;">
-      Votre paiement a été validé avec succès par le serveur.<br>
-      Le commerçant prépare votre colis pour expédition.
+    <h1 style="font-size:1.85rem; font-weight:700; color:#1d1d1f; margin-bottom:0.5rem;">
+      {% trans "Paiement Confirmé !" %}
+    </h1>
+    <p style="color:#6e6e73; font-size:1rem; margin-bottom:2rem; line-height:1.6;">
+      {% trans "Votre paiement a été validé. Le commerçant prépare votre colis pour expédition." %}
     </p>
 
-    <div style="background: var(--bg-surface); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 2rem; font-size: 0.95rem;">
-      <div class="flex items-center justify-between" style="margin-bottom: 0.5rem;">
-        <span>Numéro de commande :</span>
-        <strong style="color: var(--secondary);">#{{ order.order_number }}</strong>
+    {# Récapitulatif commande #}
+    <div style="background:var(--bg-surface); border-radius:12px; padding:1.25rem; margin-bottom:2rem; font-size:0.95rem; text-align:left;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+        <span style="color:#6e6e73;">{% trans "Numéro de commande" %}</span>
+        <strong style="color:#1d1d1f;">#{{ order.order_number }}</strong>
       </div>
-      <div class="flex items-center justify-between">
-        <span>Montant réglé :</span>
-        <strong style="color: var(--primary);">{{ order.final_amount }} {{ order.currency.symbol }}</strong>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+        <span style="color:#6e6e73;">{% trans "Montant réglé" %}</span>
+        <strong style="color:var(--primary);">{{ order.final_amount }} {{ order.currency.symbol }}</strong>
       </div>
+      {% if order.campaign %}
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="color:#6e6e73;">{% trans "Campagne" %}</span>
+        <span style="color:#1d1d1f; font-weight:600; font-size:0.9rem;">{{ order.campaign.product.name|default:order.campaign.title }}</span>
+      </div>
+      {% endif %}
     </div>
 
-    <div style="display: flex; justify-content: center; gap: 1rem;">
-      <a href="{% url 'orders:detail' order_number=order.order_number %}" class="btn btn-primary" id="btn-view-confirmed-order">
-        Voir le reçu & suivi de commande →
-      </a>
-    </div>
+    {# CTA bouton suivi #}
+    <a href="{% url 'orders:detail' order_number=order.order_number %}"
+       class="btn btn-primary" id="btn-view-confirmed-order"
+       style="display:inline-flex; align-items:center; gap:0.5rem;">
+      {% trans "Voir le reçu & suivi de commande" %} →
+    </a>
   </div>
+
+  {# ── Bloc WhatsApp (seulement si la commande est liée à une campagne) ── #}
+  {% if order.campaign %}
+    <div>
+      {% include 'partials/share_buttons.html' with campaign=order.campaign %}
+    </div>
+  {% endif %}
+
+  {# ── Call to action explorer #}
+  <div style="text-align:center; padding-bottom: 2rem;">
+    <a href="{% url 'campaigns:list' %}" style="font-size:0.9rem; color:#6e6e73; text-decoration:none;">
+      ← {% trans "Explorer d'autres offres groupées" %}
+    </a>
+  </div>
+
 </div>
+
+<style>
+@keyframes popIn {
+  0%   { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1);   opacity: 1; }
+}
+</style>
 {% endblock %}

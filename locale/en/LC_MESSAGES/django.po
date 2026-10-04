@@ -533,3 +533,54 @@ msgstr "No categories available."
 msgid "disponible"
 msgstr "available"
 
+# ── WhatsApp Share ────────────────────────────────────────────────────────────
+msgid "Invitez vos proches — le prix baisse pour tout le monde !"
+msgstr "Invite your friends — the price drops for everyone!"
+
+msgid "Plus le groupe grandit, plus le tarif descend."
+msgstr "The bigger the group, the lower the price."
+
+msgid "participants dans ce groupe"
+msgstr "participants in this group"
+
+msgid "encore"
+msgstr "only"
+
+msgid "pour débloquer le prochain palier"
+msgstr "more to unlock the next price tier"
+
+msgid "Partager sur WhatsApp"
+msgstr "Share on WhatsApp"
+
+msgid "Copier le lien"
+msgstr "Copy link"
+
+msgid "Copié !"
+msgstr "Copied!"
+
+# ── Payment success ───────────────────────────────────────────────────────────
+msgid "Paiement Confirmé — REDUX"
+msgstr "Payment Confirmed — REDUX"
+
+msgid "Paiement Confirmé !"
+msgstr "Payment Confirmed!"
+
+msgid "Votre paiement a été validé. Le commerçant prépare votre colis pour expédition."
+msgstr "Your payment has been validated. The merchant is preparing your order for shipment."
+
+msgid "Numéro de commande"
+msgstr "Order number"
+
+msgid "Montant réglé"
+msgstr "Amount paid"
+
+msgid "Campagne"
+msgstr "Campaign"
+
+msgid "Voir le reçu & suivi de commande"
+msgstr "View receipt & order tracking"
+
+msgid "Explorer d'autres offres groupées"
+msgstr "Explore other group offers"
+
+
